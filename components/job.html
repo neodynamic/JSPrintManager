@@ -1,0 +1,128 @@
+<div class="card">
+  <br />
+  <div class="row">
+    <div class="col-md-12">
+      <h4>
+        <small>Print Job Content</small>
+        <a class="btn btn-danger pull-right" title="Delete Print Job" ng-click="delete()">
+          <i class="fa fa-minus" style="color: #fff"></i>
+        </a>
+      </h4>
+      <hr>
+      <ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link" ng-class="{ 'active' : jobType == 0 }" ng-click="jobType = 0"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Raw Commands</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" ng-class="{ 'active' : jobType == 1 }" ng-click="jobType = 1"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Files <small>(PDF, PNG, JPG, etc.)</small></a>
+        </li>
+      </ul>
+        &#10102;&nbsp;<strong>Specify the target Printer</strong>
+        <select required class="form-control" ng-model="job.printer">
+            <option value="0" selected="selected">Default Printer</option>
+            <option value="1">Select one through the OS Printer Dialog</option>
+            <option value="2">Select an Installed Printer</option>
+            <option value="3" ng-hide="jobType==1">Use an IP/Ethernet Printer</option>
+            <option value="4" ng-hide="jobType==1">Use a Parallel LPT Port</option>
+            <option value="5" ng-hide="jobType==1">Use a Serial (RS232) Port</option>
+        </select>
+        <br />
+        <div class="small alert alert-light">
+            <div ng-show="job.printer == 0">
+                The Printer set as Default in this machine will be used.
+            </div>
+            <div ng-show="job.printer == 1">
+                The OS Printer Dialog will be displayed at printing time!
+            </div>
+            <div ng-show="job.printer == 2">
+                Select one of the Installed Printers
+                <select class="form-control" ng-model="job.selectedPrinter" ng-options="p for p in printer_list"></select>
+            </div>
+            <div ng-show="job.printer == 3">
+                <label>
+                    IP
+                    <input ng-model="job.networkIp" class="form-control" />
+                </label>
+                <label>
+                    Port
+                    <input ng-model="job.networkPort" class="form-control" />
+                </label>
+                <label>
+                    DNS Name
+                    <input ng-model="job.networkDns" class="form-control" />
+                </label>
+            </div>
+            <div ng-show="job.printer == 4">
+                <label>
+                    LPT Port
+                    <input ng-model="job.lptPort" class="form-control" />
+                </label>
+            </div>
+            <div ng-show="job.printer == 5">
+                <label>
+                    Serial Port
+                    <input ng-model="job.serialPort" class="form-control" />
+                </label>
+                <label>
+                    Baud Rate
+                    <input ng-model="job.serialBaudRate" class="form-control" />
+                </label>
+                <label>
+                    Data Bits
+                    <input ng-model="job.serialDataBits" class="form-control" />
+                </label>
+                <label>
+                    Parity
+                    <select ng-model="job.serialParity" class="form-control">
+                        <option value="0">None</option>
+                        <option value="1">Odd</option>
+                        <option value="2">Even</option>
+                        <option value="3">Mark</option>
+                        <option value="4">Space</option>
+                    </select>
+                </label>
+                <label>
+                    Stop bits
+                    <select ng-model="job.serialStopBits" class="form-control">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="3">1.5</option>
+                        <option value="2">2</option>
+                    </select>
+                </label>
+                <label>
+                    Flow control
+                    <select ng-model="job.serialFlowControl" class="form-control">
+                        <option value="0">None</option>
+                        <option value="3">XOnXOff</option>
+                        <option value="1">RTS (Request to send)</option>
+                        <option value="2">RTS XOnXOff</option>
+                    </select>
+                </label>
+            </div>
+            
+        </div>
+
+    </div>
+  </div>
+  <div class="row" ng-show="jobType == 0">
+    <div class="col-md-12">
+        <hr />
+        &#10103;&nbsp;<strong>Enter the raw printer commands</strong>
+        <a tabindex="0" class="btn btn-sm btn-dark pull-right" data-toggle="popover" data-trigger="focus" title="Help" data-html="true" data-content="Enter the printer's commands you want to send and is supported by the specified printer (ESC/P, ZPL, etc). <br>For non-printable characters, use the JS hex notation (e.g. \x13 for carriage return)"><i class="fa fa-question-circle"></i></a>
+      
+      <textarea ng-model="job.printerCommands" class="form-control"></textarea>
+    </div>
+  </div>
+  <div class="row" ng-show="jobType == 1">
+    <div class="col-md-12">
+            <hr />
+            &#10103;&nbsp;<strong>Select the File(s) to print</strong>
+            <a tabindex="1" class="btn btn-sm btn-dark pull-right" data-toggle="popover" data-trigger="focus" title="Help" data-html="true" data-content="Remember to check if you meet the requeriments before print files! You can check it <a data-toggle='modal' data-target='#files-requeriments' href=''>here</a>"><i class="fa fa-question-circle"></i></a>
+            
+            <hr>
+            <input fileread="job.files" type="file" multiple="multiple" class="form-control-file" />
+        </div>
+  </div>
+  <br />
+</div>
