@@ -238,7 +238,7 @@
                     client_job.clientPrinter = printer;
                     if (job.contentType == 0) {
                         if (job.printerCommands)
-                            client_job.printerCommands = job.printerCommands;
+                            client_job.printerCommands = job.printerCommands.replace(/\\x(\w+)/g, (m, p1) => { return String.fromCharCode(parseInt("0x" + p1)); });
                         else {
                             $scope.alertMessage = "Print Job #" + (i + 1) + ": Please enter the RAW printer commands to be sent to the target printer!";
                             $('#alertDialog').modal();
