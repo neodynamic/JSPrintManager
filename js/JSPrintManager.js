@@ -1,3 +1,21 @@
+/*!
+ * JSPrintManager v1.0.1
+ * https://neodynamic.com/products/printing/js-print-manager
+ *
+ * GitHub Repo 
+ * https://github.com/neodynamic/jsprintmanager
+ *
+ * Requires zip.js, zip-ext.js, and defalte.js files from 
+ * https://github.com/gildas-lormeau/zip.js
+ * 
+ * Requires JSPrintManager Client App
+ * https://neodynamic.com/downloads/jspm
+ *
+ * Copyright Neodynamic SRL
+ * https://neodynamic.com
+ * Date: 2018-07-23
+ */
+
 var JSPM;
 (function (JSPM) {
     var ClientPrintJob = (function () {
@@ -133,6 +151,7 @@ var JSPM;
             });
         };
         ClientPrintJob.prototype._genPCArrayAsync = function (printerCommands, binPrinterCommands, printerCopies) {
+            var _this = this;
             return new Promise(function (resolve, reject) {
                 try {
                     if (binPrinterCommands != null && binPrinterCommands.length > 0)
@@ -143,7 +162,7 @@ var JSPM;
                             buffer += "PCC=" + printerCopies + '|';
                         else
                             buffer += printerCommands;
-                        resolve(new Uint8Array(buffer.split('').map(function (x) { return x.charCodeAt(0); })));
+                        resolve(new Uint8Array(_this._str2UTF8Array(buffer)));
                     }
                 }
                 catch (e) {
@@ -151,12 +170,34 @@ var JSPM;
                 }
             });
         };
+        ClientPrintJob.prototype._str2UTF8Array = function (str) {
+            var utf8 = [];
+            for (var i = 0; i < str.length; i++) {
+                var charcode = str.charCodeAt(i);
+                if (charcode < 0x80)
+                    utf8.push(charcode);
+                else if (charcode < 0x800) {
+                    utf8.push(0xc0 | (charcode >> 6), 0x80 | (charcode & 0x3f));
+                }
+                else if (charcode < 0xd800 || charcode >= 0xe000) {
+                    utf8.push(0xe0 | (charcode >> 12), 0x80 | ((charcode >> 6) & 0x3f), 0x80 | (charcode & 0x3f));
+                }
+                else {
+                    i++;
+                    charcode = 0x10000 + (((charcode & 0x3ff) << 10)
+                        | (str.charCodeAt(i) & 0x3ff));
+                    utf8.push(0xf0 | (charcode >> 18), 0x80 | ((charcode >> 12) & 0x3f), 0x80 | ((charcode >> 6) & 0x3f), 0x80 | (charcode & 0x3f));
+                }
+            }
+            return utf8;
+        };
         ClientPrintJob.prototype._genPrinterArrayAsync = function (clientPrinter) {
+            var _this = this;
             return new Promise(function (resolve, reject) {
                 try {
                     if (!clientPrinter)
                         clientPrinter = new JSPM.UserSelectedPrinter();
-                    var toRet = new Uint8Array(clientPrinter.serialize().split('').map(function (x) { return x.charCodeAt(0); }));
+                    var toRet = new Uint8Array(_this._str2UTF8Array(clientPrinter.serialize()));
                     resolve(toRet);
                 }
                 catch (e) {
@@ -598,6 +639,8 @@ var JSPM;
             if (port === void 0) { port = 20443; }
             return new Promise(function (ok, err) {
                 try {
+                    if (_this.WS != null && _this.WS.readyState == _this.WS.OPEN)
+                        ok();
                     _this.LockThread();
                     _this._start(1, secure, port);
                     _this.WS.onopen = function (i) {
@@ -683,6 +726,8 @@ var JSPM;
                     err("The WebSocket connection is closed");
                 else if (_this._ws_status == JSPM.WSStatus.BlackListed)
                     err("The site is blacklisted and the connection was closed");
+                else if (_this.WS.readyState != _this.WS.OPEN)
+                    err("The WebSocket isn't ready yet");
                 _this.LockThread();
                 _this.WS.send(data);
             });
@@ -733,4 +778,3 @@ var JSPM;
     }());
     JSPM.PrintFile = PrintFile;
 })(JSPM || (JSPM = {}));
-//# sourceMappingURL=JSPrintManager.js.map
