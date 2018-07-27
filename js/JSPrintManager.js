@@ -1,5 +1,5 @@
 /*!
- * JSPrintManager v1.0.1
+ * JSPrintManager v1.0.2
  * https://neodynamic.com/products/printing/js-print-manager
  *
  * GitHub Repo 
@@ -13,10 +13,10 @@
  *
  * Copyright Neodynamic SRL
  * https://neodynamic.com
- * Date: 2018-07-23
+ * Date: 2018-07-27
  */
-
-var JSPM;
+ 
+ var JSPM;
 (function (JSPM) {
     var ClientPrintJob = (function () {
         function ClientPrintJob() {
@@ -174,7 +174,13 @@ var JSPM;
             var utf8 = [];
             for (var i = 0; i < str.length; i++) {
                 var charcode = str.charCodeAt(i);
-                if (charcode < 0x80)
+                if (i == 0 && charcode == 0xef && (i + 1 < str.length && str.charCodeAt(i + 1) == 0xbb) && (i + 2 < str.length && str.charCodeAt(i + 2) == 0xbf)) {
+                    utf8.push(0xef);
+                    utf8.push(0xbb);
+                    utf8.push(0xbf);
+                    i += 2;
+                }
+                else if (charcode < 0x80)
                     utf8.push(charcode);
                 else if (charcode < 0x800) {
                     utf8.push(0xc0 | (charcode >> 6), 0x80 | (charcode & 0x3f));
