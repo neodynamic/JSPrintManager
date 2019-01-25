@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>JSPrintManager - Print RAW Commands & Known File Formats from Javascript</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <meta charset="utf-8" />
+    <style>
+      table,
+      textarea {
+        width: 100%;
+        height: 200px;
+        padding: 3px;
+      }
+
+      a {
+        cursor: pointer;
+      }
+
+      .githubIcon {
+        margin-right: 10px;
+        color: #fff;
+        font-size: 32px;
+      }
+
+      .jspmStatus {
+        color: #fff;
+        margin-left: 10px;
+      }
+
+      .round {
+        display: inline-block;
+        height: 40px;
+        width: 40px;
+        line-height: 40px;
+        -moz-border-radius: 20px;
+        border-radius: 20px;
+        background-color: #cd2122;
+        color: #fff;
+        text-align: center;
+      }
+
+      .content {
+        padding-top: 80px;
+        padding-bottom: 20px;
+      }
+
+      .fileFormats {
+        background-color: #ececec;
+        font-weight: bold;
+        color: #666;
+      }
+
+      .topMost {
+        z-index: 1080;
+      }
+
+      .white {
+        color: #fff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <file-formats-modal id="files-requeriments"></file-formats-modal>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <!--JSPrintManager scripts-->
+    <script src="scripts/JSPrintManager.js"></script>
+    <script src="scripts/zip.js"></script>
+    <script src="scripts/zip-ext.js"></script>
+    <script src="scripts/deflate.js"></script>
+    <!--end JSPrintManager scripts-->
+
+      <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+      <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+      <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+      <script type="text/babel" src="components/JSPMStatus.js">
+      </script>
+      <script type="text/babel" src="components/DemoStartPage.js">
+      </script>
+      <script type="text/babel" src="components/InstallJSPMClientApp.js">
+      </script>
+      <script type="text/babel" src="components/WebsiteBlackListed.js">
+      </script>
+      <script type="text/babel" src="components/Printers.js">
+      </script>
+      <script type="text/babel" src="components/PrintJobForRawCommands.js">
+      </script>
+      <script type="text/babel" src="components/PrintJobForFiles.js">
+      </script>
+      <script type="text/babel" src="components/PrintJob.js">
+      </script>
+      <script type="text/babel" src="components/PrintingMultiplePrintJobsSample.js">
+      </script>
+      <script type="text/babel" src="components/PrintingRawCommandsSample.js">
+      </script>
+      <script type="text/babel" src="components/PrintingFilesSample.js">
+      </script>
+      <script type="text/babel" src="components/PrintingPDFSample.js">
+      </script>
+      <script type="text/babel" src="components/PrintingTXTSample.js">
+      </script>
+      <script type="text/babel" src="components/PrintersInfoSample.js">
+      </script>
+      <script type="text/babel" src="components/App.js">
+      </script>
+
+  </body>
+</html>
