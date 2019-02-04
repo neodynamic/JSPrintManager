@@ -216,9 +216,9 @@
                         >
                             {this.state.installedPrinters[
                               this.state.selectedPrinterIndex
-                            ].trays.map(function(item) {
+                            ].trays.map(function(item, i) {
                                 let opt = (
-                                  <option key={item} value={item}>
+                                  <option key={i} value={item}>
                                     {item}
                                   </option>
                             );
@@ -235,9 +235,9 @@
                         >
                             {this.state.installedPrinters[
                               this.state.selectedPrinterIndex
-                            ].papers.map(function(item) {
+                            ].papers.map(function(item, i) {
                                 let opt = (
-                                  <option key={item} value={item}>
+                                  <option key={i} value={item}>
                                     {item}
                                   </option>
                             );
@@ -274,8 +274,9 @@
                           <div className="checkbox">
                             <label>
                               <input
+                          id="printInReverseOrder"
                             type="checkbox"
-                            name="printerInReverseOrder"
+                            name="printInReverseOrder"
                             onChange={this.setData.bind(this)}
                           />
                           Print In Reverse Order?
