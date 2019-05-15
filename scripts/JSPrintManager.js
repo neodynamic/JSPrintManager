@@ -1,5 +1,5 @@
 /*!
- * JSPrintManager v2.0.0
+ * JSPrintManager v2.0.1
  * https://neodynamic.com/products/printing/js-print-manager
  *
  * GitHub Repo 
@@ -489,7 +489,7 @@ var JSPM;
     JSPM.SerialPortPrinter = SerialPortPrinter;
     var NetworkPrinter = (function () {
         function NetworkPrinter(port, ipAddress, dnsName) {
-            this.Id = 4;
+            this.Id = String.fromCharCode(4);
             this._networkIPAddress = "0.0.0.0";
             this._networkPort = 0;
             this._dnsName = "";
