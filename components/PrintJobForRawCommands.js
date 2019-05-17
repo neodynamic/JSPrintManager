@@ -9,9 +9,14 @@
     
 
     setPrinterCommands(cmds) {
+        //convert literal hex notation to char
+        var printCmds = cmds.replace(/\\x([0-9A-F]{2})/ig, function() {
+            return String.fromCharCode(parseInt(arguments[1], 16));
+        });
+        
         //console.log(cmds);
         //no need to re-render
-        this.state.printerCommands = cmds;
+        this.state.printerCommands = printCmds;
         this.props.onPrinterCommandsChange(this.state.printerCommands);
     }
 
