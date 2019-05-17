@@ -1,5 +1,5 @@
 /*!
- * JSPrintManager v2.0.1
+ * JSPrintManager v2.0.2
  * https://neodynamic.com/products/printing/js-print-manager
  *
  * GitHub Repo 
@@ -158,7 +158,7 @@ var JSPM;
                     utf8.push(0xbf);
                     i += 2;
                 }
-                else if (charcode < 0x80)
+                else if (charcode < 0x100)
                     utf8.push(charcode);
                 else if (charcode < 0x800) {
                     utf8.push(0xc0 | (charcode >> 6), 0x80 | (charcode & 0x3f));
