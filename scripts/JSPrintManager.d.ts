@@ -77,7 +77,7 @@ declare namespace JSPM {
         serialize(): string;
     }
     class NetworkPrinter implements IClientPrinter {
-        Id: number;
+        Id: string;
         private _networkIPAddress;
         private _networkPort;
         private _dnsName;
@@ -166,9 +166,9 @@ declare namespace JSPM {
         private _pingPong();
         private _onClose(e, __this);
         private _genID();
-        private _send(data, ok, err);
+        private _send(data, params, ok, err);
         start(): Promise<void>;
-        send(data: any): Promise<any>;
+        send(data: any, params?: {}): Promise<any>;
         stop(): void;
     }
 }
@@ -176,9 +176,12 @@ declare namespace JSPM {
     class JSPrintManager {
         static WS: JSPMWebSocket;
         static auto_reconnect: boolean;
+        static license_url: string;
+        static cache_license_at_start: boolean;
         static start(secure?: boolean, host?: string, port?: number): Promise<void>;
         static getPrinters(): Promise<{}>;
         static getPrintersInfo(): Promise<{}>;
+        static cacheLicense(url?: string): Promise<{}>;
         static readonly websocket_status: WSStatus;
         static showAbout(): Promise<any>;
         static updateClient(): Promise<any>;
