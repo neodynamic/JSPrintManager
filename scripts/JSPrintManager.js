@@ -1,5 +1,5 @@
 /*!
- * JSPrintManager v2.0.2
+ * JSPrintManager v2.0.3
  * https://neodynamic.com/products/printing/js-print-manager
  *
  * GitHub Repo 
@@ -77,25 +77,31 @@ var JSPM;
         ClientPrintJob.prototype.sendToClient = function () {
             var _this = this;
             return new Promise(function (ok, err) {
-                _this._generateDataAsync().
-                    then(function (data) {
+                _this._generateDataAsync()
+                    .then(function (data) {
                     JSPM.JSPrintManager.WS.send(data)
-                        .then(function (i) { ok(i); })
-                        .catch(function (e) { err(e); });
-                }).
-                    catch(function (e) {
+                        .then(function (i) {
+                        ok(i);
+                    })
+                        .catch(function (e) {
+                        err(e);
+                    });
+                })
+                    .catch(function (e) {
                     err(e);
                 });
             });
         };
         ClientPrintJob.prototype._intToByteArray = function (number) {
-            return new Uint8Array([number & 0xFF,
-                (number >> 8) & 0xFF,
-                (number >> 16) & 0xFF,
-                (number >> 24) & 0xFF]);
+            return new Uint8Array([
+                number & 0xff,
+                (number >> 8) & 0xff,
+                (number >> 16) & 0xff,
+                (number >> 24) & 0xff
+            ]);
         };
         ClientPrintJob.prototype._genPFGArrayAsync = function (printFileGroup) {
-            var SEPARATOR = ',';
+            var SEPARATOR = ",";
             return new Promise(function (resolve, reject) {
                 if (!zip)
                     reject("zip.js, zip-ext.js, and deflate.js files from https://github.com/gildas-lormeau/zip.js project are missing.");
@@ -110,17 +116,28 @@ var JSPM;
                             }
                             else {
                                 var printFile = printFileGroup[pf_idx];
-                                var file_1 = pf_idx + SEPARATOR + printFile.copies + SEPARATOR + printFile.fileName;
-                                printFile.serialize().then(function (reader) {
-                                    zipWriter.add(file_1, reader, function () { addPrintFile2Zip(pf_idx + 1); });
-                                }).catch(function (e) {
+                                var file_1 = pf_idx +
+                                    SEPARATOR +
+                                    printFile.copies +
+                                    SEPARATOR +
+                                    printFile.fileName;
+                                printFile
+                                    .serialize()
+                                    .then(function (reader) {
+                                    zipWriter.add(file_1, reader, function () {
+                                        addPrintFile2Zip(pf_idx + 1);
+                                    });
+                                })
+                                    .catch(function (e) {
                                     reject(e);
                                 });
                             }
                         }
                         if (printFileGroup.length != 0)
                             addPrintFile2Zip(0);
-                    }, function (e) { reject(e); });
+                    }, function (e) {
+                        reject(e);
+                    });
                 }
             });
         };
@@ -152,7 +169,12 @@ var JSPM;
             var utf8 = [];
             for (var i = 0; i < str.length; i++) {
                 var charcode = str.charCodeAt(i);
-                if (i == 0 && charcode == 0xef && (i + 1 < str.length && str.charCodeAt(i + 1) == 0xbb) && (i + 2 < str.length && str.charCodeAt(i + 2) == 0xbf)) {
+                if (i == 0 &&
+                    charcode == 0xef &&
+                    i + 1 < str.length &&
+                    str.charCodeAt(i + 1) == 0xbb &&
+                    i + 2 < str.length &&
+                    str.charCodeAt(i + 2) == 0xbf) {
                     utf8.push(0xef);
                     utf8.push(0xbb);
                     utf8.push(0xbf);
@@ -168,8 +190,9 @@ var JSPM;
                 }
                 else {
                     i++;
-                    charcode = 0x10000 + (((charcode & 0x3ff) << 10)
-                        | (str.charCodeAt(i) & 0x3ff));
+                    charcode =
+                        0x10000 +
+                            (((charcode & 0x3ff) << 10) | (str.charCodeAt(i) & 0x3ff));
                     utf8.push(0xf0 | (charcode >> 18), 0x80 | ((charcode >> 12) & 0x3f), 0x80 | ((charcode >> 6) & 0x3f), 0x80 | (charcode & 0x3f));
                 }
             }
@@ -193,6 +216,7 @@ var JSPM;
             var _this = this;
             return new Promise(function (resolve, reject) {
                 var header = new Uint8Array([99, 112, 106, 2]);
+                var licenseTD = JSPM.JSPrintManager.license_url;
                 Promise.race([
                     _this._genPCArrayAsync(_this._printerCommands, _this.binaryPrinterCommands, _this._printerCommandsCopies),
                     _this._genPFGArrayAsync(_this._printFileGroup)
@@ -202,11 +226,22 @@ var JSPM;
                         .then(function (printer_data) {
                         var idx1 = _this._intToByteArray(file_data.size);
                         var idx2 = _this._intToByteArray(file_data.size + printer_data.length);
-                        resolve(new Blob([header, idx1, idx2, file_data, printer_data]));
+                        resolve(new Blob([
+                            header,
+                            idx1,
+                            idx2,
+                            file_data,
+                            printer_data,
+                            licenseTD
+                        ]));
                     })
-                        .catch(function (e) { reject(e); });
+                        .catch(function (e) {
+                        reject(e);
+                    });
                 })
-                    .catch(function (e) { reject(e); });
+                    .catch(function (e) {
+                    reject(e);
+                });
             });
         };
         return ClientPrintJob;
@@ -229,13 +264,17 @@ var JSPM;
         ClientPrintJobGroup.prototype.sendToClient = function () {
             var _this = this;
             return new Promise(function (ok, err) {
-                _this._generateDataAsync().
-                    then(function (data) {
+                _this._generateDataAsync()
+                    .then(function (data) {
                     JSPM.JSPrintManager.WS.send(data)
-                        .then(function (i) { ok(i); })
-                        .catch(function (e) { err(e); });
-                }).
-                    catch(function (e) {
+                        .then(function (i) {
+                        ok(i);
+                    })
+                        .catch(function (e) {
+                        err(e);
+                    });
+                })
+                    .catch(function (e) {
                     err(e);
                 });
             });
@@ -243,16 +282,24 @@ var JSPM;
         ClientPrintJobGroup.prototype._generateMiniJob = function (cj) {
             var INDEXES_SIZE = 8;
             return new Promise(function (ok, error) {
-                Promise
-                    .race([cj._genPCArrayAsync(cj.printerCommands, cj.binaryPrinterCommands, cj.printerCommandsCopies),
-                    cj._genPFGArrayAsync(cj.files)])
+                Promise.race([
+                    cj._genPCArrayAsync(cj.printerCommands, cj.binaryPrinterCommands, cj.printerCommandsCopies),
+                    cj._genPFGArrayAsync(cj.files)
+                ])
                     .then(function (file_data) {
-                    cj._genPrinterArrayAsync(cj.clientPrinter).then(function (printer_data) {
+                    cj._genPrinterArrayAsync(cj.clientPrinter)
+                        .then(function (printer_data) {
                         var idx1 = cj._intToByteArray(file_data.size);
                         var idx2 = cj._intToByteArray(file_data.size + printer_data.length);
                         ok(new Blob([idx1, idx2, file_data, printer_data]));
-                    }).catch(function (e) { error(e); });
-                }).catch(function (e) { error(e); });
+                    })
+                        .catch(function (e) {
+                        error(e);
+                    });
+                })
+                    .catch(function (e) {
+                    error(e);
+                });
             });
         };
         ClientPrintJobGroup.prototype._generateDataAsync = function () {
@@ -260,13 +307,15 @@ var JSPM;
             return new Promise(function (resolve, reject) {
                 var header = new Uint8Array([99, 112, 106, 103, 2]);
                 var jobs_qty = new Uint8Array(_this._intToArray(_this.jobs.length));
+                var licenseTD = JSPM.JSPrintManager.license_url;
                 var promises = [];
                 for (var i = 0; i < _this.jobs.length; i++) {
                     promises.push(_this._generateMiniJob(_this.jobs[i]));
                 }
-                Promise.all(promises).then(function (data_arr) {
+                Promise.all(promises)
+                    .then(function (data_arr) {
                     var jobs = data_arr.reduce(function (prev, curr) { return new Blob([prev, curr]); });
-                    resolve(new Blob([header, jobs_qty, jobs]));
+                    resolve(new Blob([header, jobs_qty, jobs, licenseTD]));
                 })
                     .catch(function (error) {
                     reject(error);
@@ -274,10 +323,12 @@ var JSPM;
             });
         };
         ClientPrintJobGroup.prototype._intToArray = function (number) {
-            return [number & 0xFF,
-                (number >> 8) & 0xFF,
-                (number >> 16) & 0xFF,
-                (number >> 24) & 0xFF];
+            return [
+                number & 0xff,
+                (number >> 8) & 0xff,
+                (number >> 16) & 0xff,
+                (number >> 24) & 0xff
+            ];
         };
         return ClientPrintJobGroup;
     }());
@@ -622,7 +673,7 @@ var JSPM;
 (function (JSPM) {
     var JSPMWebSocket = (function () {
         function JSPMWebSocket(addr, port, secure, auto_reconnect) {
-            if (addr === void 0) { addr = 'localhost'; }
+            if (addr === void 0) { addr = "localhost"; }
             if (port === void 0) { port = 22443; }
             if (secure === void 0) { secure = true; }
             if (auto_reconnect === void 0) { auto_reconnect = false; }
@@ -700,7 +751,7 @@ var JSPM;
             setInterval(function (_) {
                 if (_this._status != JSPM.WSStatus.Open)
                     return;
-                _this.send('ping');
+                _this.send("ping");
             }, 30000);
         };
         JSPMWebSocket.prototype._onClose = function (e, __this) {
@@ -717,13 +768,12 @@ var JSPM;
             __this.onClose(e);
             __this.onStatusChanged();
         };
-        ;
         JSPMWebSocket.prototype._genID = function () {
             return Math.floor((1 + Math.random()) * 0x100000000)
                 .toString(16)
                 .substring(1);
         };
-        JSPMWebSocket.prototype._send = function (data, ok, err) {
+        JSPMWebSocket.prototype._send = function (data, params, ok, err) {
             do {
                 var id = this._genID();
             } while (this._job_list[id]);
@@ -732,14 +782,25 @@ var JSPM;
                 ok: ok,
                 error: err
             };
-            var _data = '';
+            var _data = {};
             if (data instanceof Blob) {
-                var job_id = new Uint8Array(('id' + id).split('')
-                    .map(function (a) { return a.charCodeAt(0); }));
+                var job_id = new Uint8Array(("id" + id).split("").map(function (a) { return a.charCodeAt(0); }));
                 _data = new Blob([data, job_id]);
             }
-            else if (typeof data == 'string') {
-                _data = JSON.stringify({ id: id, data: data });
+            else if (typeof data == "string") {
+                if ("id" in params) {
+                    params["_id"] = params["id"];
+                    delete params["id"];
+                }
+                if ("data" in params) {
+                    params["_data"] = params["data"];
+                    delete params["data"];
+                }
+                _data = { id: id, data: data };
+                for (var param in params) {
+                    _data[param] = params[param];
+                }
+                _data = JSON.stringify(_data);
             }
             else {
                 delete this._job_list[id];
@@ -751,22 +812,22 @@ var JSPM;
             var _this = this;
             return new Promise(function (ok, err) {
                 try {
-                    _this._ws = new WebSocket((_this._secure ? 'wss://' : 'ws://') +
-                        _this._addr + ':' + _this._port);
+                    _this._ws = new WebSocket((_this._secure ? "wss://" : "ws://") + _this._addr + ":" + _this._port);
                     _this._ws.onclose = function (e) { return _this._onClose(e, _this); };
                     _this._ws.onerror = function (i) {
                         err(i);
                     };
                     _this._ws.onopen = function (i) {
                         _this._ws.onopen = function (e) { return _this._onOpen(e, _this); };
+                        if (JSPM.JSPrintManager.cache_license_at_start) {
+                            JSPM.JSPrintManager.cacheLicense(JSPM.JSPrintManager.license_url);
+                        }
                         _this._ws.onmessage = function (e) {
                             if (e.data == "CONNECTED") {
                                 _this._status = JSPM.WSStatus.Open;
                                 _this.onStatusChanged();
                                 _this.onOpen(null);
-                                _this._ws.onmessage = function (e) {
-                                    return _this._onMessage(e, _this._job_list);
-                                };
+                                _this._ws.onmessage = function (e) { return _this._onMessage(e, _this._job_list); };
                             }
                         };
                         _this._ws.onerror = _this._onError;
@@ -776,15 +837,18 @@ var JSPM;
                 catch (e) {
                     if (_this.autoReconnect)
                         setTimeout(function () {
-                            _this.start().then(ok).catch(err);
+                            _this.start()
+                                .then(ok)
+                                .catch(err);
                         }, 2000);
                     else
                         err(e);
                 }
             });
         };
-        JSPMWebSocket.prototype.send = function (data) {
+        JSPMWebSocket.prototype.send = function (data, params) {
             var _this = this;
+            if (params === void 0) { params = {}; }
             return new Promise(function (ok, err) {
                 if (_this._status == JSPM.WSStatus.Closed)
                     err("The WebSocket connection is closed");
@@ -792,7 +856,7 @@ var JSPM;
                     err("The site is blacklisted and the connection was closed");
                 else if (_this._ws.readyState != _this._ws.OPEN)
                     err("The WebSocket isn't ready yet");
-                _this._send(data, ok, err);
+                _this._send(data, params, ok, err);
             });
         };
         JSPMWebSocket.prototype.stop = function () {
@@ -810,7 +874,7 @@ var JSPM;
         }
         JSPrintManager.start = function (secure, host, port) {
             if (secure === void 0) { secure = true; }
-            if (host === void 0) { host = 'localhost'; }
+            if (host === void 0) { host = "localhost"; }
             if (port === void 0) { port = 22443; }
             if (!this.WS)
                 this.WS = new JSPM.JSPMWebSocket(host, port, secure, this.auto_reconnect);
@@ -819,9 +883,9 @@ var JSPM;
         JSPrintManager.getPrinters = function () {
             var _this = this;
             return new Promise(function (ok, err) {
-                _this.WS.send('get_printers')
+                _this.WS.send("get_printers")
                     .then(function (data) {
-                    var list = data.split('|');
+                    var list = data.split("|");
                     ok(list);
                 })
                     .catch(function (e) {
@@ -832,9 +896,25 @@ var JSPM;
         JSPrintManager.getPrintersInfo = function () {
             var _this = this;
             return new Promise(function (ok, err) {
-                _this.WS.send('info_printers')
+                _this.WS.send("info_printers")
                     .then(function (data) {
                     ok(JSON.parse(data));
+                })
+                    .catch(function (e) {
+                    err(e);
+                });
+            });
+        };
+        JSPrintManager.cacheLicense = function (url) {
+            var _this = this;
+            if (url === void 0) { url = ""; }
+            if (url == "") {
+                url = window.location.origin + "/jspm";
+            }
+            return new Promise(function (ok, err) {
+                _this.WS.send("cache_license", { url: url })
+                    .then(function (_) {
+                    ok();
                 })
                     .catch(function (e) {
                     err(e);
@@ -858,6 +938,8 @@ var JSPM;
             this.WS.stop();
         };
         JSPrintManager.auto_reconnect = false;
+        JSPrintManager.license_url = "";
+        JSPrintManager.cache_license_at_start = true;
         return JSPrintManager;
     }());
     JSPM.JSPrintManager = JSPrintManager;
