@@ -1,5 +1,5 @@
 /*!
- * JSPrintManager v2.0.3
+ * JSPrintManager v2.0.4
  * https://neodynamic.com/products/printing/js-print-manager
  *
  * GitHub Repo 
@@ -1172,3 +1172,13 @@ var JSPM;
     JSPM.PrintFileTXT = PrintFileTXT;
 })(JSPM || (JSPM = {}));
 //# sourceMappingURL=JSPrintManager.js.map
+
+(function() {
+    if (typeof define === 'function' && define.amd) {
+        define(JSPM);
+    } else if (typeof exports === 'object') {
+        module.exports = JSPM;
+    } else {
+        window.JSPM = JSPM;
+    }
+})();
