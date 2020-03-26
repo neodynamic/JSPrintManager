@@ -16,9 +16,11 @@ By writing pure Javascript code, **JSPrintManager** allows you to _easily send r
 
 ## How to use JSPrintManager - Sample Code
 
-This GitHub repo contains the source code of [JSPrintManager Online Demo Website](https://jsprintmanager.azurewebsites.net) which was written by using [ReactJS](https://reactjs.org/)
+This GitHub repo contains the source code of [JSPrintManager Online Demo Website](https://jsprintmanager.azurewebsites.net) which was written by using [**ReactJS**](https://reactjs.org/)
 
 If your using **another Javascript framework** please refer to the different [articles about JSPrintManager and different printing topics which were written in plain Javascript code](https://www.neodynamic.com/products/printing/js-print-manager/articles)
+
+If you're an **Angular** dev, then try this sample repo https://github.com/neodynamic/JSPrintManager-Angular
 
 ## Licensing
 
