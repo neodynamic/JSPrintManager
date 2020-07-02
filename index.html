@@ -1,10 +1,10 @@
 ﻿<!DOCTYPE html>
 <html>
   <head>
-    <title>JSPrintManager - Print RAW Commands & Known File Formats from Javascript</title>
+      <title>JSPrintManager - Print Commands & Files, Manage Printers & Scan Docs from Javascript</title>
     <link
       rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
     />
     <link
       rel="stylesheet"
@@ -12,29 +12,29 @@
     />
     <meta charset="utf-8" />
     <style>
-      table,
-      textarea {
+        table,
+        textarea {
         width: 100%;
         height: 200px;
         padding: 3px;
-      }
+        }
 
-      a {
+        a {
         cursor: pointer;
-      }
+        }
 
-      .githubIcon {
+        .githubIcon {
         margin-right: 10px;
         color: #fff;
         font-size: 32px;
-      }
+        }
 
-      .jspmStatus {
+        .jspmStatus {
         color: #fff;
         margin-left: 10px;
-      }
+        }
 
-      .round {
+        .round {
         display: inline-block;
         height: 40px;
         width: 40px;
@@ -44,44 +44,79 @@
         background-color: #cd2122;
         color: #fff;
         text-align: center;
-      }
+        }
 
-      .content {
+        .content {
         padding-top: 80px;
         padding-bottom: 20px;
-      }
+        }
 
-      .fileFormats {
+        .fileFormats {
         background-color: #ececec;
         font-weight: bold;
         color: #666;
-      }
+        }
 
-      .topMost {
+        .topMost {
         z-index: 1080;
-      }
+        }
 
-      .white {
+        .white {
         color: #fff;
-      }
+        }
+
+        .iconDemo {
+        color: #cd2122;
+        }
+
+        .tab-content,
+        .nav-tabs {
+            border-bottom: 2px solid #cd2122;
+        }
+
+            .nav-tabs .nav-item.show .nav-link, 
+            .nav-tabs .nav-link.active {
+                background: #cd2122;
+                border-bottom: 2px solid #cd2122;
+                color: #fff;
+            }
+
+        .nav-link {
+            color: #cd2122;
+        }
+
+        .terminal {
+            background-color: #171a1d;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .text-monospace {
+            font-family: 'Courier New', Courier, monospace;
+        }
+            
     </style>
   </head>
 
   <body>
-    <div id="root"></div>
+      <div id="root"></div>
 
-    <file-formats-modal id="files-requeriments"></file-formats-modal>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+      <file-formats-modal id="files-requeriments"></file-formats-modal>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 
-    <!--JSPrintManager scripts-->
-    <script src="scripts/JSPrintManager.js"></script>
-    <script src="scripts/zip.js"></script>
-    <script src="scripts/zip-ext.js"></script>
-    <script src="scripts/deflate.js"></script>
-    <!--end JSPrintManager scripts-->
+      <!--JSPrintManager scripts-->
+      <script src="scripts/JSPrintManager.js"></script>
+      <script src="scripts/zip.js"></script>
+      <script src="scripts/zip-ext.js"></script>
+      <script src="scripts/deflate.js"></script>
+      <!--end JSPrintManager scripts-->
+      <!--Encoding tables scripts-->
+      <script src="scripts/cptable.js"></script>
+      <script src="scripts/cputils.js"></script>
+      <!--end Encoding tables scripts-->
 
       <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
       <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
@@ -111,9 +146,21 @@
       </script>
       <script type="text/babel" src="components/PrintingPDFSample.js">
       </script>
+      <script type="text/babel" src="components/PrintingDOCSample.js">
+      </script>
+      <script type="text/babel" src="components/PrintingXLSSample.js">
+      </script>
       <script type="text/babel" src="components/PrintingTXTSample.js">
       </script>
       <script type="text/babel" src="components/PrintersInfoSample.js">
+      </script>
+      <script type="text/babel" src="components/ScanningSample.js">
+      </script>
+      <script type="text/babel" src="components/SerialPortBIDISample.js">
+      </script>
+      <script type="text/babel" src="components/PrintersWatcherSample.js">
+      </script>
+      <script type="text/babel" src="components/PrintingPwdProtectedFilesSample.js">
       </script>
       <script type="text/babel" src="components/App.js">
       </script>
