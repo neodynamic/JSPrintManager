@@ -1,5 +1,5 @@
 /*!
- * JSPrintManager v3.0.0
+ * JSPrintManager v3.0.1
  * https://neodynamic.com/products/printing/js-print-manager
  *
  * GitHub Repo 
@@ -17,113 +17,151 @@
  */
 var JSPM;
 (function (JSPM) {
-    class ClientJob {
-        constructor() {
+    var ClientJob = (function () {
+        function ClientJob() {
             this._type = '';
         }
-        _generateDataAsync() {
-            return new Promise(_ => {
+        ClientJob.prototype._generateDataAsync = function () {
+            return new Promise(function (_) {
             });
-        }
-        onUpdate(data, last) { }
+        };
+        ClientJob.prototype.onUpdate = function (data, last) { };
         ;
-        onError(data, critical) { }
+        ClientJob.prototype.onError = function (data, critical) { };
         ;
-        sendToClient() {
-            return new Promise((ok, err) => {
-                this._generateDataAsync().then((data) => {
-                    let properties = {
-                        type: this._type,
-                        on_update: (data, first, last) => {
+        ClientJob.prototype.sendToClient = function () {
+            var _this = this;
+            return new Promise(function (ok, err) {
+                _this._generateDataAsync().then(function (data) {
+                    var properties = {
+                        type: _this._type,
+                        on_update: function (data, first, last) {
                             if (first)
                                 ok(data);
                             else
-                                this.onUpdate(data, last);
+                                _this.onUpdate(data, last);
                         },
-                        on_error: (data, first, critical) => {
+                        on_error: function (data, first, critical) {
                             if (first)
                                 err(data);
                             else
-                                this.onError(data, critical);
+                                _this.onError(data, critical);
                         }
                     };
                     JSPM.JSPrintManager.WS.send(data, properties);
-                }).catch((e) => err(e));
+                }).catch(function (e) { return err(e); });
             });
-        }
-    }
+        };
+        return ClientJob;
+    }());
     JSPM.ClientJob = ClientJob;
 })(JSPM || (JSPM = {}));
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var JSPM;
 (function (JSPM) {
-    class ClientPrintJob extends JSPM.ClientJob {
-        constructor() {
-            super(...arguments);
-            this._clientPrinter = null;
-            this._printerCommandsCopies = 1;
-            this._printerCommands = "";
-            this._printerCommandsCodePage = JSPM.Encoding.Default;
-            this._binaryPrinterCommands = null;
-            this._printFileGroup = [];
+    var ClientPrintJob = (function (_super) {
+        __extends(ClientPrintJob, _super);
+        function ClientPrintJob() {
+            var _this = _super !== null && _super.apply(this, arguments) || this;
+            _this._clientPrinter = null;
+            _this._printerCommandsCopies = 1;
+            _this._printerCommands = "";
+            _this._printerCommandsCodePage = JSPM.Encoding.Default;
+            _this._binaryPrinterCommands = null;
+            _this._printFileGroup = [];
+            return _this;
         }
-        get clientPrinter() {
-            return this._clientPrinter;
-        }
-        set clientPrinter(value) {
-            this._clientPrinter = value;
-        }
-        get printerCommandsCopies() {
-            return this._printerCommandsCopies;
-        }
-        set printerCommandsCopies(value) {
-            if (value < 1)
-                throw "Copies must be greater than or equal to 1.";
-            this._printerCommandsCopies = value;
-        }
-        get printerCommands() {
-            return this._printerCommands;
-        }
-        set printerCommands(value) {
-            this._printerCommands = value;
-        }
-        get printerCommandsCodePage() {
-            return this._printerCommandsCodePage;
-        }
-        set printerCommandsCodePage(value) {
-            this._printerCommandsCodePage = value;
-        }
-        get binaryPrinterCommands() {
-            return this._binaryPrinterCommands;
-        }
-        set binaryPrinterCommands(value) {
-            this._binaryPrinterCommands = value;
-            this._printerCommands = "";
-        }
-        get files() {
-            return this._printFileGroup;
-        }
-        onUpdated(data) { }
+        Object.defineProperty(ClientPrintJob.prototype, "clientPrinter", {
+            get: function () {
+                return this._clientPrinter;
+            },
+            set: function (value) {
+                this._clientPrinter = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ClientPrintJob.prototype, "printerCommandsCopies", {
+            get: function () {
+                return this._printerCommandsCopies;
+            },
+            set: function (value) {
+                if (value < 1)
+                    throw "Copies must be greater than or equal to 1.";
+                this._printerCommandsCopies = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ClientPrintJob.prototype, "printerCommands", {
+            get: function () {
+                return this._printerCommands;
+            },
+            set: function (value) {
+                this._printerCommands = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ClientPrintJob.prototype, "printerCommandsCodePage", {
+            get: function () {
+                return this._printerCommandsCodePage;
+            },
+            set: function (value) {
+                this._printerCommandsCodePage = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ClientPrintJob.prototype, "binaryPrinterCommands", {
+            get: function () {
+                return this._binaryPrinterCommands;
+            },
+            set: function (value) {
+                this._binaryPrinterCommands = value;
+                this._printerCommands = "";
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ClientPrintJob.prototype, "files", {
+            get: function () {
+                return this._printFileGroup;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ClientPrintJob.prototype.onUpdated = function (data) { };
         ;
-        onFinished(data) { }
+        ClientPrintJob.prototype.onFinished = function (data) { };
         ;
-        onError(data, is_critical) { }
+        ClientPrintJob.prototype.onError = function (data, is_critical) { };
         ;
-        onUpdate(data, last) {
+        ClientPrintJob.prototype.onUpdate = function (data, last) {
             if (last) {
                 this.onFinished(data);
             }
             else {
                 this.onUpdated(data);
             }
-        }
-        _genPFGArrayAsync(printFileGroup) {
-            const SEPARATOR = ',';
-            return new Promise((resolve, reject) => {
+        };
+        ClientPrintJob.prototype._genPFGArrayAsync = function (printFileGroup) {
+            var SEPARATOR = ',';
+            return new Promise(function (resolve, reject) {
                 if (!zip)
                     reject("zip.js, zip-ext.js, and deflate.js files from https://github.com/gildas-lormeau/zip.js project are missing.");
                 else {
                     zip.useWebWorkers = false;
-                    zip.createWriter(new zip.BlobWriter("application/zip"), (zipWriter) => {
+                    zip.createWriter(new zip.BlobWriter("application/zip"), function (zipWriter) {
                         function addPrintFile2Zip(pf_idx) {
                             if (pf_idx >= printFileGroup.length) {
                                 zipWriter.close(function (zipBlob) {
@@ -131,26 +169,26 @@ var JSPM;
                                 });
                             }
                             else {
-                                let printFile = printFileGroup[pf_idx];
-                                let file = pf_idx + SEPARATOR + printFile.copies + SEPARATOR + printFile.fileName;
-                                printFile.serialize().then((reader) => {
-                                    zipWriter.add(file, reader, () => { addPrintFile2Zip(pf_idx + 1); });
-                                }).catch((e) => {
+                                var printFile = printFileGroup[pf_idx];
+                                var file_1 = pf_idx + SEPARATOR + printFile.copies + SEPARATOR + printFile.fileName;
+                                printFile.serialize().then(function (reader) {
+                                    zipWriter.add(file_1, reader, function () { addPrintFile2Zip(pf_idx + 1); });
+                                }).catch(function (e) {
                                     reject(e);
                                 });
                             }
                         }
                         if (printFileGroup.length != 0)
                             addPrintFile2Zip(0);
-                    }, (e) => { reject(e); });
+                    }, function (e) { reject(e); });
                 }
             });
-        }
-        _genPCArrayAsync(binPrinterCommands, printerCopies) {
-            return new Promise((resolve, reject) => {
+        };
+        ClientPrintJob.prototype._genPCArrayAsync = function (binPrinterCommands, printerCopies) {
+            return new Promise(function (resolve, reject) {
                 try {
-                    let copies = JSPM.Utils._str2UTF8Array(printerCopies.toString());
-                    let pcc_copies = new Uint8Array(0);
+                    var copies = JSPM.Utils._str2UTF8Array(printerCopies.toString());
+                    var pcc_copies = new Uint8Array(0);
                     if (printerCopies > 1) {
                         pcc_copies = new Uint8Array(5 + copies.length);
                         pcc_copies.set([80, 67, 67, 61]);
@@ -164,9 +202,9 @@ var JSPM;
                     reject(e);
                 }
             });
-        }
-        _genPrinterArrayAsync(clientPrinter) {
-            return new Promise((resolve, reject) => {
+        };
+        ClientPrintJob.prototype._genPrinterArrayAsync = function (clientPrinter) {
+            return new Promise(function (resolve, reject) {
                 try {
                     if (!clientPrinter)
                         clientPrinter = new JSPM.UserSelectedPrinter();
@@ -177,8 +215,8 @@ var JSPM;
                     reject(e);
                 }
             });
-        }
-        _cmd2bin() {
+        };
+        ClientPrintJob.prototype._cmd2bin = function () {
             if (this._printerCommands && this._printerCommands.length > 0) {
                 try {
                     if (this._printerCommandsCodePage == JSPM.Encoding.Default) {
@@ -208,64 +246,73 @@ var JSPM;
                     throw e;
                 }
             }
-        }
-        _generateDataAsync() {
-            return new Promise((resolve, reject) => {
-                this._cmd2bin();
-                let header = new Uint8Array([99, 112, 106, 2]);
+        };
+        ClientPrintJob.prototype._generateDataAsync = function () {
+            var _this = this;
+            return new Promise(function (resolve, reject) {
+                _this._cmd2bin();
+                var header = new Uint8Array([99, 112, 106, 2]);
                 Promise.race([
-                    this._genPCArrayAsync(this.binaryPrinterCommands, this._printerCommandsCopies),
-                    this._genPFGArrayAsync(this._printFileGroup)
+                    _this._genPCArrayAsync(_this.binaryPrinterCommands, _this._printerCommandsCopies),
+                    _this._genPFGArrayAsync(_this._printFileGroup)
                 ])
-                    .then((file_data) => {
-                    this._genPrinterArrayAsync(this._clientPrinter)
-                        .then((printer_data) => {
-                        let idx1 = JSPM.Utils._intToByteArray(file_data.size);
+                    .then(function (file_data) {
+                    _this._genPrinterArrayAsync(_this._clientPrinter)
+                        .then(function (printer_data) {
+                        var idx1 = JSPM.Utils._intToByteArray(file_data.size);
                         resolve(new Blob([header, idx1, file_data, printer_data]));
                     })
-                        .catch((e) => { reject(e); });
+                        .catch(function (e) { reject(e); });
                 })
-                    .catch((e) => { reject(e); });
+                    .catch(function (e) { reject(e); });
             });
-        }
-    }
+        };
+        return ClientPrintJob;
+    }(JSPM.ClientJob));
     JSPM.ClientPrintJob = ClientPrintJob;
 })(JSPM || (JSPM = {}));
 var JSPM;
 (function (JSPM) {
-    class ClientPrintJobGroup extends JSPM.ClientJob {
-        constructor() {
-            super(...arguments);
-            this._jobs = [];
+    var ClientPrintJobGroup = (function (_super) {
+        __extends(ClientPrintJobGroup, _super);
+        function ClientPrintJobGroup() {
+            var _this = _super !== null && _super.apply(this, arguments) || this;
+            _this._jobs = [];
+            return _this;
         }
-        get jobs() {
-            return this._jobs;
-        }
-        _generateMiniJob(cj) {
-            const INDEXES_SIZE = 8;
-            return new Promise((ok, error) => {
+        Object.defineProperty(ClientPrintJobGroup.prototype, "jobs", {
+            get: function () {
+                return this._jobs;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ClientPrintJobGroup.prototype._generateMiniJob = function (cj) {
+            var INDEXES_SIZE = 8;
+            return new Promise(function (ok, error) {
                 cj._cmd2bin();
                 Promise
                     .race([cj._genPCArrayAsync(cj.binaryPrinterCommands, cj.printerCommandsCopies),
                     cj._genPFGArrayAsync(cj.files)])
-                    .then((file_data) => {
-                    cj._genPrinterArrayAsync(cj.clientPrinter).then((printer_data) => {
-                        let idx1 = JSPM.Utils._intToByteArray(file_data.size);
+                    .then(function (file_data) {
+                    cj._genPrinterArrayAsync(cj.clientPrinter).then(function (printer_data) {
+                        var idx1 = JSPM.Utils._intToByteArray(file_data.size);
                         ok(new Blob([idx1, file_data, printer_data]));
-                    }).catch((e) => { error(e); });
-                }).catch((e) => { error(e); });
+                    }).catch(function (e) { error(e); });
+                }).catch(function (e) { error(e); });
             });
-        }
-        _generateDataAsync() {
-            return new Promise((resolve, reject) => {
-                let header = new Uint8Array([99, 112, 106, 103, 2]);
-                let jobs_qty = new Uint8Array(JSPM.Utils._intToByteArray(this.jobs.length));
-                let promises = [];
-                for (let i = 0; i < this.jobs.length; i++) {
-                    promises.push(this._generateMiniJob(this.jobs[i]));
+        };
+        ClientPrintJobGroup.prototype._generateDataAsync = function () {
+            var _this = this;
+            return new Promise(function (resolve, reject) {
+                var header = new Uint8Array([99, 112, 106, 103, 2]);
+                var jobs_qty = new Uint8Array(JSPM.Utils._intToByteArray(_this.jobs.length));
+                var promises = [];
+                for (var i = 0; i < _this.jobs.length; i++) {
+                    promises.push(_this._generateMiniJob(_this.jobs[i]));
                 }
-                Promise.all(promises).then((data_arr) => {
-                    let jobs_metadata = data_arr.map((x) => {
+                Promise.all(promises).then(function (data_arr) {
+                    var jobs_metadata = data_arr.map(function (x) {
                         return {
                             startIndex: 0,
                             endIndex: x.size - 1
@@ -275,34 +322,40 @@ var JSPM;
                         jobs_metadata[i].startIndex = jobs_metadata[i - 1].endIndex + 1;
                         jobs_metadata[i].endIndex += jobs_metadata[i].startIndex;
                     }
-                    let metadata = JSON.stringify(jobs_metadata);
-                    let jobs = data_arr.reduce((prev, curr) => new Blob([prev, curr]));
-                    let jobs_offset = new Uint8Array(JSPM.Utils._intToByteArray(jobs.size));
+                    var metadata = JSON.stringify(jobs_metadata);
+                    var jobs = data_arr.reduce(function (prev, curr) { return new Blob([prev, curr]); });
+                    var jobs_offset = new Uint8Array(JSPM.Utils._intToByteArray(jobs.size));
                     resolve(new Blob([header, jobs_qty, jobs_offset, jobs, metadata]));
                 })
-                    .catch((error) => {
+                    .catch(function (error) {
                     reject(error);
                 });
             });
-        }
-    }
+        };
+        return ClientPrintJobGroup;
+    }(JSPM.ClientJob));
     JSPM.ClientPrintJobGroup = ClientPrintJobGroup;
 })(JSPM || (JSPM = {}));
 var JSPM;
 (function (JSPM) {
-    class DefaultPrinter {
-        constructor() {
+    var DefaultPrinter = (function () {
+        function DefaultPrinter() {
             this.Id = 0;
         }
-        serialize() {
+        DefaultPrinter.prototype.serialize = function () {
             return JSON.stringify({
                 'type': this.Id
             });
-        }
-    }
+        };
+        return DefaultPrinter;
+    }());
     JSPM.DefaultPrinter = DefaultPrinter;
-    class InstalledPrinter {
-        constructor(printerName, printToDefaultIfNotFound = false, trayName = '', paperName = '', duplex = JSPM.DuplexMode.Default) {
+    var InstalledPrinter = (function () {
+        function InstalledPrinter(printerName, printToDefaultIfNotFound, trayName, paperName, duplex) {
+            if (printToDefaultIfNotFound === void 0) { printToDefaultIfNotFound = false; }
+            if (trayName === void 0) { trayName = ''; }
+            if (paperName === void 0) { paperName = ''; }
+            if (duplex === void 0) { duplex = JSPM.DuplexMode.Default; }
             this.Id = 1;
             this._name = "";
             this._printDefault = false;
@@ -317,40 +370,62 @@ var JSPM;
             this._tray = trayName;
             this._duplex = duplex;
         }
-        bool2str(value, true_val = '1', false_val = '0') {
+        InstalledPrinter.prototype.bool2str = function (value, true_val, false_val) {
+            if (true_val === void 0) { true_val = '1'; }
+            if (false_val === void 0) { false_val = '0'; }
             return value ? true_val : false_val;
-        }
-        get printerName() {
-            return this._name;
-        }
-        set printerName(value) {
-            this._name = value;
-        }
-        get printToDefaultIfNotFound() {
-            return this._printDefault;
-        }
-        set printToDefaultIfNotFound(value) {
-            this._printDefault = value;
-        }
-        get trayName() {
-            return this._tray;
-        }
-        set trayName(value) {
-            this._tray = value;
-        }
-        get paperName() {
-            return this._paper;
-        }
-        set paperName(value) {
-            this._paper = value;
-        }
-        get duplex() {
-            return this._duplex;
-        }
-        set duplex(value) {
-            this._duplex = value;
-        }
-        serialize() {
+        };
+        Object.defineProperty(InstalledPrinter.prototype, "printerName", {
+            get: function () {
+                return this._name;
+            },
+            set: function (value) {
+                this._name = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(InstalledPrinter.prototype, "printToDefaultIfNotFound", {
+            get: function () {
+                return this._printDefault;
+            },
+            set: function (value) {
+                this._printDefault = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(InstalledPrinter.prototype, "trayName", {
+            get: function () {
+                return this._tray;
+            },
+            set: function (value) {
+                this._tray = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(InstalledPrinter.prototype, "paperName", {
+            get: function () {
+                return this._paper;
+            },
+            set: function (value) {
+                this._paper = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(InstalledPrinter.prototype, "duplex", {
+            get: function () {
+                return this._duplex;
+            },
+            set: function (value) {
+                this._duplex = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        InstalledPrinter.prototype.serialize = function () {
             if (!this._name) {
                 throw "The specified printer name is null or empty.";
             }
@@ -362,35 +437,41 @@ var JSPM;
                 tray: this._tray,
                 use_default: this._printDefault
             });
-        }
-    }
+        };
+        return InstalledPrinter;
+    }());
     JSPM.InstalledPrinter = InstalledPrinter;
-    class ParallelPortPrinter {
-        constructor(portName) {
+    var ParallelPortPrinter = (function () {
+        function ParallelPortPrinter(portName) {
             this.Id = 2;
             this._parallelPortName = "LPT1";
             if (!portName)
                 throw "The specified parallel port name is null or empty.";
             this._parallelPortName = portName;
         }
-        get portName() {
-            return this._parallelPortName;
-        }
-        set portName(value) {
-            this._parallelPortName = value;
-        }
-        serialize() {
+        Object.defineProperty(ParallelPortPrinter.prototype, "portName", {
+            get: function () {
+                return this._parallelPortName;
+            },
+            set: function (value) {
+                this._parallelPortName = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ParallelPortPrinter.prototype.serialize = function () {
             if (!this.portName)
                 throw "The specified parallel port name is null or empty.";
             return JSON.stringify({
                 type: this.Id,
                 port: this._parallelPortName
             });
-        }
-    }
+        };
+        return ParallelPortPrinter;
+    }());
     JSPM.ParallelPortPrinter = ParallelPortPrinter;
-    class SerialPortPrinter {
-        constructor(portName, baudRate, parity, stopBits, dataBits, flowControl) {
+    var SerialPortPrinter = (function () {
+        function SerialPortPrinter(portName, baudRate, parity, stopBits, dataBits, flowControl) {
             this.Id = 3;
             this._port = "COM1";
             this._baud_rate = 9600;
@@ -407,43 +488,67 @@ var JSPM;
             this._data_bits = dataBits;
             this._flow_control = flowControl;
         }
-        get portName() {
-            return this._port;
-        }
-        set portName(value) {
-            this._port = value;
-        }
-        get baudRate() {
-            return this._baud_rate;
-        }
-        set baudRate(value) {
-            this._baud_rate = value;
-        }
-        get parity() {
-            return this._parity;
-        }
-        set parity(value) {
-            this._parity = value;
-        }
-        get stopBits() {
-            return this._stop_bits;
-        }
-        set stopBits(value) {
-            this._stop_bits = value;
-        }
-        get dataBits() {
-            return this._data_bits;
-        }
-        set dataBits(value) {
-            this._data_bits = value;
-        }
-        get flowControl() {
-            return this._flow_control;
-        }
-        set flowControl(value) {
-            this._flow_control = value;
-        }
-        serialize() {
+        Object.defineProperty(SerialPortPrinter.prototype, "portName", {
+            get: function () {
+                return this._port;
+            },
+            set: function (value) {
+                this._port = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SerialPortPrinter.prototype, "baudRate", {
+            get: function () {
+                return this._baud_rate;
+            },
+            set: function (value) {
+                this._baud_rate = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SerialPortPrinter.prototype, "parity", {
+            get: function () {
+                return this._parity;
+            },
+            set: function (value) {
+                this._parity = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SerialPortPrinter.prototype, "stopBits", {
+            get: function () {
+                return this._stop_bits;
+            },
+            set: function (value) {
+                this._stop_bits = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SerialPortPrinter.prototype, "dataBits", {
+            get: function () {
+                return this._data_bits;
+            },
+            set: function (value) {
+                this._data_bits = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SerialPortPrinter.prototype, "flowControl", {
+            get: function () {
+                return this._flow_control;
+            },
+            set: function (value) {
+                this._flow_control = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        SerialPortPrinter.prototype.serialize = function () {
             if (!this.portName)
                 throw "The specified serial port name is null or empty.";
             return JSON.stringify({
@@ -455,11 +560,12 @@ var JSPM;
                 parity: this._parity,
                 stop_bits: this._stop_bits
             });
-        }
-    }
+        };
+        return SerialPortPrinter;
+    }());
     JSPM.SerialPortPrinter = SerialPortPrinter;
-    class NetworkPrinter {
-        constructor(port, ipAddress, dnsName) {
+    var NetworkPrinter = (function () {
+        function NetworkPrinter(port, ipAddress, dnsName) {
             this.Id = 4;
             this._ip = "0.0.0.0";
             this._port = 0;
@@ -472,27 +578,39 @@ var JSPM;
                 this._dnsName = dnsName;
             this._port = port;
         }
-        get dnsName() {
-            return this._dnsName;
-        }
-        set dnsName(value) {
-            this._dnsName = value;
-        }
-        get ipAddress() {
-            return this._ip;
-        }
-        set ipAddress(value) {
-            this._ip = value;
-        }
-        get port() {
-            return this._port;
-        }
-        set port(value) {
-            if (!(value >= 0 && value <= 65535))
-                throw "Invalid Port Number";
-            this._port = Math.floor(value);
-        }
-        serialize() {
+        Object.defineProperty(NetworkPrinter.prototype, "dnsName", {
+            get: function () {
+                return this._dnsName;
+            },
+            set: function (value) {
+                this._dnsName = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(NetworkPrinter.prototype, "ipAddress", {
+            get: function () {
+                return this._ip;
+            },
+            set: function (value) {
+                this._ip = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(NetworkPrinter.prototype, "port", {
+            get: function () {
+                return this._port;
+            },
+            set: function (value) {
+                if (!(value >= 0 && value <= 65535))
+                    throw "Invalid Port Number";
+                this._port = Math.floor(value);
+            },
+            enumerable: true,
+            configurable: true
+        });
+        NetworkPrinter.prototype.serialize = function () {
             if (!(this.dnsName || this.ipAddress))
                 throw "You have to specify an IP address or a DNS name";
             return JSON.stringify({
@@ -501,91 +619,113 @@ var JSPM;
                 dns: this._dnsName,
                 port: this._port
             });
-        }
-    }
+        };
+        return NetworkPrinter;
+    }());
     JSPM.NetworkPrinter = NetworkPrinter;
-    class UserSelectedPrinter {
-        constructor() {
+    var UserSelectedPrinter = (function () {
+        function UserSelectedPrinter() {
             this.Id = 5;
         }
-        serialize() {
+        UserSelectedPrinter.prototype.serialize = function () {
             return JSON.stringify({
                 type: this.Id
             });
-        }
-    }
+        };
+        return UserSelectedPrinter;
+    }());
     JSPM.UserSelectedPrinter = UserSelectedPrinter;
 })(JSPM || (JSPM = {}));
 var JSPM;
 (function (JSPM) {
-    class ClientScanJob extends JSPM.ClientJob {
-        constructor() {
-            super(...arguments);
-            this._type = 'scan_job';
-            this._scannerName = "";
-            this._pixelMode = JSPM.PixelMode.Color;
-            this._resolution = 200;
-            this._imageFormat = JSPM.ScannerImageFormatOutput.JPG;
+    var ClientScanJob = (function (_super) {
+        __extends(ClientScanJob, _super);
+        function ClientScanJob() {
+            var _this = _super !== null && _super.apply(this, arguments) || this;
+            _this._type = 'scan_job';
+            _this._scannerName = "";
+            _this._pixelMode = JSPM.PixelMode.Color;
+            _this._resolution = 200;
+            _this._imageFormat = JSPM.ScannerImageFormatOutput.JPG;
+            return _this;
         }
-        get scannerName() {
-            return this._scannerName;
-        }
-        set scannerName(val) {
-            this._scannerName = val;
-        }
-        get pixelMode() {
-            return this._pixelMode;
-        }
-        set pixelMode(val) {
-            this._pixelMode = val;
-        }
-        get resolution() {
-            return this._resolution;
-        }
-        set resolution(val) {
-            this._resolution = val;
-        }
-        get imageFormat() {
-            return this._imageFormat;
-        }
-        set imageFormat(val) {
-            this._imageFormat = val;
-        }
-        onFinished(data) { }
+        Object.defineProperty(ClientScanJob.prototype, "scannerName", {
+            get: function () {
+                return this._scannerName;
+            },
+            set: function (val) {
+                this._scannerName = val;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ClientScanJob.prototype, "pixelMode", {
+            get: function () {
+                return this._pixelMode;
+            },
+            set: function (val) {
+                this._pixelMode = val;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ClientScanJob.prototype, "resolution", {
+            get: function () {
+                return this._resolution;
+            },
+            set: function (val) {
+                this._resolution = val;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ClientScanJob.prototype, "imageFormat", {
+            get: function () {
+                return this._imageFormat;
+            },
+            set: function (val) {
+                this._imageFormat = val;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ClientScanJob.prototype.onFinished = function (data) { };
         ;
-        onError(data, is_critical) { }
+        ClientScanJob.prototype.onError = function (data, is_critical) { };
         ;
-        onUpdate(data, last) {
+        ClientScanJob.prototype.onUpdate = function (data, last) {
             if (data.result) {
                 this.onFinished(data);
             }
-        }
-        _generateDataAsync() {
-            return new Promise((ok, err) => {
-                if (!this._resolution)
+        };
+        ClientScanJob.prototype._generateDataAsync = function () {
+            var _this = this;
+            return new Promise(function (ok, err) {
+                if (!_this._resolution)
                     err("Scan resolution is required");
-                if (!this._scannerName)
+                if (!_this._scannerName)
                     err("Scanner name is required");
-                let json = {
-                    output_image_format: this._imageFormat,
-                    pixel_mode: this._pixelMode,
-                    scanner_name: this._scannerName,
-                    resolution: this._resolution
+                var json = {
+                    output_image_format: _this._imageFormat,
+                    pixel_mode: _this._pixelMode,
+                    scanner_name: _this._scannerName,
+                    resolution: _this._resolution
                 };
                 ok(JSON.stringify(json));
             });
-        }
-    }
+        };
+        return ClientScanJob;
+    }(JSPM.ClientJob));
     JSPM.ClientScanJob = ClientScanJob;
 })(JSPM || (JSPM = {}));
 var JSPM;
 (function (JSPM) {
-    let PrintersInfoLevel;
+    var PrintersInfoLevel;
     (function (PrintersInfoLevel) {
         PrintersInfoLevel[PrintersInfoLevel["Basic"] = 0] = "Basic";
         PrintersInfoLevel[PrintersInfoLevel["Extended"] = 1] = "Extended";
     })(PrintersInfoLevel = JSPM.PrintersInfoLevel || (JSPM.PrintersInfoLevel = {}));
-    let Encoding;
+    var Encoding;
     (function (Encoding) {
         Encoding[Encoding["Default"] = -1] = "Default";
         Encoding[Encoding["IBM_EBCDIC_US_Canada"] = 37] = "IBM_EBCDIC_US_Canada";
@@ -741,29 +881,29 @@ var JSPM;
         Encoding[Encoding["Unicode_UTF_7"] = 65000] = "Unicode_UTF_7";
         Encoding[Encoding["Unicode_UTF_8"] = 65001] = "Unicode_UTF_8";
     })(Encoding = JSPM.Encoding || (JSPM.Encoding = {}));
-    let DuplexMode;
+    var DuplexMode;
     (function (DuplexMode) {
         DuplexMode[DuplexMode["Default"] = 0] = "Default";
         DuplexMode[DuplexMode["Simplex"] = 1] = "Simplex";
         DuplexMode[DuplexMode["DuplexLongEdge"] = 2] = "DuplexLongEdge";
         DuplexMode[DuplexMode["DuplexShortEdge"] = 3] = "DuplexShortEdge";
     })(DuplexMode = JSPM.DuplexMode || (JSPM.DuplexMode = {}));
-    let Sizing;
+    var Sizing;
     (function (Sizing) {
         Sizing[Sizing["None"] = 0] = "None";
         Sizing[Sizing["Fit"] = 1] = "Fit";
     })(Sizing = JSPM.Sizing || (JSPM.Sizing = {}));
-    let ScannerImageFormatOutput;
+    var ScannerImageFormatOutput;
     (function (ScannerImageFormatOutput) {
         ScannerImageFormatOutput[ScannerImageFormatOutput["JPG"] = 0] = "JPG";
         ScannerImageFormatOutput[ScannerImageFormatOutput["PNG"] = 1] = "PNG";
     })(ScannerImageFormatOutput = JSPM.ScannerImageFormatOutput || (JSPM.ScannerImageFormatOutput = {}));
-    let PixelMode;
+    var PixelMode;
     (function (PixelMode) {
         PixelMode[PixelMode["Grayscale"] = 0] = "Grayscale";
         PixelMode[PixelMode["Color"] = 1] = "Color";
     })(PixelMode = JSPM.PixelMode || (JSPM.PixelMode = {}));
-    let FileSourceType;
+    var FileSourceType;
     (function (FileSourceType) {
         FileSourceType[FileSourceType["Base64"] = 0] = "Base64";
         FileSourceType[FileSourceType["Text"] = 1] = "Text";
@@ -771,7 +911,7 @@ var JSPM;
         FileSourceType[FileSourceType["URL"] = 3] = "URL";
     })(FileSourceType = JSPM.FileSourceType || (JSPM.FileSourceType = {}));
     ;
-    let WSStatus;
+    var WSStatus;
     (function (WSStatus) {
         WSStatus[WSStatus["Open"] = 0] = "Open";
         WSStatus[WSStatus["Closed"] = 1] = "Closed";
@@ -779,14 +919,14 @@ var JSPM;
         WSStatus[WSStatus["WaitingForUserResponse"] = 3] = "WaitingForUserResponse";
     })(WSStatus = JSPM.WSStatus || (JSPM.WSStatus = {}));
     ;
-    let PrintRotation;
+    var PrintRotation;
     (function (PrintRotation) {
         PrintRotation[PrintRotation["None"] = 0] = "None";
         PrintRotation[PrintRotation["Rot90"] = 1] = "Rot90";
         PrintRotation[PrintRotation["Rot180"] = 2] = "Rot180";
         PrintRotation[PrintRotation["Rot270"] = 3] = "Rot270";
     })(PrintRotation = JSPM.PrintRotation || (JSPM.PrintRotation = {}));
-    let TextAlignment;
+    var TextAlignment;
     (function (TextAlignment) {
         TextAlignment[TextAlignment["Left"] = 0] = "Left";
         TextAlignment[TextAlignment["Center"] = 1] = "Center";
@@ -794,7 +934,7 @@ var JSPM;
         TextAlignment[TextAlignment["Justify"] = 3] = "Justify";
         TextAlignment[TextAlignment["None"] = 4] = "None";
     })(TextAlignment = JSPM.TextAlignment || (JSPM.TextAlignment = {}));
-    let PrintOrientation;
+    var PrintOrientation;
     (function (PrintOrientation) {
         PrintOrientation[PrintOrientation["Portrait"] = 0] = "Portrait";
         PrintOrientation[PrintOrientation["Landscape"] = 1] = "Landscape";
@@ -803,7 +943,7 @@ var JSPM;
 (function (JSPM) {
     var Serial;
     (function (Serial) {
-        let Parity;
+        var Parity;
         (function (Parity) {
             Parity[Parity["None"] = 0] = "None";
             Parity[Parity["Odd"] = 1] = "Odd";
@@ -811,21 +951,21 @@ var JSPM;
             Parity[Parity["Mark"] = 3] = "Mark";
             Parity[Parity["Space"] = 4] = "Space";
         })(Parity = Serial.Parity || (Serial.Parity = {}));
-        let StopBits;
+        var StopBits;
         (function (StopBits) {
             StopBits[StopBits["None"] = 0] = "None";
             StopBits[StopBits["One"] = 1] = "One";
             StopBits[StopBits["Two"] = 2] = "Two";
             StopBits[StopBits["OnePointFive"] = 3] = "OnePointFive";
         })(StopBits = Serial.StopBits || (Serial.StopBits = {}));
-        let DataBits;
+        var DataBits;
         (function (DataBits) {
             DataBits[DataBits["Eight"] = 0] = "Eight";
             DataBits[DataBits["Seven"] = 1] = "Seven";
             DataBits[DataBits["Six"] = 2] = "Six";
             DataBits[DataBits["Five"] = 3] = "Five";
         })(DataBits = Serial.DataBits || (Serial.DataBits = {}));
-        let Handshake;
+        var Handshake;
         (function (Handshake) {
             Handshake[Handshake["None"] = 0] = "None";
             Handshake[Handshake["RequestToSend"] = 1] = "RequestToSend";
@@ -842,10 +982,41 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 var JSPM;
 (function (JSPM) {
-    class JSPMWebSocket {
-        constructor(addr = 'localhost', port = 23443, secure = true, auto_reconnect = false) {
+    var JSPMWebSocket = (function () {
+        function JSPMWebSocket(addr, port, secure, auto_reconnect) {
+            if (addr === void 0) { addr = 'localhost'; }
+            if (port === void 0) { port = 23443; }
+            if (secure === void 0) { secure = true; }
+            if (auto_reconnect === void 0) { auto_reconnect = false; }
             this._job_list = [];
             this._processing_message = new JSPM.Mutex();
             this.autoReconnect = false;
@@ -857,77 +1028,106 @@ var JSPM;
             this._secure = secure;
             this.autoReconnect = auto_reconnect;
         }
-        get address() {
-            return this._addr;
-        }
-        get port() {
-            return this._port;
-        }
-        get isSecure() {
-            return this._secure;
-        }
-        get status() {
-            return this._status;
-        }
-        _onOpen(e, __this) {
+        Object.defineProperty(JSPMWebSocket.prototype, "address", {
+            get: function () {
+                return this._addr;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(JSPMWebSocket.prototype, "port", {
+            get: function () {
+                return this._port;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(JSPMWebSocket.prototype, "isSecure", {
+            get: function () {
+                return this._secure;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(JSPMWebSocket.prototype, "status", {
+            get: function () {
+                return this._status;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        JSPMWebSocket.prototype._onOpen = function (e, __this) {
             this._status = JSPM.WSStatus.WaitingForUserResponse;
             this._pingPong();
             __this.onStatusChanged();
             __this.onOpen(e);
-        }
-        _onMessage(e) {
-            return __awaiter(this, void 0, void 0, function* () {
-                const unlock = yield this._processing_message.lock();
-                try {
-                    if (typeof (e.data) == 'string') {
-                        let json_data = JSON.parse(e.data);
-                        var job = this._job_list[json_data.id];
-                        if (!job)
-                            throw "Job " + json_data.id + " doesn't exist";
-                        let last = ('last' in json_data) ? json_data.last : false;
-                        let msg_type = ('type' in json_data) ? json_data.type : 'message';
-                        let data = ('data' in json_data) ? json_data.data : {};
-                        switch (msg_type) {
-                            case 'message':
-                                {
+        };
+        JSPMWebSocket.prototype._onMessage = function (e) {
+            return __awaiter(this, void 0, void 0, function () {
+                var unlock, json_data, job, last, msg_type, data, critical, blob, id_buf, id, data_blob, job, _a;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0: return [4, this._processing_message.lock()];
+                        case 1:
+                            unlock = _b.sent();
+                            _b.label = 2;
+                        case 2:
+                            _b.trys.push([2, 6, 7, 8]);
+                            if (!(typeof (e.data) == 'string')) return [3, 3];
+                            json_data = JSON.parse(e.data);
+                            job = this._job_list[json_data.id];
+                            if (!job)
+                                throw "Job " + json_data.id + " doesn't exist";
+                            last = ('last' in json_data) ? json_data.last : false;
+                            msg_type = ('type' in json_data) ? json_data.type : 'message';
+                            data = ('data' in json_data) ? json_data.data : {};
+                            switch (msg_type) {
+                                case 'message':
+                                    {
+                                        job.on_update(data, job.first_update, last);
+                                    }
+                                    break;
+                                case 'error':
+                                    {
+                                        critical = 'critical' in json_data ?
+                                            json_data.critical : false;
+                                        job.on_error(data, job.first_update, critical);
+                                    }
+                                    break;
+                                default: {
                                     job.on_update(data, job.first_update, last);
                                 }
-                                break;
-                            case 'error':
-                                {
-                                    let critical = 'critical' in json_data ?
-                                        json_data.critical : false;
-                                    job.on_error(data, job.first_update, critical);
-                                }
-                                break;
-                            default: {
-                                job.on_update(data, job.first_update, last);
                             }
-                        }
-                        if (last)
-                            delete this._job_list[json_data.id];
+                            if (last)
+                                delete this._job_list[json_data.id];
+                            return [3, 5];
+                        case 3:
+                            blob = e.data;
+                            return [4, blob.slice(blob.size - 8, blob.size).arrayBuffer()];
+                        case 4:
+                            id_buf = _b.sent();
+                            id = new TextDecoder('utf-8').decode(id_buf);
+                            data_blob = blob.slice(0, blob.size - 8);
+                            job = this._job_list[id];
+                            if (!job)
+                                throw "Job " + id + " doesn't exist";
+                            job.on_update(data_blob, job.first_update, false);
+                            _b.label = 5;
+                        case 5:
+                            job.first_update = false;
+                            return [3, 8];
+                        case 6:
+                            _a = _b.sent();
+                            throw "Malformed message. Error: " + e.data;
+                        case 7:
+                            unlock();
+                            return [7];
+                        case 8: return [2];
                     }
-                    else {
-                        let blob = e.data;
-                        let id_buf = yield blob.slice(blob.size - 8, blob.size).arrayBuffer();
-                        let id = new TextDecoder('utf-8').decode(id_buf);
-                        let data_blob = blob.slice(0, blob.size - 8);
-                        var job = this._job_list[id];
-                        if (!job)
-                            throw "Job " + id + " doesn't exist";
-                        job.on_update(data_blob, job.first_update, false);
-                    }
-                    job.first_update = false;
-                }
-                catch (_a) {
-                    throw "Malformed message. Error: " + e.data;
-                }
-                finally {
-                    unlock();
-                }
+                });
             });
-        }
-        _onError(e) {
+        };
+        JSPMWebSocket.prototype._onError = function (e) {
             try {
                 var json_data = JSON.parse(e);
                 var job = this._job_list[json_data.id];
@@ -938,38 +1138,40 @@ var JSPM;
             catch (_a) {
                 throw e;
             }
-        }
-        _pingPong() {
-            setInterval(_ => {
-                if (this._status != JSPM.WSStatus.Open)
+        };
+        JSPMWebSocket.prototype._pingPong = function () {
+            var _this = this;
+            setInterval(function (_) {
+                if (_this._status != JSPM.WSStatus.Open)
                     return;
-                this.send('', {
+                _this.send('', {
                     type: 'ping',
-                    on_update: _ => { },
-                    on_error: _ => { }
+                    on_update: function (_) { },
+                    on_error: function (_) { }
                 });
             }, 30000);
-        }
-        _onClose(e, __this) {
+        };
+        JSPMWebSocket.prototype._onClose = function (e, __this) {
+            var _this = this;
             if (e.code == 403)
                 this._status = JSPM.WSStatus.Blocked;
             else {
                 this._status = JSPM.WSStatus.Closed;
                 if (this.autoReconnect)
-                    setTimeout(_ => {
-                        this.start();
+                    setTimeout(function (_) {
+                        _this.start();
                     }, 2000);
             }
             __this.onClose(e);
             __this.onStatusChanged();
-        }
+        };
         ;
-        _genID() {
+        JSPMWebSocket.prototype._genID = function () {
             return Math.floor((1 + Math.random()) * 0x100000000)
                 .toString(16)
                 .substring(1);
-        }
-        _send(data, properties) {
+        };
+        JSPMWebSocket.prototype._send = function (data, properties) {
             var id = "";
             if ('id' in properties) {
                 id = properties.id;
@@ -987,8 +1189,8 @@ var JSPM;
             }
             var _data = '';
             if (data instanceof Blob) {
-                let job_id = new Uint8Array(('id' + id).split('')
-                    .map(a => a.charCodeAt(0)));
+                var job_id = new Uint8Array(('id' + id).split('')
+                    .map(function (a) { return a.charCodeAt(0); }));
                 _data = new Blob([data, job_id]);
             }
             else if (typeof data == 'string') {
@@ -1004,39 +1206,47 @@ var JSPM;
             }
             this._ws.send(_data);
             return id;
-        }
-        start() {
-            return new Promise((ok, err) => {
+        };
+        JSPMWebSocket.prototype.start = function () {
+            var _this = this;
+            return new Promise(function (ok, err) {
                 try {
-                    this._ws = new WebSocket((this._secure ? 'wss://' : 'ws://') +
-                        this._addr + ':' + this._port);
-                    this._ws.onclose = (e) => this._onClose(e, this);
-                    this._ws.onerror = (i) => {
+                    _this._ws = new WebSocket((_this._secure ? 'wss://' : 'ws://') +
+                        _this._addr + ':' + _this._port);
+                    _this._ws.onclose = function (e) { return _this._onClose(e, _this); };
+                    _this._ws.onerror = function (i) {
                         err(i);
                     };
-                    this._ws.onopen = (i) => {
-                        this._ws.onopen = (e) => this._onOpen(e, this);
-                        this._ws.onmessage = (e) => {
+                    _this._ws.onopen = function (i) {
+                        _this._ws.onopen = function (e) { return _this._onOpen(e, _this); };
+                        _this._ws.onmessage = function (e) {
                             try {
-                                let json = JSON.parse(e.data);
+                                var json = JSON.parse(e.data);
                                 if ('connection' in json) {
                                     if (json.connection == 'CONNECTED') {
-                                        this._status = JSPM.WSStatus.Open;
-                                        this.onStatusChanged();
-                                        this.onOpen(json.certificate);
+                                        _this._status = JSPM.WSStatus.Open;
+                                        _this.onStatusChanged();
+                                        _this.onOpen(json.certificate);
                                         JSPM.JSPrintManager._ses_cert = json.certificate;
-                                        this.send(JSON.stringify({ url: JSPM.JSPrintManager.license_url }), { type: "set_license" });
-                                        let verArray = json.version.split('.');
+                                        _this.send(JSON.stringify({ url: JSPM.JSPrintManager.license_url }), { type: "set_license" });
+                                        var verArray = json.version.split('.');
                                         if (verArray[0] + '.' + verArray[1] != JSPM.VERSION) {
                                             console.warn("Lib JS version and " +
                                                 "desktop version differs Desktop(" +
                                                 json.version + ") JS (" + JSPM.VERSION +
                                                 ")");
                                         }
-                                        this._ws.onmessage = (e) => __awaiter(this, void 0, void 0, function* () {
-                                            yield this._onMessage(e);
-                                        });
-                                        this._ws.onerror = this._onError;
+                                        _this._ws.onmessage = function (e) { return __awaiter(_this, void 0, void 0, function () {
+                                            return __generator(this, function (_a) {
+                                                switch (_a.label) {
+                                                    case 0: return [4, this._onMessage(e)];
+                                                    case 1:
+                                                        _a.sent();
+                                                        return [2];
+                                                }
+                                            });
+                                        }); };
+                                        _this._ws.onerror = _this._onError;
                                         ok();
                                     }
                                     else {
@@ -1052,16 +1262,16 @@ var JSPM;
                     };
                 }
                 catch (e) {
-                    if (this.autoReconnect)
-                        setTimeout(() => {
-                            this.start().then(ok).catch(err);
+                    if (_this.autoReconnect)
+                        setTimeout(function () {
+                            _this.start().then(ok).catch(err);
                         }, 2000);
                     else
                         err(e);
                 }
             });
-        }
-        send(data, properties) {
+        };
+        JSPMWebSocket.prototype.send = function (data, properties) {
             if (this._status == JSPM.WSStatus.Closed)
                 properties['on_first_error']("The WebSocket connection is closed");
             else if (this._status == JSPM.WSStatus.Blocked)
@@ -1069,195 +1279,235 @@ var JSPM;
             else if (this._ws.readyState != this._ws.OPEN)
                 properties['on_first_error']("The WebSocket isn't ready yet");
             return this._send(data, properties);
-        }
-        stop() {
+        };
+        JSPMWebSocket.prototype.stop = function () {
             this._ws.close();
             this._ws = null;
-        }
-    }
+        };
+        return JSPMWebSocket;
+    }());
     JSPM.JSPMWebSocket = JSPMWebSocket;
 })(JSPM || (JSPM = {}));
 var JSPM;
 (function (JSPM) {
-    class JSPrintManager {
-        static get session_certificate() {
-            return this._ses_cert;
+    var JSPrintManager = (function () {
+        function JSPrintManager() {
         }
-        static start(secure = true, host = 'localhost', port = 23443) {
-            return __awaiter(this, void 0, void 0, function* () {
-                if (!this.WS)
-                    this.WS = new JSPM.JSPMWebSocket(host, port, secure, this.auto_reconnect);
-                let ws = yield this.WS.start();
-                return ws;
+        Object.defineProperty(JSPrintManager, "session_certificate", {
+            get: function () {
+                return this._ses_cert;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        JSPrintManager.start = function (secure, host, port) {
+            if (secure === void 0) { secure = true; }
+            if (host === void 0) { host = 'localhost'; }
+            if (port === void 0) { port = 23443; }
+            return __awaiter(this, void 0, void 0, function () {
+                var ws;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            if (!this.WS)
+                                this.WS = new JSPM.JSPMWebSocket(host, port, secure, this.auto_reconnect);
+                            return [4, this.WS.start()];
+                        case 1:
+                            ws = _a.sent();
+                            return [2, ws];
+                    }
+                });
             });
-        }
-        static get license_url() {
-            return this._license;
-        }
-        static set license_url(value) {
-            this._license = value;
-            this.WS.send(JSON.stringify({ url: this._license }), { type: "set_license" });
-        }
-        static getPrinters() {
-            return new Promise((ok, err) => {
-                this.WS.send('', {
+        };
+        Object.defineProperty(JSPrintManager, "license_url", {
+            get: function () {
+                return this._license;
+            },
+            set: function (value) {
+                this._license = value;
+                this.WS.send(JSON.stringify({ url: this._license }), { type: "set_license" });
+            },
+            enumerable: true,
+            configurable: true
+        });
+        JSPrintManager.getPrinters = function () {
+            var _this = this;
+            return new Promise(function (ok, err) {
+                _this.WS.send('', {
                     type: 'printers_list',
-                    on_update: (data) => {
+                    on_update: function (data) {
                         if (data && 'result' in data)
                             ok(data.result);
                         else
                             ok(data);
                     },
-                    on_error: (data) => err(data)
+                    on_error: function (data) { return err(data); }
                 });
             });
-        }
-        static getPrintersInfo(detail_level = JSPM.PrintersInfoLevel.Basic, printer_name = '') {
-            return new Promise((ok, err) => {
-                let data = { 'detail_level': detail_level };
+        };
+        JSPrintManager.getPrintersInfo = function (detail_level, printer_name) {
+            var _this = this;
+            if (detail_level === void 0) { detail_level = JSPM.PrintersInfoLevel.Basic; }
+            if (printer_name === void 0) { printer_name = ''; }
+            return new Promise(function (ok, err) {
+                var data = { 'detail_level': detail_level };
                 if (printer_name)
                     data['printer'] = printer_name;
-                this.WS.send(JSON.stringify(data), {
+                _this.WS.send(JSON.stringify(data), {
                     type: 'printers_complete_list',
-                    on_update: (data) => {
+                    on_update: function (data) {
                         if (data && 'result' in data)
                             ok(data.result);
                         else
                             ok(data);
                     },
-                    on_error: (data) => err(data)
+                    on_error: function (data) { return err(data); }
                 });
             });
-        }
-        static get websocket_status() {
-            return this.WS ? this.WS.status : JSPM.WSStatus.Closed;
-        }
-        static showAbout() {
-            return new Promise((ok, err) => {
-                this.WS.send('', {
+        };
+        Object.defineProperty(JSPrintManager, "websocket_status", {
+            get: function () {
+                return this.WS ? this.WS.status : JSPM.WSStatus.Closed;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        JSPrintManager.showAbout = function () {
+            var _this = this;
+            return new Promise(function (ok, err) {
+                _this.WS.send('', {
                     type: 'about',
-                    on_update: (data) => {
+                    on_update: function (data) {
                         if (data && 'result' in data)
                             ok(data.result);
                         else
                             ok(data);
                     },
-                    on_error: (data) => err(data)
+                    on_error: function (data) { return err(data); }
                 });
             });
-        }
-        static updateClient() {
-            return new Promise((ok, err) => {
-                this.WS.send('', {
+        };
+        JSPrintManager.updateClient = function () {
+            var _this = this;
+            return new Promise(function (ok, err) {
+                _this.WS.send('', {
                     type: 'update',
-                    on_update: (data) => {
+                    on_update: function (data) {
                         if (data && 'result' in data)
                             ok(data.result);
                         else
                             ok(data);
                     },
-                    on_error: (data) => err(data)
+                    on_error: function (data) { return err(data); }
                 });
             });
-        }
-        static getSystemFonts() {
-            return new Promise((ok, err) => {
-                this.WS.send('', {
+        };
+        JSPrintManager.getSystemFonts = function () {
+            var _this = this;
+            return new Promise(function (ok, err) {
+                _this.WS.send('', {
                     type: 'fonts_list',
-                    on_update: (data) => {
+                    on_update: function (data) {
                         if (data && 'result' in data)
                             ok(data.result);
                         else
                             ok(data);
                     },
-                    on_error: (data) => err(data)
+                    on_error: function (data) { return err(data); }
                 });
             });
-        }
-        static getSerialPorts() {
-            return new Promise((ok, err) => {
-                this.WS.send('', {
+        };
+        JSPrintManager.getSerialPorts = function () {
+            var _this = this;
+            return new Promise(function (ok, err) {
+                _this.WS.send('', {
                     type: 'serial_ports_list',
-                    on_update: (data) => {
+                    on_update: function (data) {
                         if (data && 'result' in data)
                             ok(data.result);
                         else
                             ok(data);
                     },
-                    on_error: (data) => err(data)
+                    on_error: function (data) { return err(data); }
                 });
             });
-        }
-        static getScanners() {
-            return new Promise((ok, err) => {
-                this.WS.send('', {
+        };
+        JSPrintManager.getScanners = function () {
+            var _this = this;
+            return new Promise(function (ok, err) {
+                _this.WS.send('', {
                     type: 'scanner_list',
-                    on_update: (data) => {
+                    on_update: function (data) {
                         if (data && 'result' in data)
                             ok(data.result);
                         else
                             ok(data);
                     },
-                    on_error: (data) => err(data)
+                    on_error: function (data) { return err(data); }
                 });
             });
-        }
-        static onPrinterCreated(callback, error, detail_level = JSPM.PrintersInfoLevel.Extended) {
+        };
+        JSPrintManager.onPrinterCreated = function (callback, error, detail_level) {
+            if (detail_level === void 0) { detail_level = JSPM.PrintersInfoLevel.Extended; }
             if (detail_level == JSPM.PrintersInfoLevel.Basic)
                 throw "Basic detail level information is not implemented yet";
             if (navigator.platform.toLowerCase().indexOf("win") < 0)
                 throw "This functionality is Windows only";
             return this.WS.send('', {
                 type: 'on_printer_creation',
-                on_update: (data) => callback(data),
-                on_error: (data) => error(data)
+                on_update: function (data) { return callback(data); },
+                on_error: function (data) { return error(data); }
             });
-        }
-        static onPrinterUpdated(callback, error, detail_level = JSPM.PrintersInfoLevel.Extended) {
+        };
+        JSPrintManager.onPrinterUpdated = function (callback, error, detail_level) {
+            if (detail_level === void 0) { detail_level = JSPM.PrintersInfoLevel.Extended; }
             if (detail_level == JSPM.PrintersInfoLevel.Basic)
                 throw "Basic detail level information is not implemented yet";
             if (navigator.platform.toLowerCase().indexOf("win") < 0)
                 throw "This functionality is Windows only";
             return this.WS.send('', {
                 type: 'on_printer_modification',
-                on_update: (data) => callback(data),
-                on_error: (data) => error(data)
+                on_update: function (data) { return callback(data); },
+                on_error: function (data) { return error(data); }
             });
-        }
-        static onPrinterDeleted(callback, error, detail_level = JSPM.PrintersInfoLevel.Extended) {
+        };
+        JSPrintManager.onPrinterDeleted = function (callback, error, detail_level) {
+            if (detail_level === void 0) { detail_level = JSPM.PrintersInfoLevel.Extended; }
             if (detail_level == JSPM.PrintersInfoLevel.Basic)
                 throw "Basic detail level information is not implemented yet";
             if (navigator.platform.toLowerCase().indexOf("win") < 0)
                 throw "This functionality is Windows only";
             return this.WS.send('', {
                 type: 'on_printer_deletion',
-                on_update: (data) => callback(data),
-                on_error: (data) => error(data)
+                on_update: function (data) { return callback(data); },
+                on_error: function (data) { return error(data); }
             });
-        }
-        static unsubscribePrinterEvent(id) {
-            return new Promise((ok, err) => {
-                return this.WS.send(JSON.stringify({ close: true }), {
+        };
+        JSPrintManager.unsubscribePrinterEvent = function (id) {
+            var _this = this;
+            return new Promise(function (ok, err) {
+                return _this.WS.send(JSON.stringify({ close: true }), {
                     id: id,
                     type: 'on_printer_deletion',
-                    on_update: (data) => ok(data),
-                    on_error: (data) => err(data)
+                    on_update: function (data) { return ok(data); },
+                    on_error: function (data) { return err(data); }
                 });
             });
-        }
-        static stop() {
+        };
+        JSPrintManager.stop = function () {
             this.WS.stop();
-        }
-    }
-    JSPrintManager.auto_reconnect = false;
-    JSPrintManager._license = document.location.origin + "/jspm";
-    JSPrintManager._ses_cert = "";
+        };
+        JSPrintManager.auto_reconnect = false;
+        JSPrintManager._license = document.location.origin + "/jspm";
+        JSPrintManager._ses_cert = "";
+        return JSPrintManager;
+    }());
     JSPM.JSPrintManager = JSPrintManager;
 })(JSPM || (JSPM = {}));
 var JSPM;
 (function (JSPM) {
-    class PrintFile {
-        constructor(fileContent, fileContentType, fileName, copies) {
+    var PrintFile = (function () {
+        function PrintFile(fileContent, fileContentType, fileName, copies) {
             this.fileName = "";
             this._copies = 1;
             this.fileContent = fileContent;
@@ -1269,35 +1519,42 @@ var JSPM;
                 this.copies = copies;
             this.escapeInvalidFileNameChars();
         }
-        get copies() {
-            return this._copies;
-        }
-        set copies(value) {
-            if (value < 1)
-                throw "Copies must be greater than or equal to 1.";
-            this._copies = value;
-        }
-        escapeInvalidFileNameChars() {
+        Object.defineProperty(PrintFile.prototype, "copies", {
+            get: function () {
+                return this._copies;
+            },
+            set: function (value) {
+                if (value < 1)
+                    throw "Copies must be greater than or equal to 1.";
+                this._copies = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        PrintFile.prototype.escapeInvalidFileNameChars = function () {
             if (this.fileName.indexOf("\\") > -1)
                 this.fileName = this.fileName.replace("\\", "BACKSLASHCHAR");
-        }
-        bool2str(value, true_val = '1', false_val = '0') {
+        };
+        PrintFile.prototype.bool2str = function (value, true_val, false_val) {
+            if (true_val === void 0) { true_val = '1'; }
+            if (false_val === void 0) { false_val = '0'; }
             return value ? true_val : false_val;
-        }
-        getBLOBContent() {
-            return new Promise((ok, err) => {
-                switch (this.fileContentType) {
+        };
+        PrintFile.prototype.getBLOBContent = function () {
+            var _this = this;
+            return new Promise(function (ok, err) {
+                switch (_this.fileContentType) {
                     case JSPM.FileSourceType.BLOB:
                         {
-                            ok(this.fileContent);
+                            ok(_this.fileContent);
                         }
                         break;
                     case JSPM.FileSourceType.Base64:
                         {
                             try {
-                                let chars = atob(this.fileContent);
-                                let bytes = new Uint8Array(chars.length);
-                                for (let i = 0; i < chars.length; i++) {
+                                var chars = atob(_this.fileContent);
+                                var bytes = new Uint8Array(chars.length);
+                                for (var i = 0; i < chars.length; i++) {
                                     bytes[i] = chars.charCodeAt(i);
                                 }
                                 ok(new Blob([bytes]));
@@ -1310,9 +1567,9 @@ var JSPM;
                     case JSPM.FileSourceType.Text:
                         {
                             try {
-                                let bytes = new Uint8Array(this.fileContent.length);
-                                for (let i = 0; i < this.fileContent.length; i++) {
-                                    bytes[i] = this.fileContent.charCodeAt(i);
+                                var bytes = new Uint8Array(_this.fileContent.length);
+                                for (var i = 0; i < _this.fileContent.length; i++) {
+                                    bytes[i] = _this.fileContent.charCodeAt(i);
                                 }
                                 ok(new Blob([bytes]));
                             }
@@ -1323,78 +1580,82 @@ var JSPM;
                         break;
                     case JSPM.FileSourceType.URL:
                         {
-                            let xhr = new XMLHttpRequest();
-                            xhr.open('GET', this.fileContent, true);
-                            xhr.responseType = 'blob';
-                            xhr.onload = (oEvent) => {
-                                ok(xhr.response);
+                            var xhr_1 = new XMLHttpRequest();
+                            xhr_1.open('GET', _this.fileContent, true);
+                            xhr_1.responseType = 'blob';
+                            xhr_1.onload = function (oEvent) {
+                                ok(xhr_1.response);
                             };
-                            xhr.send(null);
+                            xhr_1.send(null);
                         }
                         break;
                     default: err('FileSourceType not specified');
                 }
             });
-        }
-        serialize() {
-            return new Promise((ok, err) => {
-                switch (this.fileContentType) {
+        };
+        PrintFile.prototype.serialize = function () {
+            var _this = this;
+            return new Promise(function (ok, err) {
+                switch (_this.fileContentType) {
                     case JSPM.FileSourceType.Base64:
                         {
-                            ok(new zip.Data64URIReader(this.fileContent));
+                            ok(new zip.Data64URIReader(_this.fileContent));
                         }
                         break;
                     case JSPM.FileSourceType.BLOB:
                         {
-                            ok(new zip.BlobReader(this.fileContent));
+                            ok(new zip.BlobReader(_this.fileContent));
                         }
                         break;
                     case JSPM.FileSourceType.Text:
                         {
-                            ok(new zip.TextReader(this.fileContent));
+                            ok(new zip.TextReader(_this.fileContent));
                         }
                         break;
                     case JSPM.FileSourceType.URL:
                         {
-                            let xhr = new XMLHttpRequest();
-                            xhr.open('GET', this.fileContent, true);
-                            xhr.responseType = 'blob';
-                            xhr.onload = (oEvent) => {
-                                ok(new zip.BlobReader(xhr.response));
+                            var xhr_2 = new XMLHttpRequest();
+                            xhr_2.open('GET', _this.fileContent, true);
+                            xhr_2.responseType = 'blob';
+                            xhr_2.onload = function (oEvent) {
+                                ok(new zip.BlobReader(xhr_2.response));
                             };
-                            xhr.send(null);
+                            xhr_2.send(null);
                         }
                         break;
                     default: err("The file content type is invalid");
                 }
             });
-        }
-    }
+        };
+        return PrintFile;
+    }());
     JSPM.PrintFile = PrintFile;
 })(JSPM || (JSPM = {}));
 var JSPM;
 (function (JSPM) {
-    class PrintFileDOC extends JSPM.PrintFile {
-        constructor(fileContent, fileContentType, fileName, copies) {
-            super(fileContent, fileContentType, fileName.substring(0, fileName.lastIndexOf('.')) + '.wdoc', copies);
-            this.manualDuplex = false;
-            this.manualDuplexMessage = "";
-            this.printInReverseOrder = false;
-            this.printRange = '';
-            this.encryptedPassword = "";
+    var PrintFileDOC = (function (_super) {
+        __extends(PrintFileDOC, _super);
+        function PrintFileDOC(fileContent, fileContentType, fileName, copies) {
+            var _this = _super.call(this, fileContent, fileContentType, fileName.substring(0, fileName.lastIndexOf('.')) + '.wdoc', copies) || this;
+            _this.manualDuplex = false;
+            _this.manualDuplexMessage = "";
+            _this.printInReverseOrder = false;
+            _this.printRange = '';
+            _this.encryptedPassword = "";
+            return _this;
         }
-        isValidRange(range) {
+        PrintFileDOC.prototype.isValidRange = function (range) {
             if (range == null || range == '')
                 return true;
-            let reg = /([0-9])+((-[0-9]+)|(,[0-9]+))*/;
-            let test = reg.exec(range);
+            var reg = /([0-9])+((-[0-9]+)|(,[0-9]+))*/;
+            var test = reg.exec(range);
             if (test == null)
                 return false;
             if (test[0].length != range.length)
                 return false;
             return true;
-        }
-        _getPropertiesJSON() {
+        };
+        PrintFileDOC.prototype._getPropertiesJSON = function () {
             return {
                 manual_duplex: this.manualDuplex,
                 reverse: this.printInReverseOrder,
@@ -1402,54 +1663,58 @@ var JSPM;
                 range: this.printRange,
                 password: this.encryptedPassword,
             };
-        }
-        serialize() {
-            return new Promise((ok, err) => {
-                const SEP = ';';
-                if (!this.isValidRange(this.printRange))
+        };
+        PrintFileDOC.prototype.serialize = function () {
+            var _this = this;
+            return new Promise(function (ok, err) {
+                var SEP = ';';
+                if (!_this.isValidRange(_this.printRange))
                     err('Invalid Print Range');
-                this.getBLOBContent().then((file_content) => {
-                    let properties = new Uint8Array(JSPM.Utils._str2UTF8Array(JSON.stringify(this._getPropertiesJSON())));
-                    let file_size = JSPM.Utils._intToByteArray(properties.length);
-                    let blob = new Blob([file_content, properties, file_size]);
+                _this.getBLOBContent().then(function (file_content) {
+                    var properties = new Uint8Array(JSPM.Utils._str2UTF8Array(JSON.stringify(_this._getPropertiesJSON())));
+                    var file_size = JSPM.Utils._intToByteArray(properties.length);
+                    var blob = new Blob([file_content, properties, file_size]);
                     ok(new zip.BlobReader(blob));
-                }).catch((e) => {
+                }).catch(function (e) {
                     err(e);
                 });
             });
-        }
-    }
+        };
+        return PrintFileDOC;
+    }(JSPM.PrintFile));
     JSPM.PrintFileDOC = PrintFileDOC;
 })(JSPM || (JSPM = {}));
 var JSPM;
 (function (JSPM) {
-    class PrintFilePDF extends JSPM.PrintFile {
-        constructor(fileContent, fileContentType, fileName, copies) {
-            super(fileContent, fileContentType, fileName.substring(0, fileName.lastIndexOf('.')) + '.wpdf', copies);
-            this.pageSizing = JSPM.Sizing.None;
-            this.manualDuplex = false;
-            this.printAutoRotate = false;
-            this.printAutoCenter = false;
-            this.manualDuplexMessage = "";
-            this.encryptedPassword = "";
-            this.printAsGrayscale = false;
-            this.printAnnotations = false;
-            this.printRange = '';
-            this.printInReverseOrder = false;
-            this.printRotation = JSPM.PrintRotation.None;
+    var PrintFilePDF = (function (_super) {
+        __extends(PrintFilePDF, _super);
+        function PrintFilePDF(fileContent, fileContentType, fileName, copies) {
+            var _this = _super.call(this, fileContent, fileContentType, fileName.substring(0, fileName.lastIndexOf('.')) + '.wpdf', copies) || this;
+            _this.pageSizing = JSPM.Sizing.None;
+            _this.manualDuplex = false;
+            _this.printAutoRotate = false;
+            _this.printAutoCenter = false;
+            _this.manualDuplexMessage = "";
+            _this.encryptedPassword = "";
+            _this.printAsGrayscale = false;
+            _this.printAnnotations = false;
+            _this.printRange = '';
+            _this.printInReverseOrder = false;
+            _this.printRotation = JSPM.PrintRotation.None;
+            return _this;
         }
-        isValidRange(range) {
+        PrintFilePDF.prototype.isValidRange = function (range) {
             if (range == null || range == '')
                 return true;
-            let reg = /([0-9])+((-[0-9]+)|(,[0-9]+))*/;
-            let test = reg.exec(range);
+            var reg = /([0-9])+((-[0-9]+)|(,[0-9]+))*/;
+            var test = reg.exec(range);
             if (test == null)
                 return false;
             if (test[0].length != range.length)
                 return false;
             return true;
-        }
-        _getPropertiesJSON() {
+        };
+        PrintFilePDF.prototype._getPropertiesJSON = function () {
             return {
                 manual_duplex: this.manualDuplex,
                 grayscale: this.printAsGrayscale,
@@ -1463,102 +1728,112 @@ var JSPM;
                 rotation: this.printRotation,
                 sizing: this.pageSizing
             };
-        }
-        serialize() {
-            return new Promise((ok, err) => {
-                const SEP = ';';
-                if (!this.isValidRange(this.printRange))
+        };
+        PrintFilePDF.prototype.serialize = function () {
+            var _this = this;
+            return new Promise(function (ok, err) {
+                var SEP = ';';
+                if (!_this.isValidRange(_this.printRange))
                     err('Invalid Print Range');
-                this.getBLOBContent().then((file_content) => {
-                    let properties = new Uint8Array(JSPM.Utils._str2UTF8Array(JSON.stringify(this._getPropertiesJSON())));
-                    let file_size = JSPM.Utils._intToByteArray(properties.length);
-                    let blob = new Blob([file_content, properties, file_size]);
+                _this.getBLOBContent().then(function (file_content) {
+                    var properties = new Uint8Array(JSPM.Utils._str2UTF8Array(JSON.stringify(_this._getPropertiesJSON())));
+                    var file_size = JSPM.Utils._intToByteArray(properties.length);
+                    var blob = new Blob([file_content, properties, file_size]);
                     ok(new zip.BlobReader(blob));
-                }).catch((e) => {
+                }).catch(function (e) {
                     err(e);
                 });
             });
-        }
-    }
+        };
+        return PrintFilePDF;
+    }(JSPM.PrintFile));
     JSPM.PrintFilePDF = PrintFilePDF;
 })(JSPM || (JSPM = {}));
 var JSPM;
 (function (JSPM) {
-    class PrintFileTXT extends JSPM.PrintFile {
-        constructor(fileContent, fileName, copies, fileContentType) {
-            super(fileContent, fileContentType ? fileContentType : JSPM.FileSourceType.Text, fileName.substring(0, fileName.lastIndexOf('.')) + '.wtxt', copies);
-            this.textContent = '';
-            this.textAligment = JSPM.TextAlignment.Left;
-            this.fontName = '';
-            this.fontBold = false;
-            this.fontItalic = false;
-            this.fontUnderline = false;
-            this.fontStrikethrough = false;
-            this.fontSize = 10;
-            this.fontColor = '#000000';
-            this.printOrientation = JSPM.PrintOrientation.Portrait;
-            this.marginLeft = 0.5;
-            this.marginRight = 0.5;
-            this.marginTop = 0.5;
-            this.marginBottom = 0.5;
+    var PrintFileTXT = (function (_super) {
+        __extends(PrintFileTXT, _super);
+        function PrintFileTXT(fileContent, fileName, copies, fileContentType) {
+            var _this = _super.call(this, fileContent, fileContentType ? fileContentType : JSPM.FileSourceType.Text, fileName.substring(0, fileName.lastIndexOf('.')) + '.wtxt', copies) || this;
+            _this.textContent = '';
+            _this.textAligment = JSPM.TextAlignment.Left;
+            _this.fontName = '';
+            _this.fontBold = false;
+            _this.fontItalic = false;
+            _this.fontUnderline = false;
+            _this.fontStrikethrough = false;
+            _this.fontSize = 10;
+            _this.fontColor = '#000000';
+            _this.printOrientation = JSPM.PrintOrientation.Portrait;
+            _this.marginLeft = 0.5;
+            _this.marginRight = 0.5;
+            _this.marginTop = 0.5;
+            _this.marginBottom = 0.5;
+            return _this;
         }
-        serialize() {
-            return new Promise((ok, err) => {
-                const SEP = '|';
-                this.getBLOBContent().then((file_content) => {
-                    let params = new Uint8Array(JSPM.Utils._str2UTF8Array(this.printOrientation + SEP + this.textAligment +
-                        SEP + this.fontName + SEP + this.fontSize + SEP +
-                        this.bool2str(this.fontBold) + SEP +
-                        this.bool2str(this.fontItalic) + SEP +
-                        this.bool2str(this.fontUnderline) + SEP +
-                        this.bool2str(this.fontStrikethrough) + SEP +
-                        this.fontColor + SEP + this.marginLeft + SEP + this.marginTop +
-                        SEP + this.marginRight + SEP + this.marginBottom + '\n'));
-                    let blob = new Blob([params, file_content]);
+        PrintFileTXT.prototype.serialize = function () {
+            var _this = this;
+            return new Promise(function (ok, err) {
+                var SEP = '|';
+                _this.getBLOBContent().then(function (file_content) {
+                    var params = new Uint8Array(JSPM.Utils._str2UTF8Array(_this.printOrientation + SEP + _this.textAligment +
+                        SEP + _this.fontName + SEP + _this.fontSize + SEP +
+                        _this.bool2str(_this.fontBold) + SEP +
+                        _this.bool2str(_this.fontItalic) + SEP +
+                        _this.bool2str(_this.fontUnderline) + SEP +
+                        _this.bool2str(_this.fontStrikethrough) + SEP +
+                        _this.fontColor + SEP + _this.marginLeft + SEP + _this.marginTop +
+                        SEP + _this.marginRight + SEP + _this.marginBottom + '\n'));
+                    var blob = new Blob([params, file_content]);
                     ok(new zip.BlobReader(blob));
-                }).catch((e) => {
+                }).catch(function (e) {
                     err(e);
                 });
             });
-        }
-    }
+        };
+        return PrintFileTXT;
+    }(JSPM.PrintFile));
     JSPM.PrintFileTXT = PrintFileTXT;
 })(JSPM || (JSPM = {}));
 var JSPM;
 (function (JSPM) {
-    class PrintFileXLS extends JSPM.PrintFile {
-        constructor(fileContent, fileContentType, fileName, copies) {
-            super(fileContent, fileContentType, fileName.substring(0, fileName.lastIndexOf('.')) + '.wxls', copies);
-            this.encryptedPassword = "";
-            this.pageFrom = 0;
-            this.pageTo = 0;
+    var PrintFileXLS = (function (_super) {
+        __extends(PrintFileXLS, _super);
+        function PrintFileXLS(fileContent, fileContentType, fileName, copies) {
+            var _this = _super.call(this, fileContent, fileContentType, fileName.substring(0, fileName.lastIndexOf('.')) + '.wxls', copies) || this;
+            _this.encryptedPassword = "";
+            _this.pageFrom = 0;
+            _this.pageTo = 0;
+            return _this;
         }
-        _getPropertiesJSON() {
+        PrintFileXLS.prototype._getPropertiesJSON = function () {
             return {
                 from: this.pageFrom,
                 to: this.pageTo,
                 password: this.encryptedPassword,
             };
-        }
-        serialize() {
-            return new Promise((ok, err) => {
-                this.getBLOBContent().then((file_content) => {
-                    let properties = new Uint8Array(JSPM.Utils._str2UTF8Array(JSON.stringify(this._getPropertiesJSON())));
-                    let file_size = JSPM.Utils._intToByteArray(properties.length);
-                    let blob = new Blob([file_content, properties, file_size]);
+        };
+        PrintFileXLS.prototype.serialize = function () {
+            var _this = this;
+            return new Promise(function (ok, err) {
+                _this.getBLOBContent().then(function (file_content) {
+                    var properties = new Uint8Array(JSPM.Utils._str2UTF8Array(JSON.stringify(_this._getPropertiesJSON())));
+                    var file_size = JSPM.Utils._intToByteArray(properties.length);
+                    var blob = new Blob([file_content, properties, file_size]);
                     ok(new zip.BlobReader(blob));
-                }).catch((e) => {
+                }).catch(function (e) {
                     err(e);
                 });
             });
-        }
-    }
+        };
+        return PrintFileXLS;
+    }(JSPM.PrintFile));
     JSPM.PrintFileXLS = PrintFileXLS;
 })(JSPM || (JSPM = {}));
 var JSPM;
 (function (JSPM) {
-    class SerialComm {
-        constructor(portName, baudRate, parity, stopBits, dataBits, flowControl) {
+    var SerialComm = (function () {
+        function SerialComm(portName, baudRate, parity, stopBits, dataBits, flowControl) {
             this._id = "";
             this._isOpen = false;
             this._port = "";
@@ -1576,130 +1851,163 @@ var JSPM;
             this._data_bits = dataBits;
             this._flow_control = flowControl;
         }
-        get portName() {
-            return this._port;
-        }
-        set portName(value) {
-            this._port = value;
-        }
-        get isOpen() {
-            return this._isOpen;
-        }
-        get baudRate() {
-            return this._baud_rate;
-        }
-        set baudRate(value) {
-            this._baud_rate = value;
-        }
-        get parity() {
-            return this._parity;
-        }
-        set parity(value) {
-            this._parity = value;
-        }
-        get stopBits() {
-            return this._stop_bits;
-        }
-        set stopBits(value) {
-            this._stop_bits = value;
-        }
-        get dataBits() {
-            return this._data_bits;
-        }
-        set dataBits(value) {
-            this._data_bits = value;
-        }
-        get flowControl() {
-            return this._flow_control;
-        }
-        set flowControl(value) {
-            this._flow_control = value;
-        }
-        onError(data, critical) { }
-        onDataReceived(data) { }
-        onClose(data) { }
-        open() {
-            return new Promise((ok, err) => {
-                if (this._isOpen) {
+        Object.defineProperty(SerialComm.prototype, "portName", {
+            get: function () {
+                return this._port;
+            },
+            set: function (value) {
+                this._port = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SerialComm.prototype, "isOpen", {
+            get: function () {
+                return this._isOpen;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SerialComm.prototype, "baudRate", {
+            get: function () {
+                return this._baud_rate;
+            },
+            set: function (value) {
+                this._baud_rate = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SerialComm.prototype, "parity", {
+            get: function () {
+                return this._parity;
+            },
+            set: function (value) {
+                this._parity = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SerialComm.prototype, "stopBits", {
+            get: function () {
+                return this._stop_bits;
+            },
+            set: function (value) {
+                this._stop_bits = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SerialComm.prototype, "dataBits", {
+            get: function () {
+                return this._data_bits;
+            },
+            set: function (value) {
+                this._data_bits = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SerialComm.prototype, "flowControl", {
+            get: function () {
+                return this._flow_control;
+            },
+            set: function (value) {
+                this._flow_control = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        SerialComm.prototype.onError = function (data, critical) { };
+        SerialComm.prototype.onDataReceived = function (data) { };
+        SerialComm.prototype.onClose = function (data) { };
+        SerialComm.prototype.open = function () {
+            var _this = this;
+            return new Promise(function (ok, err) {
+                if (_this._isOpen) {
                     throw "Connection is already open";
                 }
-                let props = this.propertiesJSON();
-                props['on_update'] = (data, first, last) => {
+                var props = _this.propertiesJSON();
+                props['on_update'] = function (data, first, last) {
                     if (first) {
-                        if (data.result && data.result == "Open" && this._isOpen == false)
-                            this._isOpen = true;
+                        if (data.result && data.result == "Open" && _this._isOpen == false)
+                            _this._isOpen = true;
                         ok(data);
                     }
                     else if (last) {
-                        this.onClose(data);
-                        this._id = "";
-                        this._isOpen = false;
+                        _this.onClose(data);
+                        _this._id = "";
+                        _this._isOpen = false;
                     }
                     else
-                        this.onDataReceived(data.data);
+                        _this.onDataReceived(data.data);
                 };
-                props['on_error'] = (data, first, critical) => {
+                props['on_error'] = function (data, first, critical) {
                     if (first)
                         err(data);
                     else
-                        this.onError(data, critical);
+                        _this.onError(data, critical);
                 };
-                this._id = JSPM.JSPrintManager.WS.send(JSON.stringify({
-                    port: this._port,
-                    baud_rate: this._baud_rate,
-                    data_bits: this._data_bits,
-                    flow_control: this._flow_control,
-                    parity: this._parity,
-                    stop_bits: this._stop_bits
+                _this._id = JSPM.JSPrintManager.WS.send(JSON.stringify({
+                    port: _this._port,
+                    baud_rate: _this._baud_rate,
+                    data_bits: _this._data_bits,
+                    flow_control: _this._flow_control,
+                    parity: _this._parity,
+                    stop_bits: _this._stop_bits
                 }), props);
             });
-        }
-        send(utf8string) {
-            let props = this.propertiesJSON();
+        };
+        SerialComm.prototype.send = function (utf8string) {
+            var props = this.propertiesJSON();
             JSPM.JSPrintManager.WS.send(JSON.stringify({ data: utf8string }), props);
-        }
-        close() {
+        };
+        SerialComm.prototype.close = function () {
             JSPM.JSPrintManager.WS.send(JSON.stringify({ close: true }), this.propertiesJSON());
-        }
-        propertiesJSON() {
+        };
+        SerialComm.prototype.propertiesJSON = function () {
             if (!this.portName)
                 throw "The specified serial port name is null or empty.";
-            let p = {
+            var p = {
                 type: 'serial'
             };
             if (this._id)
                 p['id'] = this._id;
             return p;
-        }
-    }
+        };
+        return SerialComm;
+    }());
     JSPM.SerialComm = SerialComm;
 })(JSPM || (JSPM = {}));
 var JSPM;
 (function (JSPM) {
     JSPM.VERSION = '3.0';
-    class Mutex {
-        constructor() {
+    var Mutex = (function () {
+        function Mutex() {
             this.mutex = Promise.resolve();
         }
-        lock() {
-            let begin = unlock => { };
-            this.mutex = this.mutex.then(() => {
+        Mutex.prototype.lock = function () {
+            var begin = function (unlock) { };
+            this.mutex = this.mutex.then(function () {
                 return new Promise(begin);
             });
-            return new Promise(res => {
+            return new Promise(function (res) {
                 begin = res;
             });
-        }
-    }
+        };
+        return Mutex;
+    }());
     JSPM.Mutex = Mutex;
-    class Utils {
-        static _intToByteArray(number) {
+    var Utils = (function () {
+        function Utils() {
+        }
+        Utils._intToByteArray = function (number) {
             return new Uint8Array([number & 0xFF,
                 (number >> 8) & 0xFF,
                 (number >> 16) & 0xFF,
                 (number >> 24) & 0xFF]);
-        }
-        static _str2UTF8Array(str) {
+        };
+        Utils._str2UTF8Array = function (str) {
             var utf8 = [];
             for (var i = 0; i < str.length; i++) {
                 var charcode = str.charCodeAt(i);
@@ -1727,7 +2035,8 @@ var JSPM;
                 }
             }
             return utf8;
-        }
-    }
+        };
+        return Utils;
+    }());
     JSPM.Utils = Utils;
 })(JSPM || (JSPM = {}));
