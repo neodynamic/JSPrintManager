@@ -1,5 +1,5 @@
 /*!
- * JSPrintManager v3.0.2
+ * JSPrintManager v3.0.3
  * https://neodynamic.com/products/printing/js-print-manager
  *
  * GitHub Repo 
@@ -13,7 +13,7 @@
  *
  * Copyright Neodynamic SRL
  * https://neodynamic.com
- * Date: 2020-07-22
+ * Date: 2020-07-28
  */
 var JSPM;
 (function (JSPM) {
@@ -1325,7 +1325,7 @@ var JSPM;
             },
             set: function (value) {
                 this._license = value;
-                if (this.WS.status == JSPM.WSStatus.Open)
+                if (this.WS && this.WS.status == JSPM.WSStatus.Open)
                     this.WS.send(JSON.stringify({ url: this._license }), {
                         type: "set_license",
                         on_update: function (_) { }, on_error: function (_) { }
