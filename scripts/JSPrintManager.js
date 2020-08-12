@@ -1,5 +1,5 @@
 /*!
- * JSPrintManager v3.0.3
+ * JSPrintManager v3.0.4
  * https://neodynamic.com/products/printing/js-print-manager
  *
  * GitHub Repo 
@@ -13,7 +13,7 @@
  *
  * Copyright Neodynamic SRL
  * https://neodynamic.com
- * Date: 2020-07-28
+ * Date: 2020-08-12
  */
 var JSPM;
 (function (JSPM) {
@@ -1064,15 +1064,15 @@ var JSPM;
         };
         JSPMWebSocket.prototype._onMessage = function (e) {
             return __awaiter(this, void 0, void 0, function () {
-                var unlock, json_data, job, last, msg_type, data, critical, blob, id_buf, id, data_blob, job, _a;
-                return __generator(this, function (_b) {
-                    switch (_b.label) {
+                var unlock, json_data, job, last, msg_type, data, critical, blob, id_buf, id, data_blob, job, err_1;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
                         case 0: return [4, this._processing_message.lock()];
                         case 1:
-                            unlock = _b.sent();
-                            _b.label = 2;
+                            unlock = _a.sent();
+                            _a.label = 2;
                         case 2:
-                            _b.trys.push([2, 6, 7, 8]);
+                            _a.trys.push([2, 6, 7, 8]);
                             if (!(typeof (e.data) == 'string')) return [3, 3];
                             json_data = JSON.parse(e.data);
                             job = this._job_list[json_data.id];
@@ -1084,18 +1084,21 @@ var JSPM;
                             switch (msg_type) {
                                 case 'message':
                                     {
-                                        job.on_update(data, job.first_update, last);
+                                        if (job.on_update && typeof (job.on_update === "function"))
+                                            job.on_update(data, job.first_update, last);
                                     }
                                     break;
                                 case 'error':
                                     {
                                         critical = 'critical' in json_data ?
                                             json_data.critical : false;
-                                        job.on_error(data, job.first_update, critical);
+                                        if (job.on_error && typeof (job.on_error === "function"))
+                                            job.on_error(data, job.first_update, critical);
                                     }
                                     break;
                                 default: {
-                                    job.on_update(data, job.first_update, last);
+                                    if (job.on_update && typeof (job.on_update === "function"))
+                                        job.on_update(data, job.first_update, last);
                                 }
                             }
                             if (last)
@@ -1105,20 +1108,21 @@ var JSPM;
                             blob = e.data;
                             return [4, blob.slice(blob.size - 8, blob.size).arrayBuffer()];
                         case 4:
-                            id_buf = _b.sent();
+                            id_buf = _a.sent();
                             id = new TextDecoder('utf-8').decode(id_buf);
                             data_blob = blob.slice(0, blob.size - 8);
                             job = this._job_list[id];
                             if (!job)
                                 throw "Job " + id + " doesn't exist";
-                            job.on_update(data_blob, job.first_update, false);
-                            _b.label = 5;
+                            if (job.on_update && typeof (job.on_update === "function"))
+                                job.on_update(data_blob, job.first_update, false);
+                            _a.label = 5;
                         case 5:
                             job.first_update = false;
                             return [3, 8];
                         case 6:
-                            _a = _b.sent();
-                            throw "Malformed message. Error: " + e.data;
+                            err_1 = _a.sent();
+                            throw "Malformed message. Error: " + err_1 + " Message: " + e.data;
                         case 7:
                             unlock();
                             return [7];
@@ -1228,7 +1232,11 @@ var JSPM;
                                         _this.onStatusChanged();
                                         _this.onOpen(json.certificate);
                                         JSPM.JSPrintManager._ses_cert = json.certificate;
-                                        _this.send(JSON.stringify({ url: JSPM.JSPrintManager.license_url }), { type: "set_license" });
+                                        _this.send(JSON.stringify({ url: JSPM.JSPrintManager.license_url }), {
+                                            type: "set_license",
+                                            on_update: function (v) { console.info("JSPrintManager License:", 'result' in v ? v['result'] : v); },
+                                            on_error: function (v) { console.warn("JSPrintManager License:", 'result' in v ? v['result'] : v); },
+                                        });
                                         var verArray = json.version.split('.');
                                         if (verArray[0] + '.' + verArray[1] != JSPM.VERSION) {
                                             console.warn("Lib JS version and " +
