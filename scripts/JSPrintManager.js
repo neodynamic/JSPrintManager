@@ -1,5 +1,5 @@
 /*!
- * JSPrintManager v3.0.4
+ * JSPrintManager v3.0.5
  * https://neodynamic.com/products/printing/js-print-manager
  *
  * GitHub Repo 
@@ -13,7 +13,7 @@
  *
  * Copyright Neodynamic SRL
  * https://neodynamic.com
- * Date: 2020-08-12
+ * Date: 2020-08-20
  */
 var JSPM;
 (function (JSPM) {
@@ -2052,3 +2052,13 @@ var JSPM;
     }());
     JSPM.Utils = Utils;
 })(JSPM || (JSPM = {}));
+
+(function() {
+    if (typeof define === 'function' && define.amd) {
+        define(JSPM);
+    } else if (typeof exports === 'object') {
+        module.exports = JSPM;
+    } else {
+        window.JSPM = JSPM;
+    }
+})();
