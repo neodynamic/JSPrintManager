@@ -86,6 +86,60 @@ If your using **another Javascript framework** please refer to the different [ar
 
 If you're an **Angular** dev, then try this sample repo https://github.com/neodynamic/JSPrintManager-Angular
 
+## HOWTOs & Articles
+
+#### Printing Known File Formats
+- [Advanced Silent PDF Printing with Tray, Paper Size, Rotation &amp; Pages Range Settings from Javascript](https://www.neodynamic.com/articles/Advanced-Silent-PDF-Printing-Tray-Paper-Size-Rotation-Pages-Range-Settings-from-Javascript)
+
+
+#### Printing RAW Printer Commands
+- [How to print raw commands from Web APIs, WebServices, Remote and Local files with Javascript](https://www.neodynamic.com/articles/How-to-print-raw-commands-from-Web-APIs-WebServices-Remote-and-Local-files-with-Javascript)
+
+- [How to print raw Zebra ZPL commands from Javascript](https://www.neodynamic.com/articles/How-to-print-raw-Zebra-ZPL-commands-from-Javascript)
+
+- [Print Unicode UTF8 Text to Zebra ZPL printer from Javascript](https://www.neodynamic.com/articles/Print-Unicode-UTF8-Text-to-Zebra-ZPL-printer-from-Javascript)
+
+- [How to print raw Zebra EPL commands from Javascript](https://www.neodynamic.com/articles/How-to-print-raw-Zebra-EPL-commands-from-Javascript)
+
+- [How to generate (JSESCPOSBuilder) and print raw ESC/POS commands from Javascript](https://www.neodynamic.com/articles/How-to-generate-and-print-raw-ESC-POS-commands-from-Javascript)
+
+- [How to print raw ESC/POS commands from Javascript](https://www.neodynamic.com/articles/How-to-print-raw-ESC-POS-commands-from-Javascript)
+
+- [How to print raw Intermec IPL commands from Javascript](https://www.neodynamic.com/articles/How-to-print-raw-Intermec-IPL-commands-from-Javascript)
+
+- [How to print raw BOCA FGL commands from Javascript](https://www.neodynamic.com/articles/How-to-print-raw-BOCA-FGL-commands-from-Javascript)
+
+- [How to print raw Datamax DPL commands from Javascript](https://www.neodynamic.com/articles/How-to-print-raw-Datamax-DPL-commands-from-Javascript)
+
+- [How to print raw Godex EZPL commands from Javascript](https://www.neodynamic.com/articles/How-to-print-raw-Godex-EZPL-commands-from-Javascript)
+
+#### HTML &amp; CSS Content
+- [Print HTML from Javascript directly to the client printer without print dialog or silent mode](https://www.neodynamic.com/articles/Print-HTML-from-Javascript-to-client-printer-without-print-dialog-silently)
+
+#### MS Word Documents (*.doc; *.docx)
+- [Silent Word DOC Printing with Duplex, Reverse & Pages Range Settings from Javascript](https://www.neodynamic.com/articles/Silent-Print-Word-DOC-duplex-pages-range-reverse-from-Javascript)
+
+#### MS Excel Spreadsheet (*.xls; *.xlsx)
+- [Silent Excel Spreadsheet XLS Printing with Pages Range Settings from Javascript](https://www.neodynamic.com/articles/Silent-Print-Excel-Spreadsheet-XLS-pages-range-from-Javascript)
+
+#### Image Files (*.jpg; *.png)
+- [Silent JPG &amp; PNG Images Printing with custom Location, Size &amp; Page Orientation Settings from Javascript](https://www.neodynamic.com/articles/Silent-Print-Images-JPG-PNG-Location-Size-Page-Orientation-from-Javascript)
+
+#### Mobile &amp; Sandboxed Printing
+- [How to print raw commands and pdf files from iOS, Android, ChromeOS and sandboxed devices from Javascript](https://www.neodynamic.com/articles/How-to-print-raw-commands-pdf-files-from-iOS-Android-ChromeOS-sandboxed-devices-from-Javascript)
+
+#### Printers
+- [How to detect when a Printer is added or created, updated, deleted or removed from Javascript](https://www.neodynamic.com/articles/How-to-detect-when-Printer-is-added-created-updated-deleted-removed-from-Javascript)
+
+- [How to detect virtual &amp; real-physical printers from Javascript](https://www.neodynamic.com/articles/How-to-detect-virtual-real-physical-printer-from-Javascript)
+
+- [How to trace Print Job Status from Javascript](https://www.neodynamic.com/articles/How-to-trace-Print-Job-Status-from-Javascript)
+
+#### Serial Port Comm
+- [How to send/write and receive/read (BIDI) Serial Port Data from Javascript](https://www.neodynamic.com/articles/How-to-send-write-receive-read-bidi-serial-port-data-from-Javascript)
+
+#### Web Scanning
+- [How to Scan Documents &amp; Images from Javascript](https://www.neodynamic.com/articles/How-to-scan-documents-images-from-Javascript)
 
 ## Licensing
 
