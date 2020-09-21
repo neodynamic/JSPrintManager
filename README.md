@@ -87,7 +87,7 @@ This GitHub repo contains the source code of [JSPrintManager Online Demo Website
 If you're an **Angular** dev, then try this sample repo https://github.com/neodynamic/JSPrintManager-Angular
 
 ### Vue Sample
-If you're an **Vue** dev, then try this sample repo https://github.com/neodynamic/JSPrintManager-Vue
+If you're a **Vue** dev, then try this sample repo https://github.com/neodynamic/JSPrintManager-Vue
 
 ### Any other JS framework
 If your using **another Javascript framework** please refer to the different [articles about JSPrintManager and different printing topics which were written in plain Javascript code](https://www.neodynamic.com/products/printing/js-print-manager/articles)
