@@ -339,10 +339,9 @@ declare namespace JSPM.Serial {
         Space = 4,
     }
     enum StopBits {
-        None = 0,
-        One = 1,
+        One = 0,
+        OnePointFive = 1,
         Two = 2,
-        OnePointFive = 3,
     }
     enum DataBits {
         Eight = 0,
