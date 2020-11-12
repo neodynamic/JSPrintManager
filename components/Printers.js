@@ -14,7 +14,7 @@
             printerSerialPort: "",
             printerSerialPortBaudRate: 9600,
             printerSerialPortParity: "None",
-            printerSerialPortStopBits: "None",
+            printerSerialPortStopBits: "One",
             printerSerialPortDataBits: "Eight",
             printerSerialPortFlowControl: "None"
         };
@@ -177,7 +177,6 @@
                     <label>
                         Stop bits
                         <select className="form-control form-control-sm" name="printerSerialPortStopBits" onChange={this.setPrinterState.bind(this)}>
-                            <option value="None">0</option>
                             <option value="One">1</option>
                             <option value="OnePointFive">1.5</option>
                             <option value="Two">2</option>

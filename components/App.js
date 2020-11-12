@@ -108,7 +108,7 @@
                 demoContent = <PrintingPwdProtectedFilesSample setSample={this.setDemoSample} os={this.OS} />;
             }
         } else if (this.state.JSPM_WS_Status == "Closed") demoContent = <InstallJSPMClientApp />;
-        else if (this.state.JSPM_WS_Status == "BlackListed") demoContent = <WebsiteBlackListed />;
+        else if (this.state.JSPM_WS_Status == "Blocked") demoContent = <Websiteblocked />;
         else {
             demoContent = (
                 <div className="row">

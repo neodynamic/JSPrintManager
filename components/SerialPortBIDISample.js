@@ -7,13 +7,14 @@
             serialPort: "",
             serialPortBaudRate: 9600,
             serialPortParity: "None",
-            serialPortStopBits: "None",
+            serialPortStopBits: "One",
             serialPortDataBits: "Eight",
             serialPortFlowControl: "None",
             serialComm: null,
             serialCommState: 0, // 0 = closed, 1 = sending, 2 = data received, 3 = error
             dataToSend: "",
-            dataReceived: ""
+            dataReceived: "",
+            endLineChars: ""
         };
     }
 
@@ -40,7 +41,7 @@
             this.setState({ serialCommState: 3 });
         } else if (this.state.dataToSend.length > 0) {
             this.setState({ serialCommState: 1 });
-            this.state.serialComm.send(this.state.dataToSend + "\r\n");
+            this.state.serialComm.send(this.state.dataToSend + this.state.endLineChars.replace('CR', '\r').replace('LF', '\n'));
             this.state.dataReceived += "> " + this.state.dataToSend + "\r\n";
         }
     }
@@ -160,7 +161,6 @@
                                         <label>
                                             Stop bits
                                             <select className="form-control form-control-sm" name="serialPortStopBits" onChange={this.setData.bind(this)}>
-                                                <option value="None">0</option>
                                                 <option value="One">1</option>
                                                 <option value="OnePointFive">1.5</option>
                                                 <option value="Two">2</option>
@@ -192,6 +192,12 @@
                                     <strong>Data to Send:</strong>
                                     <div className="input-group mb-3">
                                         <input placeholder="Type Data here..." aria-label="Type Data here..." aria-describedby="basic-addon2" className="form-control text-monospace" name="dataToSend" onChange={this.setData.bind(this)} />
+                                        <select name="endLineChars" onChange={this.setData.bind(this)}>
+                                            <option value="">None</option>
+                                            <option value="CR">CR</option>
+                                            <option value="LF">LF</option>
+                                            <option value="CRLF">CRLF</option>
+                                        </select>
                                         <div className="input-group-append">
                                             <button className="btn btn-info" type="button" onClick={this.doSendData.bind(this)}>
                                                 Send...
