@@ -1,5 +1,5 @@
 /*!
- * JSPrintManager v3.0.5
+ * JSPrintManager v3.0.6
  * https://neodynamic.com/products/printing/js-print-manager
  *
  * GitHub Repo 
@@ -13,7 +13,7 @@
  *
  * Copyright Neodynamic SRL
  * https://neodynamic.com
- * Date: 2020-08-20
+ * Date: 2020-11-11
  */
 var JSPM;
 (function (JSPM) {
@@ -953,10 +953,9 @@ var JSPM;
         })(Parity = Serial.Parity || (Serial.Parity = {}));
         var StopBits;
         (function (StopBits) {
-            StopBits[StopBits["None"] = 0] = "None";
-            StopBits[StopBits["One"] = 1] = "One";
+            StopBits[StopBits["One"] = 0] = "One";
+            StopBits[StopBits["OnePointFive"] = 1] = "OnePointFive";
             StopBits[StopBits["Two"] = 2] = "Two";
-            StopBits[StopBits["OnePointFive"] = 3] = "OnePointFive";
         })(StopBits = Serial.StopBits || (Serial.StopBits = {}));
         var DataBits;
         (function (DataBits) {
@@ -1262,9 +1261,9 @@ var JSPM;
                                     }
                                 }
                             }
-                            catch (_a) {
+                            catch (e) {
                                 err("Malformed message. Check if JS version " +
-                                    "and Desktop version are the same");
+                                    "and Desktop version are the same. Description: " + e);
                             }
                         };
                     };
