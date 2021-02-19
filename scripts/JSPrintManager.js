@@ -1,5 +1,5 @@
 /*!
- * JSPrintManager v3.0.6
+ * JSPrintManager v3.0.7
  * https://neodynamic.com/products/printing/js-print-manager
  *
  * GitHub Repo 
@@ -13,7 +13,7 @@
  *
  * Copyright Neodynamic SRL
  * https://neodynamic.com
- * Date: 2020-11-11
+ * Date: 2021-02-19
  */
 var JSPM;
 (function (JSPM) {
@@ -161,26 +161,47 @@ var JSPM;
                     reject("zip.js, zip-ext.js, and deflate.js files from https://github.com/gildas-lormeau/zip.js project are missing.");
                 else {
                     zip.useWebWorkers = false;
-                    zip.createWriter(new zip.BlobWriter("application/zip"), function (zipWriter) {
-                        function addPrintFile2Zip(pf_idx) {
-                            if (pf_idx >= printFileGroup.length) {
-                                zipWriter.close(function (zipBlob) {
-                                    resolve(zipBlob);
-                                });
+                    if (zip.createWriter) {
+                        zip.createWriter(new zip.BlobWriter("application/zip"), function (zipWriter) {
+                            function addPrintFile2Zip(pf_idx) {
+                                if (pf_idx >= printFileGroup.length) {
+                                    zipWriter.close(function (zipBlob) {
+                                        resolve(zipBlob);
+                                    });
+                                }
+                                else {
+                                    var printFile = printFileGroup[pf_idx];
+                                    var file_1 = pf_idx + SEPARATOR + printFile.copies + SEPARATOR + printFile.fileName;
+                                    printFile.serialize().then(function (reader) {
+                                        zipWriter.add(file_1, reader, function () { addPrintFile2Zip(pf_idx + 1); });
+                                    }).catch(function (e) {
+                                        reject(e);
+                                    });
+                                }
                             }
-                            else {
-                                var printFile = printFileGroup[pf_idx];
-                                var file_1 = pf_idx + SEPARATOR + printFile.copies + SEPARATOR + printFile.fileName;
-                                printFile.serialize().then(function (reader) {
-                                    zipWriter.add(file_1, reader, function () { addPrintFile2Zip(pf_idx + 1); });
-                                }).catch(function (e) {
-                                    reject(e);
-                                });
-                            }
-                        }
-                        if (printFileGroup.length != 0)
-                            addPrintFile2Zip(0);
-                    }, function (e) { reject(e); });
+                            if (printFileGroup.length != 0)
+                                addPrintFile2Zip(0);
+                        }, function (e) { reject(e); });
+                    }
+                    else {
+                        if (!zip.ZipWriter)
+                            throw "Invalid zip.js version";
+                        var zipBlob = new zip.BlobWriter("application/zip");
+                        var writer = new zip.ZipWriter(zipBlob);
+                        var results = printFileGroup.map(function (file, pf_idx) { return new Promise(function (ok, err) {
+                            file.serialize().then(function (reader) {
+                                var file_name = pf_idx + SEPARATOR + file.copies + SEPARATOR + file.fileName;
+                                writer.add(file_name, reader).then(function (_) { return ok(); }).catch(function (e) { return err(e); });
+                            });
+                        }); });
+                        Promise.all(results)
+                            .then(function (_) {
+                            writer.close().then(function (data) {
+                                resolve(data);
+                            });
+                        })
+                            .catch(function (e) { return reject(e); });
+                    }
                 }
             });
         };
