@@ -1,5 +1,5 @@
 /*!
- * JSPrintManager v3.0.7
+ * JSPrintManager v3.0.8
  * https://neodynamic.com/products/printing/js-print-manager
  *
  * GitHub Repo 
@@ -13,7 +13,7 @@
  *
  * Copyright Neodynamic SRL
  * https://neodynamic.com
- * Date: 2021-02-19
+ * Date: 2021-03-26
  */
 var JSPM;
 (function (JSPM) {
@@ -1874,6 +1874,8 @@ var JSPM;
             this._stop_bits = JSPM.Serial.StopBits.One;
             this._data_bits = JSPM.Serial.DataBits.Eight;
             this._flow_control = JSPM.Serial.Handshake.XOnXOff;
+            this._updated_values = {};
+            this.SERIAL_TIMEOUT = 5000;
             if (!portName)
                 throw "The specified serial port name is null or empty.";
             this._port = portName;
@@ -1950,8 +1952,85 @@ var JSPM;
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(SerialComm.prototype, "dsr", {
+            get: function () {
+                var _this = this;
+                if (!this._isOpen) {
+                    throw "Connection closed";
+                }
+                JSPM.JSPrintManager.WS.send(JSON.stringify({ dsr: true }), this.propertiesJSON());
+                return new Promise(function (ok, err) {
+                    setTimeout(function () { return err('Timeout'); }, _this.SERIAL_TIMEOUT);
+                    var wait_for_value = function () {
+                        if (!('dsr' in _this._updated_values))
+                            setTimeout(wait_for_value, 100);
+                        var val = _this._updated_values['dsr'];
+                        delete _this._updated_values['dsr'];
+                        ok(val);
+                    };
+                    wait_for_value();
+                });
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SerialComm.prototype, "cts", {
+            get: function () {
+                var _this = this;
+                if (!this._isOpen) {
+                    throw "Connection closed";
+                }
+                JSPM.JSPrintManager.WS.send(JSON.stringify({ dsr: true }), this.propertiesJSON());
+                return new Promise(function (ok, err) {
+                    setTimeout(function () { return err('Timeout'); }, _this.SERIAL_TIMEOUT);
+                    var wait_for_value = function () {
+                        if (!('cts' in _this._updated_values))
+                            setTimeout(wait_for_value, 100);
+                        var val = _this._updated_values['cts'];
+                        delete _this._updated_values['cts'];
+                        ok(val);
+                    };
+                    wait_for_value();
+                });
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SerialComm.prototype, "rts", {
+            set: function (value) {
+                if (!this._isOpen) {
+                    throw "Connection closed";
+                }
+                if (this._flow_control in [JSPM.Serial.Handshake.RequestToSend, JSPM.Serial.Handshake.RequestToSendXOnXOff])
+                    throw "Invalid operation. Flow control manages RTS";
+                JSPM.JSPrintManager.WS.send(JSON.stringify({ rts: value }), this.propertiesJSON());
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SerialComm.prototype, "dtr", {
+            set: function (value) {
+                if (!this._isOpen) {
+                    throw "Connection closed";
+                }
+                JSPM.JSPrintManager.WS.send(JSON.stringify({ dtr: value }), this.propertiesJSON());
+            },
+            enumerable: true,
+            configurable: true
+        });
         SerialComm.prototype.onError = function (data, critical) { };
         SerialComm.prototype.onDataReceived = function (data) { };
+        SerialComm.prototype._onDataReceived = function (data) {
+            if ('dsr' in data) {
+                this._updated_values['dsr'] = data.dsr;
+            }
+            else if ('cts' in data) {
+                this._updated_values['cts'] = data.cts;
+            }
+            else {
+                this.onDataReceived(data.data);
+            }
+        };
         SerialComm.prototype.onClose = function (data) { };
         SerialComm.prototype.open = function () {
             var _this = this;
@@ -1972,7 +2051,7 @@ var JSPM;
                         _this._isOpen = false;
                     }
                     else
-                        _this.onDataReceived(data.data);
+                        _this._onDataReceived(data);
                 };
                 props['on_error'] = function (data, first, critical) {
                     if (first)
