@@ -496,6 +496,8 @@ declare namespace JSPM {
         private _stop_bits;
         private _data_bits;
         private _flow_control;
+        private _updated_values;
+        SERIAL_TIMEOUT: number;
         portName: string;
         readonly isOpen: Boolean;
         baudRate: number;
@@ -503,9 +505,14 @@ declare namespace JSPM {
         stopBits: Serial.StopBits;
         dataBits: Serial.DataBits;
         flowControl: Serial.Handshake;
+        readonly dsr: Promise<boolean>;
+        readonly cts: Promise<boolean>;
+        rts: boolean;
+        dtr: boolean;
         constructor(portName: string, baudRate: number, parity: Serial.Parity, stopBits: Serial.StopBits, dataBits: Serial.DataBits, flowControl: Serial.Handshake);
         onError(data: any, critical: any): void;
         onDataReceived(data: any): void;
+        private _onDataReceived(data);
         onClose(data: any): void;
         open(): Promise<{}>;
         send(utf8string: string): void;
