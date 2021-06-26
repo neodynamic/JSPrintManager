@@ -102,9 +102,9 @@
       <div id="root"></div>
 
       <file-formats-modal id="files-requeriments"></file-formats-modal>
-      
+
       <script src="scripts/ie11.js"></script>
-    
+
       <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js"></script>
       <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -112,13 +112,11 @@
 
       <!--JSPrintManager scripts-->
       <script src="scripts/JSPrintManager.js"></script>
-      <script src="scripts/zip.js"></script>
-      <script src="scripts/zip-ext.js"></script>
-      <script src="scripts/deflate.js"></script>
+      <script src="https://cdn.jsdelivr.net/gh/gildas-lormeau/zip.js/dist/zip-full.min.js"></script>
       <!--end JSPrintManager scripts-->
-      <!--Encoding tables scripts-->
-      <script src="scripts/cptable.js"></script>
-      <script src="scripts/cputils.js"></script>
+      <!--Encoding tables scripts https://github.com/SheetJS/js-codepage  -->
+      <script src="https://cdn.jsdelivr.net/gh/SheetJS/js-codepage/dist/cptable.js"></script>
+      <script src="https://cdn.jsdelivr.net/gh/SheetJS/js-codepage/dist/cputils.js"></script>
       <!--end Encoding tables scripts-->
 
       <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
@@ -148,6 +146,10 @@
       <script type="text/babel" src="components/PrintingFilesSample.js">
       </script>
       <script type="text/babel" src="components/PrintingPDFSample.js">
+      </script>
+      <script type="text/babel" src="components/PrintingTIFSample.js">
+      </script>
+      <script type="text/babel" src="components/PrintingFileGroupDuplexSample.js">
       </script>
       <script type="text/babel" src="components/PrintingDOCSample.js">
       </script>
