@@ -79,6 +79,30 @@
                 <div className="row">
                     <div className="col-sm-4">
                         <h2>
+                            <i className="fa fa-files-o iconDemo" />&nbsp;Advanced TIF Printing
+                        </h2>
+                        <p>
+                            Print <strong>Multipage TIF</strong> files specifying advanced settings like <strong>tray, paper source, print rotation, duplex printing, pages range and more!</strong>
+                        </p>
+                        <button className="btn btn-danger" onClick={() => this.props.setSample(13)}>
+                            TRY NOW
+                        </button>
+                    </div>
+
+                    <div className="col-sm-4">
+                        <h2>
+                            <i className="fa fa-files-o iconDemo" />&nbsp;Print File Group
+                        </h2>
+                        <p>
+                            Print a <strong>Group of Files</strong> as they were part of a single multipage document with advanced settings like <strong>tray, paper source, duplex printing, pages range and more!</strong>
+                        </p>
+                        <button className="btn btn-danger" onClick={() => this.props.setSample(14)}>
+                            TRY NOW
+                        </button>
+                    </div>
+
+                    <div className="col-sm-4">
+                        <h2>
                             <i className="fa fa-key iconDemo" />&nbsp;Print Password Protected Files
                         </h2>
                         <p>
@@ -88,6 +112,10 @@
                             TRY NOW
                         </button>
                     </div>
+                </div>
+                <br />
+                <div className="row">
+                    
 
                     <div className="col-sm-4">
                         <h2>
@@ -113,10 +141,6 @@
                             TRY NOW
                         </button>
                     </div>
-                </div>
-
-                <br />
-                <div className="row">
                     <div className="col-sm-4">
                         <h2>
                             <i className="fa fa-exchange iconDemo" />&nbsp;BIDI Serial Comm
@@ -128,6 +152,11 @@
                             TRY NOW
                         </button>
                     </div>
+                </div>
+
+                <br />
+                <div className="row">
+                    
                     <div className="col-sm-4">
                         <h2>
                             <i className="fa fa-print iconDemo" />&nbsp;Get Printers Info
@@ -150,7 +179,9 @@
                             TRY NOW
                         </button>
                     </div>
-
+                    <div className="col-sm-4">
+                       
+                    </div>
                 </div>
 
                 <hr />

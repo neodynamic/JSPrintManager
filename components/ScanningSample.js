@@ -8,9 +8,13 @@
             resolution: 200,
             pixelMode: "Color",
             imageFormat: "JPG",
+            enableDuplex: false,
+            enableFeeder: false,
+            feederCount: 1,
             scanningState: 0, // 0 = finished, 1 = scanning, 2 = error
             error: "",
-            outputImage: ""
+            scannedImages: [],
+            curImgIndex: 0
         };
     }
 
@@ -30,19 +34,30 @@
         csj.pixelMode = JSPM.PixelMode[this.state.pixelMode];
         csj.resolution = parseInt(this.state.resolution);
         csj.imageFormat = JSPM.ScannerImageFormatOutput[this.state.imageFormat];
+        csj.enableDuplex = this.state.enableDuplex;
+        csj.enableFeeder = this.state.enableFeeder;
+        csj.feederCount = parseInt(this.state.feederCount);
 
         let _this = this;
 
         csj.onUpdate = (data, last) => {
+            
+            this.setState({ scanningState: (last ? 0 : 1) });
+
             if (!(data instanceof Blob)) {
                 console.info(data);
                 return;
             }
+
+            var imgBlob = new Blob([data]);
+
+            if (imgBlob.size == 0) return;
+
             var data_type = "image/jpg";
             if (this.state.imageFormat == "PNG") data_type = "image/png";
-            var img = URL.createObjectURL(new Blob([data], { type: data_type }));
-            this.state.outputImage = img;
-            this.setState({ scanningState: 0 });
+            var img = URL.createObjectURL(imgBlob, { type: data_type });
+            this.state.scannedImages.push(img);
+            
         };
 
         csj.onError = function(data, is_critical) {
@@ -54,11 +69,25 @@
         return csj;
     }
 
+    nextImage() {
+        if (this.state.curImgIndex < this.state.scannedImages.length - 1) {
+            this.setState({ curImgIndex: (this.state.curImgIndex + 1) });
+        }
+    }
+
+    prevImage() {
+        if (this.state.curImgIndex > 0) {
+            this.setState({ curImgIndex: (this.state.curImgIndex - 1) });
+        }
+    }
+
     doScanning() {
         let csj = this.createScanJob();
         if (csj) {
             this.state.error = "";
             this.setState({ scanningState: 1 });
+            this.setState({ scannedImages: []});
+            this.setState({ curImgIndex: 0 });
             csj.sendToClient().then(data => console.info(data));
         }
     }
@@ -123,14 +152,30 @@
                         </div>
                     </div>
                 );
-            } else if (this.state.scanningState == 0 && this.state.outputImage != "") {
+            } else if (this.state.scanningState == 0 && this.state.scannedImages.length > 0) {
                 let imgScale = { width: Math.round(96.0 / this.state.resolution * 100.0) + "%", height: "auto" };
 
                 scanningStateContent = (
                     <div className="row">
                         <div className="col-md-12">
-                            <div className="alert alert-secondary text-center">
-                                <img src={this.state.outputImage} id="scanningImageResult" style={imgScale} />
+                            <div className="alert alert-secondary">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        <button type="button" className="btn btn-info" onClick={this.prevImage.bind(this)}><i className="fa fa-chevron-left"></i></button>
+                                    </div>
+                                    <div className="col-md-4 text-center">
+                                        <h4>Scan result: {this.state.curImgIndex + 1} of {this.state.scannedImages.length} </h4>
+                                    </div>
+                                    <div className="col-md-4">
+                                        <button type="button" className="btn btn-info pull-right" onClick={this.nextImage.bind(this)}><i className="fa fa-chevron-right"></i></button>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div className="row">
+                                    <div className="col-md-12  text-center">
+                                        <img src={this.state.scannedImages[this.state.curImgIndex]} id="scanningImageResult" style={imgScale} />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -155,26 +200,47 @@
                                         })}
                                     </select>
                                 </div>
-                                <div className="col-md-3">
+                                <div className="col-md-2">
                                     <label>Resolution (DPI):</label>
-                                    <input type="text" className="form-control form-control-sm" name="resolution" onChange={this.setData.bind(this)} placeholder="200" />
+                                        <input type="text" className="form-control form-control-sm" name="resolution" onChange={this.setData.bind(this)} placeholder="200" />
                                 </div>
-                                <div className="col-md-3">
+                                <div className="col-md-2">
                                     <label>Pixel Mode:</label>
                                     <select className="form-control form-control-sm" name="pixelMode" onChange={this.setData.bind(this)}>
                                         <option>Color</option>
                                         <option>Grayscale</option>
                                     </select>
                                 </div>
-                                <div className="col-md-3">
+                                <div className="col-md-2">
                                     <label>Image Format:</label>
                                     <select className="form-control form-control-sm" name="imageFormat" onChange={this.setData.bind(this)}>
                                         <option>JPG</option>
                                         <option>PNG</option>
                                     </select>
                                 </div>
+                                <div className="col-md-3">
+                                    <span className="badge badge-info">Windows Only</span>
+                                    <br />
+                                    <div className="custom-control custom-switch">
+                                        <input type="checkbox" className="custom-control-input" id="enableDuplex" name="enableDuplex" onChange={this.setData.bind(this)} />
+                                        <label className="custom-control-label" htmlFor="enableDuplex">
+                                            Enable Duplex
+                                        </label>
+                                    </div>
+                                    <div className="custom-control custom-switch">
+                                        <input type="checkbox" className="custom-control-input" id="enableFeeder" name="enableFeeder" onChange={this.setData.bind(this)} />
+                                        <label className="custom-control-label" htmlFor="enableFeeder">
+                                            Enable Feeder (ADF)
+                                        </label>
+                                    </div>
+                                    <div className="input-group input-group-sm mb-3">
+                                      <div className="input-group-prepend">
+                                        <span className="input-group-text" id="basic-addon1">Feeder Count:</span>
+                                      </div>
+                                      <input type="text" name="feederCount" className="form-control" aria-label="Feeder Count" aria-describedby="basic-addon1" onChange={this.setData.bind(this)} placeholder="1" />
+                                    </div>
+                                </div>
                             </div>
-
                             <div className="row">
                                 <div className="col-md-12">
                                     <br />
@@ -183,11 +249,10 @@
                                             <i className="fa fa-crosshairs" /> Scan Now...
                                         </button>
                                     </div>
+                                    <br />
                                 </div>
                             </div>
-
-                            <br />
-
+                            
                             {scanningStateContent}
                         </div>
                     </div>

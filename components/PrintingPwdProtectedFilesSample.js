@@ -65,7 +65,10 @@
                 }
             }
         };
-        req.send(JSON.stringify({ Certificate: JSPM.JSPrintManager.session_certificate }));
+        JSPM.JSPrintManager.getSessionCertificate()
+            .then((data) => {req.send(JSON.stringify({ Certificate: data.certificate }));})
+            .catch(err => console.log(err));
+        
 
         /*
         fetch("/GetEncryptPassword.ashx", {

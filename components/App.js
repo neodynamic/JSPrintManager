@@ -106,9 +106,13 @@
                 demoContent = <PrintersWatcherSample setSample={this.setDemoSample} os={this.OS} />;
             } else if (this.state.DemoIndex == 12) {
                 demoContent = <PrintingPwdProtectedFilesSample setSample={this.setDemoSample} os={this.OS} />;
+            } else if (this.state.DemoIndex == 13) {
+                demoContent = <PrintingTIFSample setSample={this.setDemoSample} printersInfo={this.state.printersInfo} />;
+            } else if (this.state.DemoIndex == 14) {
+                demoContent = <PrintingFileGroupDuplexSample setSample={this.setDemoSample} printersInfo={this.state.printersInfo} />;
             }
         } else if (this.state.JSPM_WS_Status == "Closed") demoContent = <InstallJSPMClientApp />;
-        else if (this.state.JSPM_WS_Status == "Blocked") demoContent = <Websiteblocked />;
+        else if (this.state.JSPM_WS_Status == "Blocked") demoContent = <WebsiteBlocked />;
         else {
             demoContent = (
                 <div className="row">
@@ -129,7 +133,7 @@
                     <div className="container">
                         <a className="navbar-brand" href="//neodynamic.com/products/printing/js-print-manager" target="_blank">
                             <img alt="Neodynamic" src="//neodynamic.com/images/jspm-32.png" />
-                            &nbsp;&nbsp;JSPrintManager <span className="round">3.0</span>
+                            &nbsp;&nbsp;JSPrintManager <span className="round">4.0</span>
                         </a>
                         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon" />
@@ -213,6 +217,11 @@
                                         </tr>
                                         <tr>
                                             <td>PDF</td>
+                                            <td>Natively supported!</td>
+                                            <td>Natively supported!</td>
+                                        </tr>
+                                        <tr>
+                                            <td>TIF</td>
                                             <td>Natively supported!</td>
                                             <td>Natively supported!</td>
                                         </tr>

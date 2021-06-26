@@ -27,6 +27,8 @@
 
                     if (file_ext == "pdf") {
                         my_file = new JSPM.PrintFilePDF(files[j], JSPM.FileSourceType.BLOB, files[j].name, 1);
+                    } else if (file_ext == "tif") {
+                        my_file = new JSPM.PrintFileTIF(files[j], JSPM.FileSourceType.BLOB, files[j].name, 1);
                     } else if (file_ext == "txt") {
                         my_file = new JSPM.PrintFileTXT(files[j], files[j].name, 1, JSPM.FileSourceType.BLOB);
                     } else {
@@ -40,6 +42,8 @@
 
                     if (file_ext == "pdf") {
                         my_file = new JSPM.PrintFilePDF(files[j], JSPM.FileSourceType.URL, "myFileToPrint." + file_ext, 1);
+                    } else if (file_ext == "tif") {
+                        my_file = new JSPM.PrintFileTIF(files[j], JSPM.FileSourceType.URL, "myFileToPrint." + file_ext, 1);
                     } else if (file_ext == "txt") {
                         my_file = new JSPM.PrintFileTXT(files[j], "myFileToPrint." + file_ext, 1, JSPM.FileSourceType.URL);
                     } else {
