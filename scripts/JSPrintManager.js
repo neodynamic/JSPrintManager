@@ -1,11 +1,11 @@
 /*!
- * JSPrintManager v3.0.8
+ * JSPrintManager v4.0.0
  * https://neodynamic.com/products/printing/js-print-manager
  *
  * GitHub Repo 
  * https://github.com/neodynamic/jsprintmanager
  *
- * Requires zip.js, zip-ext.js, and defalte.js files from 
+ * Requires zip-full.min.js file from 
  * https://github.com/gildas-lormeau/zip.js
  * 
  * Requires JSPrintManager Client App
@@ -13,7 +13,7 @@
  *
  * Copyright Neodynamic SRL
  * https://neodynamic.com
- * Date: 2021-03-26
+ * Date: 2021-06-25
  */
 var JSPM;
 (function (JSPM) {
@@ -57,15 +57,56 @@ var JSPM;
     JSPM.ClientJob = ClientJob;
 })(JSPM || (JSPM = {}));
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 var JSPM;
 (function (JSPM) {
     var ClientPrintJob = (function (_super) {
@@ -87,7 +128,7 @@ var JSPM;
             set: function (value) {
                 this._clientPrinter = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(ClientPrintJob.prototype, "printerCommandsCopies", {
@@ -99,7 +140,7 @@ var JSPM;
                     throw "Copies must be greater than or equal to 1.";
                 this._printerCommandsCopies = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(ClientPrintJob.prototype, "printerCommands", {
@@ -109,7 +150,7 @@ var JSPM;
             set: function (value) {
                 this._printerCommands = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(ClientPrintJob.prototype, "printerCommandsCodePage", {
@@ -119,7 +160,7 @@ var JSPM;
             set: function (value) {
                 this._printerCommandsCodePage = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(ClientPrintJob.prototype, "binaryPrinterCommands", {
@@ -130,14 +171,14 @@ var JSPM;
                 this._binaryPrinterCommands = value;
                 this._printerCommands = "";
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(ClientPrintJob.prototype, "files", {
             get: function () {
                 return this._printFileGroup;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         ClientPrintJob.prototype.onUpdated = function (data) { };
@@ -155,54 +196,61 @@ var JSPM;
             }
         };
         ClientPrintJob.prototype._genPFGArrayAsync = function (printFileGroup) {
-            var SEPARATOR = ',';
+            var _this = this;
             return new Promise(function (resolve, reject) {
-                if (!zip)
-                    reject("zip.js, zip-ext.js, and deflate.js files from https://github.com/gildas-lormeau/zip.js project are missing.");
-                else {
-                    zip.useWebWorkers = false;
-                    if (zip.createWriter) {
-                        zip.createWriter(new zip.BlobWriter("application/zip"), function (zipWriter) {
-                            function addPrintFile2Zip(pf_idx) {
-                                if (pf_idx >= printFileGroup.length) {
-                                    zipWriter.close(function (zipBlob) {
-                                        resolve(zipBlob);
-                                    });
-                                }
-                                else {
-                                    var printFile = printFileGroup[pf_idx];
-                                    var file_1 = pf_idx + SEPARATOR + printFile.copies + SEPARATOR + printFile.fileName;
-                                    printFile.serialize().then(function (reader) {
-                                        zipWriter.add(file_1, reader, function () { addPrintFile2Zip(pf_idx + 1); });
-                                    }).catch(function (e) {
-                                        reject(e);
-                                    });
-                                }
-                            }
-                            if (printFileGroup.length != 0)
-                                addPrintFile2Zip(0);
-                        }, function (e) { reject(e); });
-                    }
-                    else {
-                        if (!zip.ZipWriter)
-                            throw "Invalid zip.js version";
-                        var zipBlob = new zip.BlobWriter("application/zip");
-                        var writer = new zip.ZipWriter(zipBlob);
-                        var results = printFileGroup.map(function (file, pf_idx) { return new Promise(function (ok, err) {
-                            file.serialize().then(function (reader) {
-                                var file_name = pf_idx + SEPARATOR + file.copies + SEPARATOR + file.fileName;
-                                writer.add(file_name, reader).then(function (_) { return ok(); }).catch(function (e) { return err(e); });
-                            });
-                        }); });
-                        Promise.all(results)
-                            .then(function (_) {
-                            writer.close().then(function (data) {
-                                resolve(data);
-                            });
-                        })
-                            .catch(function (e) { return reject(e); });
-                    }
+                if (!zip) {
+                    reject("zip-full.min.js file from https://github.com/gildas-lormeau/zip.js project is missing.");
+                    return;
                 }
+                if (printFileGroup.length == 0)
+                    return;
+                zip.configure({ useWebWorkers: false });
+                var blobW = new zip.BlobWriter("application/zip");
+                var zipWriter = new zip.ZipWriter(blobW);
+                var zipped_files = printFileGroup.map(function (pf) { return new Promise(function (ok, err) { return __awaiter(_this, void 0, void 0, function () {
+                    var file_content, reason_1;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                _a.trys.push([0, 3, , 4]);
+                                return [4, pf.getContent()];
+                            case 1:
+                                file_content = _a.sent();
+                                return [4, zipWriter.add(pf.fileName, file_content)];
+                            case 2:
+                                _a.sent();
+                                ok();
+                                return [3, 4];
+                            case 3:
+                                reason_1 = _a.sent();
+                                err(reason_1);
+                                return [3, 4];
+                            case 4: return [2];
+                        }
+                    });
+                }); }); });
+                Promise.all(zipped_files).then(function (_) { return __awaiter(_this, void 0, void 0, function () {
+                    var e_1;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                _a.trys.push([0, 3, , 4]);
+                                return [4, zipWriter.add("metadata.json", new zip.BlobReader(new Blob([JSON.stringify(printFileGroup.map(function (pf) { return pf.getProperties(); }))])))];
+                            case 1:
+                                _a.sent();
+                                return [4, zipWriter.close()];
+                            case 2:
+                                _a.sent();
+                                resolve(blobW.getData());
+                                return [3, 4];
+                            case 3:
+                                e_1 = _a.sent();
+                                reject(e_1);
+                                return [3, 4];
+                            case 4: return [2];
+                        }
+                    });
+                }); }).catch(function (e) { return reject(e); });
             });
         };
         ClientPrintJob.prototype._genPCArrayAsync = function (binPrinterCommands, printerCopies) {
@@ -305,16 +353,17 @@ var JSPM;
             get: function () {
                 return this._jobs;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         ClientPrintJobGroup.prototype._generateMiniJob = function (cj) {
             var INDEXES_SIZE = 8;
             return new Promise(function (ok, error) {
                 cj._cmd2bin();
-                Promise
-                    .race([cj._genPCArrayAsync(cj.binaryPrinterCommands, cj.printerCommandsCopies),
-                    cj._genPFGArrayAsync(cj.files)])
+                Promise.race([
+                    cj._genPCArrayAsync(cj.binaryPrinterCommands, cj.printerCommandsCopies),
+                    cj._genPFGArrayAsync(cj.files)
+                ])
                     .then(function (file_data) {
                     cj._genPrinterArrayAsync(cj.clientPrinter).then(function (printer_data) {
                         var idx1 = JSPM.Utils._intToByteArray(file_data.size);
@@ -403,7 +452,7 @@ var JSPM;
             set: function (value) {
                 this._name = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(InstalledPrinter.prototype, "printToDefaultIfNotFound", {
@@ -413,7 +462,7 @@ var JSPM;
             set: function (value) {
                 this._printDefault = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(InstalledPrinter.prototype, "trayName", {
@@ -423,7 +472,7 @@ var JSPM;
             set: function (value) {
                 this._tray = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(InstalledPrinter.prototype, "paperName", {
@@ -433,7 +482,7 @@ var JSPM;
             set: function (value) {
                 this._paper = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(InstalledPrinter.prototype, "duplex", {
@@ -443,7 +492,7 @@ var JSPM;
             set: function (value) {
                 this._duplex = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         InstalledPrinter.prototype.serialize = function () {
@@ -477,7 +526,7 @@ var JSPM;
             set: function (value) {
                 this._parallelPortName = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         ParallelPortPrinter.prototype.serialize = function () {
@@ -516,7 +565,7 @@ var JSPM;
             set: function (value) {
                 this._port = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(SerialPortPrinter.prototype, "baudRate", {
@@ -526,7 +575,7 @@ var JSPM;
             set: function (value) {
                 this._baud_rate = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(SerialPortPrinter.prototype, "parity", {
@@ -536,7 +585,7 @@ var JSPM;
             set: function (value) {
                 this._parity = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(SerialPortPrinter.prototype, "stopBits", {
@@ -546,7 +595,7 @@ var JSPM;
             set: function (value) {
                 this._stop_bits = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(SerialPortPrinter.prototype, "dataBits", {
@@ -556,7 +605,7 @@ var JSPM;
             set: function (value) {
                 this._data_bits = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(SerialPortPrinter.prototype, "flowControl", {
@@ -566,7 +615,7 @@ var JSPM;
             set: function (value) {
                 this._flow_control = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         SerialPortPrinter.prototype.serialize = function () {
@@ -606,7 +655,7 @@ var JSPM;
             set: function (value) {
                 this._dnsName = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(NetworkPrinter.prototype, "ipAddress", {
@@ -616,7 +665,7 @@ var JSPM;
             set: function (value) {
                 this._ip = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(NetworkPrinter.prototype, "port", {
@@ -628,7 +677,7 @@ var JSPM;
                     throw "Invalid Port Number";
                 this._port = Math.floor(value);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         NetworkPrinter.prototype.serialize = function () {
@@ -668,6 +717,9 @@ var JSPM;
             _this._pixelMode = JSPM.PixelMode.Color;
             _this._resolution = 200;
             _this._imageFormat = JSPM.ScannerImageFormatOutput.JPG;
+            _this._enableDuplex = false;
+            _this._enableFeeder = false;
+            _this._feederCount = 1;
             return _this;
         }
         Object.defineProperty(ClientScanJob.prototype, "scannerName", {
@@ -677,7 +729,7 @@ var JSPM;
             set: function (val) {
                 this._scannerName = val;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(ClientScanJob.prototype, "pixelMode", {
@@ -687,7 +739,7 @@ var JSPM;
             set: function (val) {
                 this._pixelMode = val;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(ClientScanJob.prototype, "resolution", {
@@ -697,7 +749,7 @@ var JSPM;
             set: function (val) {
                 this._resolution = val;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(ClientScanJob.prototype, "imageFormat", {
@@ -707,7 +759,37 @@ var JSPM;
             set: function (val) {
                 this._imageFormat = val;
             },
-            enumerable: true,
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(ClientScanJob.prototype, "enableDuplex", {
+            get: function () {
+                return this._enableDuplex;
+            },
+            set: function (val) {
+                this._enableDuplex = val;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(ClientScanJob.prototype, "enableFeeder", {
+            get: function () {
+                return this._enableFeeder;
+            },
+            set: function (val) {
+                this._enableFeeder = val;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(ClientScanJob.prototype, "feederCount", {
+            get: function () {
+                return this._feederCount;
+            },
+            set: function (val) {
+                this._feederCount = val;
+            },
+            enumerable: false,
             configurable: true
         });
         ClientScanJob.prototype.onFinished = function (data) { };
@@ -730,7 +812,10 @@ var JSPM;
                     output_image_format: _this._imageFormat,
                     pixel_mode: _this._pixelMode,
                     scanner_name: _this._scannerName,
-                    resolution: _this._resolution
+                    resolution: _this._resolution,
+                    enable_duplex: _this._enableDuplex,
+                    enable_feeder: _this._enableFeeder,
+                    feeder_count: _this._feederCount
                 };
                 ok(JSON.stringify(json));
             });
@@ -741,6 +826,19 @@ var JSPM;
 })(JSPM || (JSPM = {}));
 var JSPM;
 (function (JSPM) {
+    var PrintFileType;
+    (function (PrintFileType) {
+        PrintFileType[PrintFileType["Image"] = 0] = "Image";
+        PrintFileType[PrintFileType["Generic"] = 1] = "Generic";
+        PrintFileType[PrintFileType["Document"] = 2] = "Document";
+        PrintFileType[PrintFileType["WDOC"] = 3] = "WDOC";
+        PrintFileType[PrintFileType["WXLS"] = 4] = "WXLS";
+        PrintFileType[PrintFileType["WPDF"] = 5] = "WPDF";
+        PrintFileType[PrintFileType["WTXT"] = 6] = "WTXT";
+        PrintFileType[PrintFileType["Group"] = 7] = "Group";
+        PrintFileType[PrintFileType["WTIF"] = 8] = "WTIF";
+    })(PrintFileType = JSPM.PrintFileType || (JSPM.PrintFileType = {}));
+    ;
     var PrintersInfoLevel;
     (function (PrintersInfoLevel) {
         PrintersInfoLevel[PrintersInfoLevel["Basic"] = 0] = "Basic";
@@ -994,328 +1092,6 @@ var JSPM;
         })(Handshake = Serial.Handshake || (Serial.Handshake = {}));
     })(Serial = JSPM.Serial || (JSPM.Serial = {}));
 })(JSPM || (JSPM = {}));
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-var JSPM;
-(function (JSPM) {
-    var JSPMWebSocket = (function () {
-        function JSPMWebSocket(addr, port, secure, auto_reconnect) {
-            if (addr === void 0) { addr = 'localhost'; }
-            if (port === void 0) { port = 23443; }
-            if (secure === void 0) { secure = true; }
-            if (auto_reconnect === void 0) { auto_reconnect = false; }
-            this._job_list = [];
-            this._processing_message = new JSPM.Mutex();
-            this.autoReconnect = false;
-            this.onClose = function (e) { };
-            this.onOpen = function (e) { };
-            this.onStatusChanged = function () { };
-            this._addr = addr;
-            this._port = port;
-            this._secure = secure;
-            this.autoReconnect = auto_reconnect;
-        }
-        Object.defineProperty(JSPMWebSocket.prototype, "address", {
-            get: function () {
-                return this._addr;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(JSPMWebSocket.prototype, "port", {
-            get: function () {
-                return this._port;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(JSPMWebSocket.prototype, "isSecure", {
-            get: function () {
-                return this._secure;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(JSPMWebSocket.prototype, "status", {
-            get: function () {
-                return this._status;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        JSPMWebSocket.prototype._onOpen = function (e, __this) {
-            this._status = JSPM.WSStatus.WaitingForUserResponse;
-            this._pingPong();
-            __this.onStatusChanged();
-            __this.onOpen(e);
-        };
-        JSPMWebSocket.prototype._onMessage = function (e) {
-            return __awaiter(this, void 0, void 0, function () {
-                var unlock, json_data, job, last, msg_type, data, critical, blob, id_buf, id, data_blob, job, err_1;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4, this._processing_message.lock()];
-                        case 1:
-                            unlock = _a.sent();
-                            _a.label = 2;
-                        case 2:
-                            _a.trys.push([2, 6, 7, 8]);
-                            if (!(typeof (e.data) == 'string')) return [3, 3];
-                            json_data = JSON.parse(e.data);
-                            job = this._job_list[json_data.id];
-                            if (!job)
-                                throw "Job " + json_data.id + " doesn't exist";
-                            last = ('last' in json_data) ? json_data.last : false;
-                            msg_type = ('type' in json_data) ? json_data.type : 'message';
-                            data = ('data' in json_data) ? json_data.data : {};
-                            switch (msg_type) {
-                                case 'message':
-                                    {
-                                        if (job.on_update && typeof (job.on_update === "function"))
-                                            job.on_update(data, job.first_update, last);
-                                    }
-                                    break;
-                                case 'error':
-                                    {
-                                        critical = 'critical' in json_data ?
-                                            json_data.critical : false;
-                                        if (job.on_error && typeof (job.on_error === "function"))
-                                            job.on_error(data, job.first_update, critical);
-                                    }
-                                    break;
-                                default: {
-                                    if (job.on_update && typeof (job.on_update === "function"))
-                                        job.on_update(data, job.first_update, last);
-                                }
-                            }
-                            if (last)
-                                delete this._job_list[json_data.id];
-                            return [3, 5];
-                        case 3:
-                            blob = e.data;
-                            return [4, blob.slice(blob.size - 8, blob.size).arrayBuffer()];
-                        case 4:
-                            id_buf = _a.sent();
-                            id = new TextDecoder('utf-8').decode(id_buf);
-                            data_blob = blob.slice(0, blob.size - 8);
-                            job = this._job_list[id];
-                            if (!job)
-                                throw "Job " + id + " doesn't exist";
-                            if (job.on_update && typeof (job.on_update === "function"))
-                                job.on_update(data_blob, job.first_update, false);
-                            _a.label = 5;
-                        case 5:
-                            job.first_update = false;
-                            return [3, 8];
-                        case 6:
-                            err_1 = _a.sent();
-                            throw "Malformed message. Error: " + err_1 + " Message: " + e.data;
-                        case 7:
-                            unlock();
-                            return [7];
-                        case 8: return [2];
-                    }
-                });
-            });
-        };
-        JSPMWebSocket.prototype._onError = function (e) {
-            try {
-                var json_data = JSON.parse(e);
-                var job = this._job_list[json_data.id];
-                if (!job)
-                    throw e;
-                job.on_error(e, true, true);
-            }
-            catch (_a) {
-                throw e;
-            }
-        };
-        JSPMWebSocket.prototype._pingPong = function () {
-            var _this = this;
-            setInterval(function (_) {
-                if (_this._status != JSPM.WSStatus.Open)
-                    return;
-                _this.send('', {
-                    type: 'ping',
-                    on_update: function (_) { },
-                    on_error: function (_) { }
-                });
-            }, 30000);
-        };
-        JSPMWebSocket.prototype._onClose = function (e, __this) {
-            var _this = this;
-            if (e.code == 403)
-                this._status = JSPM.WSStatus.Blocked;
-            else {
-                this._status = JSPM.WSStatus.Closed;
-                if (this.autoReconnect)
-                    setTimeout(function (_) {
-                        _this.start();
-                    }, 2000);
-            }
-            __this.onClose(e);
-            __this.onStatusChanged();
-        };
-        ;
-        JSPMWebSocket.prototype._genID = function () {
-            return Math.floor((1 + Math.random()) * 0x100000000)
-                .toString(16)
-                .substring(1);
-        };
-        JSPMWebSocket.prototype._send = function (data, properties) {
-            var id = "";
-            if ('id' in properties) {
-                id = properties.id;
-            }
-            else {
-                do {
-                    var id = this._genID();
-                } while (this._job_list[id]);
-                this._job_list[id] = {
-                    id: id,
-                    first_update: true,
-                    on_update: properties['on_update'],
-                    on_error: properties['on_error']
-                };
-            }
-            var _data = '';
-            if (data instanceof Blob) {
-                var job_id = new Uint8Array(('id' + id).split('')
-                    .map(function (a) { return a.charCodeAt(0); }));
-                _data = new Blob([data, job_id]);
-            }
-            else if (typeof data == 'string') {
-                _data = { id: id, data: data };
-                if ('type' in properties) {
-                    _data['type'] = properties.type;
-                }
-                _data = JSON.stringify(_data);
-            }
-            else {
-                delete this._job_list[id];
-                _data = data;
-            }
-            this._ws.send(_data);
-            return id;
-        };
-        JSPMWebSocket.prototype.start = function () {
-            var _this = this;
-            return new Promise(function (ok, err) {
-                try {
-                    _this._ws = new WebSocket((_this._secure ? 'wss://' : 'ws://') +
-                        _this._addr + ':' + _this._port);
-                    _this._ws.onclose = function (e) { return _this._onClose(e, _this); };
-                    _this._ws.onerror = function (i) {
-                        err(i);
-                    };
-                    _this._ws.onopen = function (i) {
-                        _this._ws.onopen = function (e) { return _this._onOpen(e, _this); };
-                        _this._ws.onmessage = function (e) {
-                            try {
-                                var json = JSON.parse(e.data);
-                                if ('connection' in json) {
-                                    if (json.connection == 'CONNECTED') {
-                                        _this._status = JSPM.WSStatus.Open;
-                                        _this.onStatusChanged();
-                                        _this.onOpen(json.certificate);
-                                        JSPM.JSPrintManager._ses_cert = json.certificate;
-                                        _this.send(JSON.stringify({ url: JSPM.JSPrintManager.license_url }), {
-                                            type: "set_license",
-                                            on_update: function (v) { console.info("JSPrintManager License:", 'result' in v ? v['result'] : v); },
-                                            on_error: function (v) { console.warn("JSPrintManager License:", 'result' in v ? v['result'] : v); },
-                                        });
-                                        var verArray = json.version.split('.');
-                                        if (verArray[0] + '.' + verArray[1] != JSPM.VERSION) {
-                                            console.warn("Lib JS version and " +
-                                                "desktop version differs Desktop(" +
-                                                json.version + ") JS (" + JSPM.VERSION +
-                                                ")");
-                                        }
-                                        _this._ws.onmessage = function (e) { return __awaiter(_this, void 0, void 0, function () {
-                                            return __generator(this, function (_a) {
-                                                switch (_a.label) {
-                                                    case 0: return [4, this._onMessage(e)];
-                                                    case 1:
-                                                        _a.sent();
-                                                        return [2];
-                                                }
-                                            });
-                                        }); };
-                                        _this._ws.onerror = _this._onError;
-                                        ok();
-                                    }
-                                    else {
-                                        err("WS Connection not established. Reason: " + json.connection);
-                                    }
-                                }
-                            }
-                            catch (e) {
-                                err("Malformed message. Check if JS version " +
-                                    "and Desktop version are the same. Description: " + e);
-                            }
-                        };
-                    };
-                }
-                catch (e) {
-                    if (_this.autoReconnect)
-                        setTimeout(function () {
-                            _this.start().then(ok).catch(err);
-                        }, 2000);
-                    else
-                        err(e);
-                }
-            });
-        };
-        JSPMWebSocket.prototype.send = function (data, properties) {
-            if (this._status == JSPM.WSStatus.Closed)
-                properties['on_first_error']("The WebSocket connection is closed");
-            else if (this._status == JSPM.WSStatus.Blocked)
-                properties['on_first_error']("The site is blocked and the connection was closed");
-            else if (this._ws.readyState != this._ws.OPEN)
-                properties['on_first_error']("The WebSocket isn't ready yet");
-            return this._send(data, properties);
-        };
-        JSPMWebSocket.prototype.stop = function () {
-            this._ws.close();
-            this._ws = null;
-        };
-        return JSPMWebSocket;
-    }());
-    JSPM.JSPMWebSocket = JSPMWebSocket;
-})(JSPM || (JSPM = {}));
 var JSPM;
 (function (JSPM) {
     var JSPrintManager = (function () {
@@ -1325,20 +1101,21 @@ var JSPM;
             get: function () {
                 return this._ses_cert;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         JSPrintManager.start = function (secure, host, port) {
             if (secure === void 0) { secure = true; }
             if (host === void 0) { host = 'localhost'; }
-            if (port === void 0) { port = 23443; }
+            if (port === void 0) { port = 24443; }
             return __awaiter(this, void 0, void 0, function () {
                 var ws;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
                             if (!this.WS)
-                                this.WS = new JSPM.JSPMWebSocket(host, port, secure, this.auto_reconnect);
+                                this.WS = new JSPM.NDWS(host, port, secure, this.auto_reconnect);
+                            this.WS.onStatusChanged = this.onStatusChanged;
                             return [4, this.WS.start()];
                         case 1:
                             ws = _a.sent();
@@ -1359,7 +1136,7 @@ var JSPM;
                         on_update: function (_) { }, on_error: function (_) { }
                     });
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         JSPrintManager.getPrinters = function () {
@@ -1377,6 +1154,21 @@ var JSPM;
                 });
             });
         };
+        JSPrintManager.getSessionCertificate = function () {
+            var _this = this;
+            return new Promise(function (ok, err) {
+                _this.WS.send('', {
+                    type: 'session_certificate',
+                    on_update: function (data) {
+                        if (data && 'result' in data)
+                            ok(data.result);
+                        else
+                            ok(data);
+                    },
+                    on_error: function (data) { return err(data); }
+                });
+            });
+        };
         JSPrintManager.getPrintersInfo = function (detail_level, printer_name) {
             var _this = this;
             if (detail_level === void 0) { detail_level = JSPM.PrintersInfoLevel.Basic; }
@@ -1384,7 +1176,7 @@ var JSPM;
             return new Promise(function (ok, err) {
                 var data = { 'detail_level': detail_level };
                 if (printer_name)
-                    data['printer'] = printer_name;
+                    data['printer_name'] = printer_name;
                 _this.WS.send(JSON.stringify(data), {
                     type: 'printers_complete_list',
                     on_update: function (data) {
@@ -1401,7 +1193,7 @@ var JSPM;
             get: function () {
                 return this.WS ? this.WS.status : JSPM.WSStatus.Closed;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         JSPrintManager.showAbout = function () {
@@ -1529,12 +1321,302 @@ var JSPM;
         JSPrintManager.stop = function () {
             this.WS.stop();
         };
+        JSPrintManager._ses_cert = "";
         JSPrintManager.auto_reconnect = false;
         JSPrintManager._license = document.location.origin + "/jspm";
-        JSPrintManager._ses_cert = "";
+        JSPrintManager.onStatusChanged = function () { };
         return JSPrintManager;
     }());
     JSPM.JSPrintManager = JSPrintManager;
+})(JSPM || (JSPM = {}));
+var JSPM;
+(function (JSPM) {
+    var NDWS = (function () {
+        function NDWS(addr, port, secure, auto_reconnect) {
+            if (addr === void 0) { addr = 'localhost'; }
+            if (port === void 0) { port = 24443; }
+            if (secure === void 0) { secure = true; }
+            if (auto_reconnect === void 0) { auto_reconnect = false; }
+            this._job_list = [];
+            this._processing_message = new JSPM.Mutex();
+            this.autoReconnect = false;
+            this.onClose = function (e) { };
+            this.onOpen = function (e) { };
+            this.onStatusChanged = function () { };
+            this._addr = addr;
+            this._port = port;
+            this._secure = secure;
+            this.autoReconnect = auto_reconnect;
+        }
+        Object.defineProperty(NDWS.prototype, "address", {
+            get: function () {
+                return this._addr;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(NDWS.prototype, "port", {
+            get: function () {
+                return this._port;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(NDWS.prototype, "isSecure", {
+            get: function () {
+                return this._secure;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(NDWS.prototype, "status", {
+            get: function () {
+                return this._status;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        NDWS.prototype._onOpen = function (e, __this) {
+            this._status = JSPM.WSStatus.WaitingForUserResponse;
+            this._pingPong();
+            __this.onStatusChanged();
+            __this.onOpen(e);
+        };
+        NDWS.prototype._onMessage = function (e) {
+            return __awaiter(this, void 0, void 0, function () {
+                var unlock, json_data, job, last, msg_type, data, critical, blob, id_buf, id, data_blob, job, err_1;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4, this._processing_message.lock()];
+                        case 1:
+                            unlock = _a.sent();
+                            _a.label = 2;
+                        case 2:
+                            _a.trys.push([2, 6, 7, 8]);
+                            if (!(typeof (e.data) == 'string')) return [3, 3];
+                            json_data = JSON.parse(e.data);
+                            job = this._job_list[json_data.id];
+                            if (!job)
+                                throw "Job " + json_data.id + " doesn't exist";
+                            last = ('last' in json_data) ? json_data.last : false;
+                            msg_type = ('type' in json_data) ? json_data.type : 'message';
+                            data = ('data' in json_data) ? json_data.data : {};
+                            switch (msg_type) {
+                                case 'message':
+                                    {
+                                        if (job.on_update && typeof (job.on_update === "function"))
+                                            job.on_update(data, job.first_update, last);
+                                    }
+                                    break;
+                                case 'error':
+                                    {
+                                        critical = 'critical' in json_data ?
+                                            json_data.critical : false;
+                                        if (job.on_error && typeof (job.on_error === "function"))
+                                            job.on_error(data, job.first_update, critical);
+                                    }
+                                    break;
+                                default: {
+                                    if (job.on_update && typeof (job.on_update === "function"))
+                                        job.on_update(data, job.first_update, last);
+                                }
+                            }
+                            if (last)
+                                delete this._job_list[json_data.id];
+                            return [3, 5];
+                        case 3:
+                            blob = e.data;
+                            return [4, blob.slice(blob.size - 8, blob.size).arrayBuffer()];
+                        case 4:
+                            id_buf = _a.sent();
+                            id = new TextDecoder('utf-8').decode(id_buf);
+                            data_blob = blob.slice(0, blob.size - 8);
+                            job = this._job_list[id];
+                            if (!job)
+                                throw "Job " + id + " doesn't exist";
+                            if (job.on_update && typeof (job.on_update === "function"))
+                                job.on_update(data_blob, job.first_update, false);
+                            _a.label = 5;
+                        case 5:
+                            job.first_update = false;
+                            return [3, 8];
+                        case 6:
+                            err_1 = _a.sent();
+                            throw "Malformed message. Error: " + err_1 + " Message: " + e.data;
+                        case 7:
+                            unlock();
+                            return [7];
+                        case 8: return [2];
+                    }
+                });
+            });
+        };
+        NDWS.prototype._onError = function (e) {
+            try {
+                var json_data = JSON.parse(e);
+                var job = this._job_list[json_data.id];
+                if (!job)
+                    throw e;
+                job.on_error(e, true, true);
+            }
+            catch (_a) {
+                throw e;
+            }
+        };
+        NDWS.prototype._pingPong = function () {
+            var _this = this;
+            setInterval(function (_) {
+                if (_this._status != JSPM.WSStatus.Open)
+                    return;
+                _this.send('', {
+                    type: 'ping',
+                    on_update: function (_) { },
+                    on_error: function (_) { }
+                });
+            }, 30000);
+        };
+        NDWS.prototype._onClose = function (e, __this) {
+            var _this = this;
+            if (e.code == 403)
+                this._status = JSPM.WSStatus.Blocked;
+            else {
+                this._status = JSPM.WSStatus.Closed;
+                if (this.autoReconnect)
+                    setTimeout(function (_) {
+                        _this.start();
+                    }, 2000);
+            }
+            __this.onClose(e);
+            __this.onStatusChanged();
+        };
+        ;
+        NDWS.prototype._genID = function () {
+            return Math.floor((1 + Math.random()) * 0x100000000)
+                .toString(16)
+                .substring(1);
+        };
+        NDWS.prototype._send = function (data, properties) {
+            var id = "";
+            if ('id' in properties) {
+                id = properties.id;
+            }
+            else {
+                do {
+                    var id = this._genID();
+                } while (this._job_list[id]);
+                this._job_list[id] = {
+                    id: id,
+                    first_update: true,
+                    on_update: properties['on_update'],
+                    on_error: properties['on_error']
+                };
+            }
+            var _data = '';
+            if (data instanceof Blob) {
+                var job_id = new Uint8Array(('id' + id).split('')
+                    .map(function (a) { return a.charCodeAt(0); }));
+                _data = new Blob([data, job_id]);
+            }
+            else if (typeof data == 'string') {
+                _data = { id: id, data: data };
+                if ('type' in properties) {
+                    _data['type'] = properties.type;
+                }
+                _data = JSON.stringify(_data);
+            }
+            else {
+                delete this._job_list[id];
+                _data = data;
+            }
+            this._ws.send(_data);
+            return id;
+        };
+        NDWS.prototype.start = function () {
+            var _this = this;
+            return new Promise(function (ok, err) {
+                try {
+                    _this._ws = new WebSocket((_this._secure ? 'wss://' : 'ws://') +
+                        _this._addr + ':' + _this._port);
+                    _this._ws.onclose = function (e) { return _this._onClose(e, _this); };
+                    _this._ws.onerror = function (i) {
+                        err(i);
+                    };
+                    _this._ws.onopen = function (i) {
+                        _this._ws.onopen = function (e) { return _this._onOpen(e, _this); };
+                        _this._ws.onmessage = function (e) {
+                            try {
+                                var json = JSON.parse(e.data);
+                                if ('connection' in json) {
+                                    if (json.connection == 'CONNECTED') {
+                                        _this._status = JSPM.WSStatus.Open;
+                                        _this.onStatusChanged();
+                                        _this.onOpen(json.certificate);
+                                        JSPM.JSPrintManager._ses_cert = json.certificate;
+                                        _this.send(JSON.stringify({ url: JSPM.JSPrintManager.license_url }), {
+                                            type: "set_license",
+                                            on_update: function (v) { console.info("JSPrintManager License:", 'result' in v ? v['result'] : v); },
+                                            on_error: function (v) { console.warn("JSPrintManager License:", 'result' in v ? v['result'] : v); },
+                                        });
+                                        var verArray = json.version.split('.');
+                                        if (verArray[0] + '.' + verArray[1] != JSPM.VERSION) {
+                                            console.warn("Lib JS version and " +
+                                                "desktop version differs Desktop(" +
+                                                json.version + ") JS (" + JSPM.VERSION +
+                                                ")");
+                                        }
+                                        _this._ws.onmessage = function (e) { return __awaiter(_this, void 0, void 0, function () {
+                                            return __generator(this, function (_a) {
+                                                switch (_a.label) {
+                                                    case 0: return [4, this._onMessage(e)];
+                                                    case 1:
+                                                        _a.sent();
+                                                        return [2];
+                                                }
+                                            });
+                                        }); };
+                                        _this._ws.onerror = _this._onError;
+                                        ok();
+                                    }
+                                    else {
+                                        err("WS Connection not established. Reason: " + json.connection);
+                                    }
+                                }
+                            }
+                            catch (e) {
+                                err("Malformed message. Check if JS version " +
+                                    "and Desktop version are the same. Description: " + e);
+                            }
+                        };
+                    };
+                }
+                catch (e) {
+                    if (_this.autoReconnect)
+                        setTimeout(function () {
+                            _this.start().then(ok).catch(err);
+                        }, 2000);
+                    else
+                        err(e);
+                }
+            });
+        };
+        NDWS.prototype.send = function (data, properties) {
+            if (this._status == JSPM.WSStatus.Closed)
+                properties['on_first_error']("The WebSocket connection is closed");
+            else if (this._status == JSPM.WSStatus.Blocked)
+                properties['on_first_error']("The site is blocked and the connection was closed");
+            else if (this._ws.readyState != this._ws.OPEN)
+                properties['on_first_error']("The WebSocket isn't ready yet");
+            return this._send(data, properties);
+        };
+        NDWS.prototype.stop = function () {
+            if (this._ws) {
+                this._ws.close();
+                this._ws = null;
+            }
+        };
+        return NDWS;
+    }());
+    JSPM.NDWS = NDWS;
 })(JSPM || (JSPM = {}));
 var JSPM;
 (function (JSPM) {
@@ -1560,7 +1642,7 @@ var JSPM;
                     throw "Copies must be greater than or equal to 1.";
                 this._copies = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         PrintFile.prototype.escapeInvalidFileNameChars = function () {
@@ -1572,19 +1654,37 @@ var JSPM;
             if (false_val === void 0) { false_val = '0'; }
             return value ? true_val : false_val;
         };
-        PrintFile.prototype.getBLOBContent = function () {
-            var _this = this;
+        PrintFile.prototype.getProperties = function () {
+            return {
+                file_type: JSPM.PrintFileType.Generic,
+                file_name: this.fileName,
+                copies: this._copies
+            };
+        };
+        PrintFile.prototype.isValidRange = function (range) {
+            range = range.replace(/\s/g, '');
+            if (range == null || range == '')
+                return true;
+            var reg = /([0-9])+((-[0-9]+)|(,[0-9]+))*/;
+            var test = reg.exec(range);
+            if (test == null)
+                return false;
+            if (test[0].length != range.length)
+                return false;
+            return true;
+        };
+        PrintFile.prototype._getBLOBContent = function (fileContentType, fileContent) {
             return new Promise(function (ok, err) {
-                switch (_this.fileContentType) {
+                switch (fileContentType) {
                     case JSPM.FileSourceType.BLOB:
                         {
-                            ok(_this.fileContent);
+                            ok(fileContent);
                         }
                         break;
                     case JSPM.FileSourceType.Base64:
                         {
                             try {
-                                var chars = atob(_this.fileContent);
+                                var chars = atob(fileContent);
                                 var bytes = new Uint8Array(chars.length);
                                 for (var i = 0; i < chars.length; i++) {
                                     bytes[i] = chars.charCodeAt(i);
@@ -1599,9 +1699,9 @@ var JSPM;
                     case JSPM.FileSourceType.Text:
                         {
                             try {
-                                var bytes = new Uint8Array(_this.fileContent.length);
-                                for (var i = 0; i < _this.fileContent.length; i++) {
-                                    bytes[i] = _this.fileContent.charCodeAt(i);
+                                var bytes = new Uint8Array(fileContent.length);
+                                for (var i = 0; i < fileContent.length; i++) {
+                                    bytes[i] = fileContent.charCodeAt(i);
                                 }
                                 ok(new Blob([bytes]));
                             }
@@ -1613,7 +1713,7 @@ var JSPM;
                     case JSPM.FileSourceType.URL:
                         {
                             var xhr_1 = new XMLHttpRequest();
-                            xhr_1.open('GET', _this.fileContent, true);
+                            xhr_1.open('GET', fileContent, true);
                             xhr_1.responseType = 'blob';
                             xhr_1.onload = function (oEvent) {
                                 ok(xhr_1.response);
@@ -1625,7 +1725,7 @@ var JSPM;
                 }
             });
         };
-        PrintFile.prototype.serialize = function () {
+        PrintFile.prototype.getContent = function () {
             var _this = this;
             return new Promise(function (ok, err) {
                 switch (_this.fileContentType) {
@@ -1662,33 +1762,34 @@ var JSPM;
         return PrintFile;
     }());
     JSPM.PrintFile = PrintFile;
+    var PrintFileDuplexable = (function (_super) {
+        __extends(PrintFileDuplexable, _super);
+        function PrintFileDuplexable() {
+            var _this = _super !== null && _super.apply(this, arguments) || this;
+            _this.manualDuplexMessage = "";
+            _this.manualDuplex = false;
+            _this.printInReverseOrder = false;
+            _this.printRange = '';
+            return _this;
+        }
+        return PrintFileDuplexable;
+    }(PrintFile));
+    JSPM.PrintFileDuplexable = PrintFileDuplexable;
 })(JSPM || (JSPM = {}));
 var JSPM;
 (function (JSPM) {
     var PrintFileDOC = (function (_super) {
         __extends(PrintFileDOC, _super);
         function PrintFileDOC(fileContent, fileContentType, fileName, copies) {
-            var _this = _super.call(this, fileContent, fileContentType, fileName.substring(0, fileName.lastIndexOf('.')) + '.wdoc', copies) || this;
-            _this.manualDuplex = false;
-            _this.manualDuplexMessage = "";
-            _this.printInReverseOrder = false;
-            _this.printRange = '';
+            var _this = _super.call(this, fileContent, fileContentType, fileName, copies) || this;
             _this.encryptedPassword = "";
             return _this;
         }
-        PrintFileDOC.prototype.isValidRange = function (range) {
-            if (range == null || range == '')
-                return true;
-            var reg = /([0-9])+((-[0-9]+)|(,[0-9]+))*/;
-            var test = reg.exec(range);
-            if (test == null)
-                return false;
-            if (test[0].length != range.length)
-                return false;
-            return true;
-        };
-        PrintFileDOC.prototype._getPropertiesJSON = function () {
+        PrintFileDOC.prototype.getProperties = function () {
             return {
+                file_type: JSPM.PrintFileType.WDOC,
+                file_name: this.fileName,
+                copies: this.copies,
                 manual_duplex: this.manualDuplex,
                 reverse: this.printInReverseOrder,
                 duplex_message: this.manualDuplexMessage,
@@ -1696,58 +1797,134 @@ var JSPM;
                 password: this.encryptedPassword,
             };
         };
-        PrintFileDOC.prototype.serialize = function () {
+        PrintFileDOC.prototype.getContent = function () {
             var _this = this;
             return new Promise(function (ok, err) {
-                var SEP = ';';
                 if (!_this.isValidRange(_this.printRange))
                     err('Invalid Print Range');
-                _this.getBLOBContent().then(function (file_content) {
-                    var properties = new Uint8Array(JSPM.Utils._str2UTF8Array(JSON.stringify(_this._getPropertiesJSON())));
-                    var file_size = JSPM.Utils._intToByteArray(properties.length);
-                    var blob = new Blob([file_content, properties, file_size]);
-                    ok(new zip.BlobReader(blob));
-                }).catch(function (e) {
-                    err(e);
-                });
+                _this._getBLOBContent(_this.fileContentType, _this.fileContent)
+                    .then(function (file_content) {
+                    ok(new zip.BlobReader(file_content));
+                })
+                    .catch(function (reason) { return err(reason); });
             });
         };
         return PrintFileDOC;
-    }(JSPM.PrintFile));
+    }(JSPM.PrintFileDuplexable));
     JSPM.PrintFileDOC = PrintFileDOC;
+})(JSPM || (JSPM = {}));
+var JSPM;
+(function (JSPM) {
+    var PrintFileGroup = (function (_super) {
+        __extends(PrintFileGroup, _super);
+        function PrintFileGroup(fileContent, fileName, copies) {
+            return _super.call(this, fileContent, JSPM.FileSourceType.BLOB, fileName, copies) || this;
+        }
+        PrintFileGroup.prototype.getProperties = function () {
+            return {
+                file_type: JSPM.PrintFileType.Group,
+                file_name: this.fileName,
+                range: this.printRange,
+                copies: this.copies,
+                manual_duplex: this.manualDuplex,
+                reverse: this.printInReverseOrder,
+                duplex_message: this.manualDuplexMessage
+            };
+        };
+        PrintFileGroup.prototype._getBLOBContent = function () {
+            return __awaiter(this, void 0, void 0, function () {
+                var _this = this;
+                return __generator(this, function (_a) {
+                    return [2, new Promise(function (ok, err) { return __awaiter(_this, void 0, void 0, function () {
+                            var writer, zipped_files, e_2;
+                            var _this = this;
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0:
+                                        _a.trys.push([0, 2, , 3]);
+                                        writer = new zip.ZipWriter(new zip.BlobWriter("application/zip"));
+                                        zipped_files = this.fileContent.map(function (file) { return new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
+                                            var blob_content, e_3;
+                                            return __generator(this, function (_a) {
+                                                switch (_a.label) {
+                                                    case 0:
+                                                        _a.trys.push([0, 3, , 4]);
+                                                        return [4, _super.prototype._getBLOBContent.call(this, file.fileContentType, file.fileContent)];
+                                                    case 1:
+                                                        blob_content = _a.sent();
+                                                        return [4, writer.add(file.fileName, new zip.BlobReader(blob_content))];
+                                                    case 2:
+                                                        _a.sent();
+                                                        resolve();
+                                                        return [3, 4];
+                                                    case 3:
+                                                        e_3 = _a.sent();
+                                                        reject(e_3);
+                                                        return [3, 4];
+                                                    case 4: return [2];
+                                                }
+                                            });
+                                        }); }); });
+                                        return [4, writer.add("metadata.json", new zip.BlobReader(new Blob([JSON.stringify(this.fileContent.map(function (pf) { return pf.getProperties(); }))])))];
+                                    case 1:
+                                        _a.sent();
+                                        Promise.all(zipped_files).then(function (_) { return __awaiter(_this, void 0, void 0, function () {
+                                            return __generator(this, function (_a) {
+                                                writer.close().then(function (zip_f) { return ok(zip_f); }).catch(function (e) { return err(e); });
+                                                return [2];
+                                            });
+                                        }); }).catch(function (e) { return err(e); });
+                                        return [3, 3];
+                                    case 2:
+                                        e_2 = _a.sent();
+                                        err(e_2);
+                                        return [3, 3];
+                                    case 3: return [2];
+                                }
+                            });
+                        }); })];
+                });
+            });
+        };
+        PrintFileGroup.prototype.getContent = function () {
+            var _this = this;
+            return new Promise(function (ok, err) { return __awaiter(_this, void 0, void 0, function () {
+                var file_content;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4, this._getBLOBContent()];
+                        case 1:
+                            file_content = _a.sent();
+                            ok(new zip.BlobReader(file_content));
+                            return [2];
+                    }
+                });
+            }); });
+        };
+        return PrintFileGroup;
+    }(JSPM.PrintFileDuplexable));
+    JSPM.PrintFileGroup = PrintFileGroup;
 })(JSPM || (JSPM = {}));
 var JSPM;
 (function (JSPM) {
     var PrintFilePDF = (function (_super) {
         __extends(PrintFilePDF, _super);
         function PrintFilePDF(fileContent, fileContentType, fileName, copies) {
-            var _this = _super.call(this, fileContent, fileContentType, fileName.substring(0, fileName.lastIndexOf('.')) + '.wpdf', copies) || this;
+            var _this = _super.call(this, fileContent, fileContentType, fileName, copies) || this;
             _this.pageSizing = JSPM.Sizing.None;
-            _this.manualDuplex = false;
             _this.printAutoRotate = false;
             _this.printAutoCenter = false;
-            _this.manualDuplexMessage = "";
             _this.encryptedPassword = "";
             _this.printAsGrayscale = false;
             _this.printAnnotations = false;
-            _this.printRange = '';
-            _this.printInReverseOrder = false;
             _this.printRotation = JSPM.PrintRotation.None;
             return _this;
         }
-        PrintFilePDF.prototype.isValidRange = function (range) {
-            if (range == null || range == '')
-                return true;
-            var reg = /([0-9])+((-[0-9]+)|(,[0-9]+))*/;
-            var test = reg.exec(range);
-            if (test == null)
-                return false;
-            if (test[0].length != range.length)
-                return false;
-            return true;
-        };
-        PrintFilePDF.prototype._getPropertiesJSON = function () {
+        PrintFilePDF.prototype.getProperties = function () {
             return {
+                file_type: JSPM.PrintFileType.WPDF,
+                file_name: this.fileName,
+                copies: this.copies,
                 manual_duplex: this.manualDuplex,
                 grayscale: this.printAsGrayscale,
                 annotations: this.printAnnotations,
@@ -1761,32 +1938,86 @@ var JSPM;
                 sizing: this.pageSizing
             };
         };
-        PrintFilePDF.prototype.serialize = function () {
+        PrintFilePDF.prototype.getContent = function () {
             var _this = this;
             return new Promise(function (ok, err) {
                 var SEP = ';';
                 if (!_this.isValidRange(_this.printRange))
                     err('Invalid Print Range');
-                _this.getBLOBContent().then(function (file_content) {
-                    var properties = new Uint8Array(JSPM.Utils._str2UTF8Array(JSON.stringify(_this._getPropertiesJSON())));
-                    var file_size = JSPM.Utils._intToByteArray(properties.length);
-                    var blob = new Blob([file_content, properties, file_size]);
-                    ok(new zip.BlobReader(blob));
-                }).catch(function (e) {
-                    err(e);
-                });
+                _this._getBLOBContent(_this.fileContentType, _this.fileContent)
+                    .then(function (file_content) {
+                    ok(new zip.BlobReader(file_content));
+                })
+                    .catch(function (reason) { return err(reason); });
             });
         };
         return PrintFilePDF;
-    }(JSPM.PrintFile));
+    }(JSPM.PrintFileDuplexable));
     JSPM.PrintFilePDF = PrintFilePDF;
+})(JSPM || (JSPM = {}));
+var JSPM;
+(function (JSPM) {
+    var PrintFileTIF = (function (_super) {
+        __extends(PrintFileTIF, _super);
+        function PrintFileTIF(fileContent, fileContentType, fileName, copies) {
+            var _this = _super.call(this, fileContent, fileContentType, fileName, copies) || this;
+            _this.printAutoRotate = false;
+            _this.printAutoCenter = false;
+            _this.printAsGrayscale = false;
+            _this.printRotation = JSPM.PrintRotation.None;
+            _this.pageSizing = JSPM.Sizing.None;
+            return _this;
+        }
+        PrintFileTIF.prototype.isValidRange = function (range) {
+            if (range == null || range == '')
+                return true;
+            var reg = /([0-9])+((-[0-9]+)|(,[0-9]+))*/;
+            var test = reg.exec(range);
+            if (test == null)
+                return false;
+            if (test[0].length != range.length)
+                return false;
+            return true;
+        };
+        PrintFileTIF.prototype.getProperties = function () {
+            return {
+                file_type: JSPM.PrintFileType.WTIF,
+                file_name: this.fileName,
+                copies: this.copies,
+                manual_duplex: this.manualDuplex,
+                grayscale: this.printAsGrayscale,
+                reverse: this.printInReverseOrder,
+                auto_rotate: this.printAutoRotate,
+                auto_center: this.printAutoCenter,
+                duplex_message: this.manualDuplexMessage,
+                range: this.printRange,
+                rotation: this.printRotation,
+                sizing: this.pageSizing
+            };
+        };
+        PrintFileTIF.prototype.getContent = function () {
+            var _this = this;
+            return new Promise(function (ok, err) {
+                var SEP = ';';
+                if (!_this.isValidRange(_this.printRange))
+                    err('Invalid Print Range');
+                _this._getBLOBContent(_this.fileContentType, _this.fileContent)
+                    .then(function (file_content) {
+                    ok(new zip.BlobReader(file_content));
+                })
+                    .catch(function (reason) { return err(reason); });
+            });
+        };
+        return PrintFileTIF;
+    }(JSPM.PrintFileDuplexable));
+    JSPM.PrintFileTIF = PrintFileTIF;
 })(JSPM || (JSPM = {}));
 var JSPM;
 (function (JSPM) {
     var PrintFileTXT = (function (_super) {
         __extends(PrintFileTXT, _super);
         function PrintFileTXT(fileContent, fileName, copies, fileContentType) {
-            var _this = _super.call(this, fileContent, fileContentType ? fileContentType : JSPM.FileSourceType.Text, fileName.substring(0, fileName.lastIndexOf('.')) + '.wtxt', copies) || this;
+            var _this = _super.call(this, fileContent, fileContentType ? fileContentType : JSPM.FileSourceType.Text, fileName, copies) || this;
             _this.textContent = '';
             _this.textAligment = JSPM.TextAlignment.Left;
             _this.fontName = '';
@@ -1803,28 +2034,44 @@ var JSPM;
             _this.marginBottom = 0.5;
             return _this;
         }
-        PrintFileTXT.prototype.serialize = function () {
+        PrintFileTXT.prototype.getProperties = function () {
+            return {
+                file_name: this.fileName,
+                file_type: JSPM.PrintFileType.WTXT,
+                alignment: this.textAligment,
+                bold: this.fontBold,
+                color: this.fontColor,
+                copies: this.copies,
+                font_name: this.fontName,
+                font_size: this.fontSize,
+                italic: this.fontItalic,
+                margin_bottom: this.marginBottom,
+                margin_left: this.marginLeft,
+                margin_right: this.marginRight,
+                margin_top: this.marginTop,
+                orientation: this.printOrientation,
+                range: this.printRange,
+                duplex_message: this.manualDuplexMessage,
+                manual_duplex: this.manualDuplex,
+                reverse: this.printInReverseOrder,
+                strikethrough: this.fontStrikethrough,
+                underline: this.fontUnderline
+            };
+        };
+        PrintFileTXT.prototype.getContent = function () {
             var _this = this;
             return new Promise(function (ok, err) {
                 var SEP = '|';
-                _this.getBLOBContent().then(function (file_content) {
-                    var params = new Uint8Array(JSPM.Utils._str2UTF8Array(_this.printOrientation + SEP + _this.textAligment +
-                        SEP + _this.fontName + SEP + _this.fontSize + SEP +
-                        _this.bool2str(_this.fontBold) + SEP +
-                        _this.bool2str(_this.fontItalic) + SEP +
-                        _this.bool2str(_this.fontUnderline) + SEP +
-                        _this.bool2str(_this.fontStrikethrough) + SEP +
-                        _this.fontColor + SEP + _this.marginLeft + SEP + _this.marginTop +
-                        SEP + _this.marginRight + SEP + _this.marginBottom + '\n'));
-                    var blob = new Blob([params, file_content]);
+                _this._getBLOBContent(_this.fileContentType, _this.fileContent)
+                    .then(function (file_content) {
+                    var blob = new Blob([file_content]);
                     ok(new zip.BlobReader(blob));
-                }).catch(function (e) {
-                    err(e);
-                });
+                })
+                    .catch(function (e) { err(e); });
             });
         };
         return PrintFileTXT;
-    }(JSPM.PrintFile));
+    }(JSPM.PrintFileDuplexable));
     JSPM.PrintFileTXT = PrintFileTXT;
 })(JSPM || (JSPM = {}));
 var JSPM;
@@ -1832,30 +2079,32 @@ var JSPM;
     var PrintFileXLS = (function (_super) {
         __extends(PrintFileXLS, _super);
         function PrintFileXLS(fileContent, fileContentType, fileName, copies) {
-            var _this = _super.call(this, fileContent, fileContentType, fileName.substring(0, fileName.lastIndexOf('.')) + '.wxls', copies) || this;
+            var _this = _super.call(this, fileContent, fileContentType, fileName, copies) || this;
             _this.encryptedPassword = "";
             _this.pageFrom = 0;
             _this.pageTo = 0;
             return _this;
         }
-        PrintFileXLS.prototype._getPropertiesJSON = function () {
+        PrintFileXLS.prototype.getProperties = function () {
             return {
-                from: this.pageFrom,
-                to: this.pageTo,
+                file_type: JSPM.PrintFileType.WXLS,
+                file_name: this.fileName,
+                copies: this.copies,
+                from_page: this.pageFrom,
+                to_page: this.pageTo,
                 password: this.encryptedPassword,
             };
         };
-        PrintFileXLS.prototype.serialize = function () {
+        PrintFileXLS.prototype.getContent = function () {
             var _this = this;
             return new Promise(function (ok, err) {
-                _this.getBLOBContent().then(function (file_content) {
-                    var properties = new Uint8Array(JSPM.Utils._str2UTF8Array(JSON.stringify(_this._getPropertiesJSON())));
-                    var file_size = JSPM.Utils._intToByteArray(properties.length);
-                    var blob = new Blob([file_content, properties, file_size]);
-                    ok(new zip.BlobReader(blob));
-                }).catch(function (e) {
-                    err(e);
-                });
+                if (_this.pageFrom > _this.pageTo)
+                    err('Invalid Print Range');
+                _this._getBLOBContent(_this.fileContentType, _this.fileContent)
+                    .then(function (file_content) {
+                    ok(new zip.BlobReader(file_content));
+                })
+                    .catch(function (reason) { return err(reason); });
             });
         };
         return PrintFileXLS;
@@ -1892,14 +2141,14 @@ var JSPM;
             set: function (value) {
                 this._port = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(SerialComm.prototype, "isOpen", {
             get: function () {
                 return this._isOpen;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(SerialComm.prototype, "baudRate", {
@@ -1909,7 +2158,7 @@ var JSPM;
             set: function (value) {
                 this._baud_rate = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(SerialComm.prototype, "parity", {
@@ -1919,7 +2168,7 @@ var JSPM;
             set: function (value) {
                 this._parity = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(SerialComm.prototype, "stopBits", {
@@ -1929,7 +2178,7 @@ var JSPM;
             set: function (value) {
                 this._stop_bits = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(SerialComm.prototype, "dataBits", {
@@ -1939,7 +2188,7 @@ var JSPM;
             set: function (value) {
                 this._data_bits = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(SerialComm.prototype, "flowControl", {
@@ -1949,7 +2198,7 @@ var JSPM;
             set: function (value) {
                 this._flow_control = value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(SerialComm.prototype, "dsr", {
@@ -1971,7 +2220,7 @@ var JSPM;
                     wait_for_value();
                 });
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(SerialComm.prototype, "cts", {
@@ -1993,7 +2242,7 @@ var JSPM;
                     wait_for_value();
                 });
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(SerialComm.prototype, "rts", {
@@ -2005,7 +2254,7 @@ var JSPM;
                     throw "Invalid operation. Flow control manages RTS";
                 JSPM.JSPrintManager.WS.send(JSON.stringify({ rts: value }), this.propertiesJSON());
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(SerialComm.prototype, "dtr", {
@@ -2015,7 +2264,7 @@ var JSPM;
                 }
                 JSPM.JSPrintManager.WS.send(JSON.stringify({ dtr: value }), this.propertiesJSON());
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         SerialComm.prototype.onError = function (data, critical) { };
@@ -2092,7 +2341,7 @@ var JSPM;
 })(JSPM || (JSPM = {}));
 var JSPM;
 (function (JSPM) {
-    JSPM.VERSION = '3.0';
+    JSPM.VERSION = '4.0';
     var Mutex = (function () {
         function Mutex() {
             this.mutex = Promise.resolve();

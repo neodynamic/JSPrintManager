@@ -4,23 +4,28 @@ declare namespace JSPM {
         protected _generateDataAsync(): Promise<Blob | string>;
         protected onUpdate(data: any, last: any): void;
         protected onError(data: any, critical: any): void;
-        sendToClient(): Promise<{}>;
+        sendToClient(): Promise<unknown>;
     }
 }
 declare namespace JSPM {
     class ClientPrintJob extends ClientJob {
         private _clientPrinter;
-        clientPrinter: IClientPrinter;
+        get clientPrinter(): IClientPrinter;
+        set clientPrinter(value: IClientPrinter);
         private _printerCommandsCopies;
-        printerCommandsCopies: number;
+        get printerCommandsCopies(): number;
+        set printerCommandsCopies(value: number);
         private _printerCommands;
         private _printerCommandsCodePage;
-        printerCommands: string;
-        printerCommandsCodePage: Encoding;
+        get printerCommands(): string;
+        set printerCommands(value: string);
+        get printerCommandsCodePage(): Encoding;
+        set printerCommandsCodePage(value: Encoding);
         private _binaryPrinterCommands;
-        binaryPrinterCommands: Uint8Array;
+        get binaryPrinterCommands(): Uint8Array;
+        set binaryPrinterCommands(value: Uint8Array);
         private _printFileGroup;
-        readonly files: PrintFile[];
+        get files(): PrintFile[];
         onUpdated(data: any): void;
         onFinished(data: any): void;
         onError(data: any, is_critical: any): void;
@@ -35,8 +40,8 @@ declare namespace JSPM {
 declare namespace JSPM {
     class ClientPrintJobGroup extends ClientJob {
         _jobs: ClientPrintJob[];
-        readonly jobs: ClientPrintJob[];
-        private _generateMiniJob(cj);
+        get jobs(): ClientPrintJob[];
+        private _generateMiniJob;
         _generateDataAsync(): Promise<Blob>;
     }
 }
@@ -56,19 +61,25 @@ declare namespace JSPM {
         private _tray;
         private _paper;
         private _duplex;
-        private bool2str(value, true_val?, false_val?);
-        printerName: string;
-        printToDefaultIfNotFound: boolean;
-        trayName: string;
-        paperName: string;
-        duplex: DuplexMode;
+        private bool2str;
+        get printerName(): string;
+        set printerName(value: string);
+        get printToDefaultIfNotFound(): boolean;
+        set printToDefaultIfNotFound(value: boolean);
+        get trayName(): string;
+        set trayName(value: string);
+        get paperName(): string;
+        set paperName(value: string);
+        get duplex(): DuplexMode;
+        set duplex(value: DuplexMode);
         constructor(printerName: string, printToDefaultIfNotFound?: boolean, trayName?: string, paperName?: string, duplex?: DuplexMode);
         serialize(): string;
     }
     class ParallelPortPrinter implements IClientPrinter {
         Id: number;
         private _parallelPortName;
-        portName: string;
+        get portName(): string;
+        set portName(value: string);
         constructor(portName: string);
         serialize(): string;
     }
@@ -80,12 +91,18 @@ declare namespace JSPM {
         private _stop_bits;
         private _data_bits;
         private _flow_control;
-        portName: string;
-        baudRate: number;
-        parity: Serial.Parity;
-        stopBits: Serial.StopBits;
-        dataBits: Serial.DataBits;
-        flowControl: Serial.Handshake;
+        get portName(): string;
+        set portName(value: string);
+        get baudRate(): number;
+        set baudRate(value: number);
+        get parity(): Serial.Parity;
+        set parity(value: Serial.Parity);
+        get stopBits(): Serial.StopBits;
+        set stopBits(value: Serial.StopBits);
+        get dataBits(): Serial.DataBits;
+        set dataBits(value: Serial.DataBits);
+        get flowControl(): Serial.Handshake;
+        set flowControl(value: Serial.Handshake);
         constructor(portName: string, baudRate: number, parity: Serial.Parity, stopBits: Serial.StopBits, dataBits: Serial.DataBits, flowControl: Serial.Handshake);
         serialize(): string;
     }
@@ -94,9 +111,12 @@ declare namespace JSPM {
         private _ip;
         private _port;
         private _dnsName;
-        dnsName: string;
-        ipAddress: string;
-        port: number;
+        get dnsName(): string;
+        set dnsName(value: string);
+        get ipAddress(): string;
+        set ipAddress(value: string);
+        get port(): number;
+        set port(value: number);
         constructor(port: number, ipAddress?: string, dnsName?: string);
         serialize(): string;
     }
@@ -112,10 +132,23 @@ declare namespace JSPM {
         _pixelMode: PixelMode;
         _resolution: number;
         _imageFormat: ScannerImageFormatOutput;
-        scannerName: string;
-        pixelMode: PixelMode;
-        resolution: number;
-        imageFormat: ScannerImageFormatOutput;
+        _enableDuplex: boolean;
+        _enableFeeder: boolean;
+        _feederCount: number;
+        get scannerName(): string;
+        set scannerName(val: string);
+        get pixelMode(): PixelMode;
+        set pixelMode(val: PixelMode);
+        get resolution(): number;
+        set resolution(val: number);
+        get imageFormat(): ScannerImageFormatOutput;
+        set imageFormat(val: ScannerImageFormatOutput);
+        get enableDuplex(): boolean;
+        set enableDuplex(val: boolean);
+        get enableFeeder(): boolean;
+        set enableFeeder(val: boolean);
+        get feederCount(): number;
+        set feederCount(val: number);
         onFinished(data: any): void;
         onError(data: any, is_critical: any): void;
         onUpdate(data: any, last: any): void;
@@ -123,9 +156,20 @@ declare namespace JSPM {
     }
 }
 declare namespace JSPM {
+    enum PrintFileType {
+        Image = 0,
+        Generic = 1,
+        Document = 2,
+        WDOC = 3,
+        WXLS = 4,
+        WPDF = 5,
+        WTXT = 6,
+        Group = 7,
+        WTIF = 8
+    }
     enum PrintersInfoLevel {
         Basic = 0,
-        Extended = 1,
+        Extended = 1
     }
     enum Encoding {
         Default = -1,
@@ -280,54 +324,54 @@ declare namespace JSPM {
         ISCII_Gujarati = 57010,
         ISCII_Punjabi = 57011,
         Unicode_UTF_7 = 65000,
-        Unicode_UTF_8 = 65001,
+        Unicode_UTF_8 = 65001
     }
     enum DuplexMode {
         Default = 0,
         Simplex = 1,
         DuplexLongEdge = 2,
-        DuplexShortEdge = 3,
+        DuplexShortEdge = 3
     }
     enum Sizing {
         None = 0,
-        Fit = 1,
+        Fit = 1
     }
     enum ScannerImageFormatOutput {
         JPG = 0,
-        PNG = 1,
+        PNG = 1
     }
     enum PixelMode {
         Grayscale = 0,
-        Color = 1,
+        Color = 1
     }
     enum FileSourceType {
         Base64 = 0,
         Text = 1,
         BLOB = 2,
-        URL = 3,
+        URL = 3
     }
     enum WSStatus {
         Open = 0,
         Closed = 1,
         Blocked = 2,
-        WaitingForUserResponse = 3,
+        WaitingForUserResponse = 3
     }
     enum PrintRotation {
         None = 0,
         Rot90 = 1,
         Rot180 = 2,
-        Rot270 = 3,
+        Rot270 = 3
     }
     enum TextAlignment {
         Left = 0,
         Center = 1,
         Right = 2,
         Justify = 3,
-        None = 4,
+        None = 4
     }
     enum PrintOrientation {
         Portrait = 0,
-        Landscape = 1,
+        Landscape = 1
     }
 }
 declare namespace JSPM.Serial {
@@ -336,68 +380,40 @@ declare namespace JSPM.Serial {
         Odd = 1,
         Even = 2,
         Mark = 3,
-        Space = 4,
+        Space = 4
     }
     enum StopBits {
         One = 0,
         OnePointFive = 1,
-        Two = 2,
+        Two = 2
     }
     enum DataBits {
         Eight = 0,
         Seven = 1,
         Six = 2,
-        Five = 3,
+        Five = 3
     }
     enum Handshake {
         None = 0,
         RequestToSend = 1,
         RequestToSendXOnXOff = 2,
-        XOnXOff = 3,
-    }
-}
-declare namespace JSPM {
-    class JSPMWebSocket {
-        private _ws;
-        private _addr;
-        private _port;
-        private _secure;
-        private _status;
-        private _job_list;
-        private _processing_message;
-        readonly address: string;
-        readonly port: number;
-        readonly isSecure: boolean;
-        readonly status: WSStatus;
-        autoReconnect: boolean;
-        onClose: (e: any) => void;
-        onOpen: (e: any) => void;
-        onStatusChanged: () => void;
-        constructor(addr?: string, port?: number, secure?: boolean, auto_reconnect?: boolean);
-        private _onOpen(e, __this);
-        private _onMessage(e);
-        private _onError(e);
-        private _pingPong();
-        private _onClose(e, __this);
-        private _genID();
-        private _send(data, properties);
-        start(): Promise<void>;
-        send(data: any, properties: any): string;
-        stop(): void;
+        XOnXOff = 3
     }
 }
 declare namespace JSPM {
     class JSPrintManager {
-        static WS: JSPMWebSocket;
+        static WS: NDWS;
+        static _ses_cert: string;
+        static get session_certificate(): string;
         static auto_reconnect: boolean;
         private static _license;
-        static _ses_cert: string;
-        static readonly session_certificate: string;
         static start(secure?: boolean, host?: string, port?: number): Promise<void>;
-        static license_url: string;
-        static getPrinters(): Promise<{}>;
-        static getPrintersInfo(detail_level?: PrintersInfoLevel, printer_name?: string): Promise<{}>;
-        static readonly websocket_status: WSStatus;
+        static get license_url(): string;
+        static set license_url(value: string);
+        static getPrinters(): Promise<unknown>;
+        static getSessionCertificate(): Promise<unknown>;
+        static getPrintersInfo(detail_level?: PrintersInfoLevel, printer_name?: string): Promise<unknown>;
+        static get websocket_status(): WSStatus;
         static showAbout(): Promise<any>;
         static updateClient(): Promise<any>;
         static getSystemFonts(): Promise<any>;
@@ -406,58 +422,161 @@ declare namespace JSPM {
         static onPrinterCreated(callback: any, error: any, detail_level?: PrintersInfoLevel): string;
         static onPrinterUpdated(callback: any, error: any, detail_level?: PrintersInfoLevel): string;
         static onPrinterDeleted(callback: any, error: any, detail_level?: PrintersInfoLevel): string;
-        static unsubscribePrinterEvent(id: any): Promise<{}>;
+        static unsubscribePrinterEvent(id: any): Promise<unknown>;
         static stop(): void;
+        static onStatusChanged: () => void;
     }
 }
 declare namespace JSPM {
+    class NDWS {
+        private _ws;
+        private _addr;
+        private _port;
+        private _secure;
+        private _status;
+        private _job_list;
+        private _processing_message;
+        get address(): string;
+        get port(): number;
+        get isSecure(): boolean;
+        get status(): WSStatus;
+        autoReconnect: boolean;
+        onClose: (e: any) => void;
+        onOpen: (e: any) => void;
+        onStatusChanged: () => void;
+        constructor(addr?: string, port?: number, secure?: boolean, auto_reconnect?: boolean);
+        private _onOpen;
+        private _onMessage;
+        private _onError;
+        private _pingPong;
+        private _onClose;
+        private _genID;
+        private _send;
+        start(): Promise<void>;
+        send(data: any, properties: any): string;
+        stop(): void;
+    }
+}
+declare namespace JSPM {
+    interface IPrintFileProperties {
+        file_type: PrintFileType;
+        file_name: string | string[];
+        copies: number;
+    }
+    interface IPrintFileDuplexableProperties extends IPrintFileProperties {
+        manual_duplex: boolean;
+        duplex_message: string;
+        range: string;
+        reverse: boolean;
+    }
     class PrintFile {
         fileContentType: FileSourceType;
         fileContent: any;
         fileName: string;
         private _copies;
-        copies: number;
-        private escapeInvalidFileNameChars();
+        get copies(): number;
+        set copies(value: number);
+        private escapeInvalidFileNameChars;
         constructor(fileContent: any, fileContentType: FileSourceType, fileName: string, copies?: number);
         protected bool2str(value: any, true_val?: string, false_val?: string): string;
-        protected getBLOBContent(): Promise<Blob>;
-        serialize(): Promise<zip.Reader>;
+        getProperties(): IPrintFileProperties;
+        protected isValidRange(range: string): boolean;
+        protected _getBLOBContent(fileContentType: FileSourceType, fileContent: any): Promise<Blob>;
+        getContent(): Promise<zip.Reader>;
     }
-}
-declare namespace JSPM {
-    class PrintFileDOC extends PrintFile {
-        manualDuplex: boolean;
+    class PrintFileDuplexable extends PrintFile {
         manualDuplexMessage: string;
+        manualDuplex: boolean;
         printInReverseOrder: boolean;
         printRange: string;
-        encryptedPassword: string;
-        constructor(fileContent: any, fileContentType: FileSourceType, fileName: string, copies?: number);
-        isValidRange(range: string): boolean;
-        private _getPropertiesJSON();
-        serialize(): Promise<zip.Reader>;
     }
 }
 declare namespace JSPM {
-    class PrintFilePDF extends PrintFile {
+    interface IPrintFileDOCProperties extends IPrintFileDuplexableProperties {
+        password: string;
+    }
+    export class PrintFileDOC extends PrintFileDuplexable {
+        encryptedPassword: string;
+        constructor(fileContent: any, fileContentType: FileSourceType, fileName: string, copies?: number);
+        getProperties(): IPrintFileDOCProperties;
+        getContent(): Promise<zip.Reader>;
+    }
+    export {};
+}
+declare namespace JSPM {
+    interface IPrintFileGroupProperties extends IPrintFileDuplexableProperties {
+    }
+    export class PrintFileGroup extends PrintFileDuplexable {
+        fileContent: PrintFile[];
+        constructor(fileContent: PrintFile[], fileName?: string, copies?: number);
+        getProperties(): IPrintFileGroupProperties;
+        protected _getBLOBContent(): Promise<Blob>;
+        getContent(): Promise<zip.Reader>;
+    }
+    export {};
+}
+declare namespace JSPM {
+    interface IPrintFilePDFProperties extends IPrintFileDuplexableProperties {
+        grayscale: boolean;
+        annotations: boolean;
+        auto_rotate: boolean;
+        auto_center: boolean;
+        password: string;
+        rotation: PrintRotation;
+        sizing: Sizing;
+    }
+    export class PrintFilePDF extends PrintFileDuplexable {
         pageSizing: Sizing;
-        manualDuplex: boolean;
         printAutoRotate: boolean;
         printAutoCenter: boolean;
-        manualDuplexMessage: string;
         encryptedPassword: string;
         printAsGrayscale: boolean;
         printAnnotations: boolean;
-        printRange: string;
-        printInReverseOrder: boolean;
         printRotation: PrintRotation;
         constructor(fileContent: any, fileContentType: FileSourceType, fileName: string, copies?: number);
-        isValidRange(range: string): boolean;
-        private _getPropertiesJSON();
-        serialize(): Promise<zip.Reader>;
+        getProperties(): IPrintFilePDFProperties;
+        getContent(): Promise<zip.Reader>;
     }
+    export {};
 }
 declare namespace JSPM {
-    class PrintFileTXT extends PrintFile {
+    interface IPrintFileTIFProperties extends IPrintFileDuplexableProperties {
+        grayscale: boolean;
+        auto_rotate: boolean;
+        auto_center: boolean;
+        rotation: PrintRotation;
+        sizing: Sizing;
+    }
+    export class PrintFileTIF extends PrintFileDuplexable {
+        printAutoRotate: boolean;
+        printAutoCenter: boolean;
+        printAsGrayscale: boolean;
+        printRotation: PrintRotation;
+        pageSizing: Sizing;
+        constructor(fileContent: any, fileContentType: FileSourceType, fileName: string, copies?: number);
+        isValidRange(range: string): boolean;
+        getProperties(): IPrintFileTIFProperties;
+        getContent(): Promise<zip.Reader>;
+    }
+    export {};
+}
+declare namespace JSPM {
+    interface IPrintFileTXTProperties extends IPrintFileDuplexableProperties {
+        alignment: TextAlignment;
+        font_name: String;
+        font_size: number;
+        bold: Boolean;
+        italic: Boolean;
+        underline: Boolean;
+        strikethrough: Boolean;
+        color: String;
+        margin_left: number;
+        margin_top: number;
+        margin_right: number;
+        margin_bottom: number;
+        orientation: PrintOrientation;
+    }
+    export class PrintFileTXT extends PrintFileDuplexable {
         textContent: string;
         textAligment: TextAlignment;
         fontName: string;
@@ -473,18 +592,26 @@ declare namespace JSPM {
         marginTop: number;
         marginBottom: number;
         constructor(fileContent: string, fileName: string, copies?: number, fileContentType?: FileSourceType);
-        serialize(): Promise<zip.Reader>;
+        getProperties(): IPrintFileTXTProperties;
+        getContent(): Promise<zip.Reader>;
     }
+    export {};
 }
 declare namespace JSPM {
-    class PrintFileXLS extends PrintFile {
+    interface IPrintFileXLSProperties extends IPrintFileProperties {
+        from_page: number;
+        to_page: number;
+        password: string;
+    }
+    export class PrintFileXLS extends PrintFile {
         encryptedPassword: string;
         pageFrom: number;
         pageTo: number;
         constructor(fileContent: any, fileContentType: FileSourceType, fileName: string, copies?: number);
-        private _getPropertiesJSON();
-        serialize(): Promise<zip.Reader>;
+        getProperties(): IPrintFileXLSProperties;
+        getContent(): Promise<zip.Reader>;
     }
+    export {};
 }
 declare namespace JSPM {
     class SerialComm {
@@ -498,23 +625,29 @@ declare namespace JSPM {
         private _flow_control;
         private _updated_values;
         SERIAL_TIMEOUT: number;
-        portName: string;
-        readonly isOpen: Boolean;
-        baudRate: number;
-        parity: Serial.Parity;
-        stopBits: Serial.StopBits;
-        dataBits: Serial.DataBits;
-        flowControl: Serial.Handshake;
-        readonly dsr: Promise<boolean>;
-        readonly cts: Promise<boolean>;
-        rts: boolean;
-        dtr: boolean;
+        get portName(): string;
+        set portName(value: string);
+        get isOpen(): Boolean;
+        get baudRate(): number;
+        set baudRate(value: number);
+        get parity(): Serial.Parity;
+        set parity(value: Serial.Parity);
+        get stopBits(): Serial.StopBits;
+        set stopBits(value: Serial.StopBits);
+        get dataBits(): Serial.DataBits;
+        set dataBits(value: Serial.DataBits);
+        get flowControl(): Serial.Handshake;
+        set flowControl(value: Serial.Handshake);
+        get dsr(): Promise<boolean>;
+        get cts(): Promise<boolean>;
+        set rts(value: boolean);
+        set dtr(value: boolean);
         constructor(portName: string, baudRate: number, parity: Serial.Parity, stopBits: Serial.StopBits, dataBits: Serial.DataBits, flowControl: Serial.Handshake);
         onError(data: any, critical: any): void;
         onDataReceived(data: any): void;
-        private _onDataReceived(data);
+        private _onDataReceived;
         onClose(data: any): void;
-        open(): Promise<{}>;
+        open(): Promise<unknown>;
         send(utf8string: string): void;
         close(): void;
         propertiesJSON(): {
@@ -523,7 +656,7 @@ declare namespace JSPM {
     }
 }
 declare namespace JSPM {
-    const VERSION = "3.0";
+    const VERSION = "4.0";
     class Mutex {
         private mutex;
         lock(): PromiseLike<() => void>;
