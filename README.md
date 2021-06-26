@@ -2,9 +2,9 @@
 
 ## Print Commands & Files, Manage Printers & Scan Docs from Javascript
 
-**[JSPrintManager](https://neodynamic.com/products/printing/js-print-manager)** is a **Javascript + Client App** solution for **Client-side Printing & Scanning** scenarios **designed to be used in any Website** developed on top of **any Web Platform like ASP.NET, PHP, Django, Ruby On Rails (RoR), Express.js and more!**
+**[JSPrintManager](https://neodynamic.com/products/printing/js-print-manager)** is a **Javascript + Client App** solution for **Client-side Printing & Scanning** scenarios **designed to be used in any Website** developed on top of **any Web Platform like ASP.NET, PHP, Django, Ruby On Rails (RoR), Express.js, Angular, React, Vue, Blazor and more!**
 
-By writing pure Javascript code, **JSPrintManager** allows you to _easily send raw data, text and native commands_ as well as _known file formats (like PDF, TXT, DOC, XLS, JPG, PNG)_ to any printer installed or available at the client machine *without showing or displaying any print dialog box!*
+By writing pure Javascript code, **JSPrintManager** allows you to _easily send raw data, text and native commands_ as well as _known file formats (like PDF, TIFF, TXT, DOC, XLS, JPG, PNG)_ to any printer installed or available at the client machine *without showing or displaying any print dialog box!*
 Scan Documents & Images is also supported!
 
 **[More details about JSPrintManager...](https://neodynamic.com/products/printing/js-print-manager)**
@@ -25,6 +25,9 @@ In addition to print raw commands, you can also use JSPrintManager solution to s
 
 ### Advanced XLS Printing
 [Print XLS files silently](https://neodynamic.com/articles/Silent-Print-Excel-Spreadsheet-XLS-pages-range-from-Javascript) with Advanced Printing settings including Password-protected files, Pages Range, and more! _Windows only, requires MS Excel 97+_
+
+### Advanced Multipage TIFF Printing
+Print Multipage TIFF image files silently with Advanced Printing settings including Tray Name, Paper Size, Print Rotation, Pages Range, Auto Rotate, Auto Center, Duplex, and more!
 
 ### Print Files With Password
 Print Password Protected PDF, DOC & XLS files! The password protected file is set at server side and the password to unlock it is encrypted and embedded into the file as part of its metadata.
