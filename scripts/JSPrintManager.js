@@ -1,5 +1,5 @@
 /*!
- * JSPrintManager v4.0.0
+ * JSPrintManager v4.0.1
  * https://neodynamic.com/products/printing/js-print-manager
  *
  * GitHub Repo 
@@ -13,7 +13,7 @@
  *
  * Copyright Neodynamic SRL
  * https://neodynamic.com
- * Date: 2021-06-25
+ * Date: 2021-08-19
  */
 var JSPM;
 (function (JSPM) {
@@ -294,7 +294,7 @@ var JSPM;
                     else {
                         if (!('cptable' in window)) {
                             throw "cptable.js and cputils.js files from " +
-                                "https://github.com/SheetJS/js-codepage" +
+                                "https://github.com/SheetJS/js-codepage " +
                                 "project are missing";
                         }
                         if (!('utils' in window['cptable'])) {
@@ -1320,6 +1320,7 @@ var JSPM;
         };
         JSPrintManager.stop = function () {
             this.WS.stop();
+            this.WS = null;
         };
         JSPrintManager._ses_cert = "";
         JSPrintManager.auto_reconnect = false;
