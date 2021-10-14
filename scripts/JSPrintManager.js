@@ -1,5 +1,5 @@
 /*!
- * JSPrintManager v4.0.1
+ * JSPrintManager v4.0.2
  * https://neodynamic.com/products/printing/js-print-manager
  *
  * GitHub Repo 
@@ -13,7 +13,7 @@
  *
  * Copyright Neodynamic SRL
  * https://neodynamic.com
- * Date: 2021-08-19
+ * Date: 2021-10-14
  */
 var JSPM;
 (function (JSPM) {
@@ -1344,6 +1344,9 @@ var JSPM;
             this.onClose = function (e) { };
             this.onOpen = function (e) { };
             this.onStatusChanged = function () { };
+            this.onError = function (e) {
+                throw e;
+            };
             this._addr = addr;
             this._port = port;
             this._secure = secure;
@@ -1398,7 +1401,7 @@ var JSPM;
                             json_data = JSON.parse(e.data);
                             job = this._job_list[json_data.id];
                             if (!job)
-                                throw "Job " + json_data.id + " doesn't exist";
+                                this.onError("Job " + json_data.id + " doesn't exist");
                             last = ('last' in json_data) ? json_data.last : false;
                             msg_type = ('type' in json_data) ? json_data.type : 'message';
                             data = ('data' in json_data) ? json_data.data : {};
@@ -1422,8 +1425,6 @@ var JSPM;
                                         job.on_update(data, job.first_update, last);
                                 }
                             }
-                            if (last)
-                                delete this._job_list[json_data.id];
                             return [3, 5];
                         case 3:
                             blob = e.data;
@@ -1434,7 +1435,7 @@ var JSPM;
                             data_blob = blob.slice(0, blob.size - 8);
                             job = this._job_list[id];
                             if (!job)
-                                throw "Job " + id + " doesn't exist";
+                                this.onError("Job " + id + " doesn't exist");
                             if (job.on_update && typeof (job.on_update === "function"))
                                 job.on_update(data_blob, job.first_update, false);
                             _a.label = 5;
@@ -1443,7 +1444,8 @@ var JSPM;
                             return [3, 8];
                         case 6:
                             err_1 = _a.sent();
-                            throw "Malformed message. Error: " + err_1 + " Message: " + e.data;
+                            this.onError("Malformed message. Error: " + err_1 + " Message: " + e.data);
+                            return [3, 8];
                         case 7:
                             unlock();
                             return [7];
@@ -1456,12 +1458,13 @@ var JSPM;
             try {
                 var json_data = JSON.parse(e);
                 var job = this._job_list[json_data.id];
-                if (!job)
-                    throw e;
-                job.on_error(e, true, true);
+                if (job)
+                    job.on_error(e, true, true);
+                else
+                    this.onError(e);
             }
             catch (_a) {
-                throw e;
+                this.onError(e);
             }
         };
         NDWS.prototype._pingPong = function () {
@@ -1685,12 +1688,7 @@ var JSPM;
                     case JSPM.FileSourceType.Base64:
                         {
                             try {
-                                var chars = atob(fileContent);
-                                var bytes = new Uint8Array(chars.length);
-                                for (var i = 0; i < chars.length; i++) {
-                                    bytes[i] = chars.charCodeAt(i);
-                                }
-                                ok(new Blob([bytes]));
+                                ok(new Blob([atob(fileContent)], { type: "text/plain;charset=utf-8" }));
                             }
                             catch (e) {
                                 err('Error trying to decode the base64 data.\n' + e);
@@ -1700,11 +1698,7 @@ var JSPM;
                     case JSPM.FileSourceType.Text:
                         {
                             try {
-                                var bytes = new Uint8Array(fileContent.length);
-                                for (var i = 0; i < fileContent.length; i++) {
-                                    bytes[i] = fileContent.charCodeAt(i);
-                                }
-                                ok(new Blob([bytes]));
+                                ok(new Blob([fileContent], { type: "text/plain;charset=utf-8" }));
                             }
                             catch (e) {
                                 err('Error trying to decode the text data.\n' + e);
