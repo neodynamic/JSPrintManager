@@ -6,10 +6,6 @@ export declare class ClientJob {
     sendToClient(): Promise<unknown>;
 }
 
-import { ClientJob } from "./ClientJob";
-import { IClientPrinter } from "./ClientPrinter";
-import { Encoding } from "./Enums";
-import { PrintFile } from "./PrintFile";
 export declare class ClientPrintJob extends ClientJob {
     private _clientPrinter;
     get clientPrinter(): IClientPrinter;
@@ -39,8 +35,6 @@ export declare class ClientPrintJob extends ClientJob {
     _generateDataAsync(): Promise<Blob>;
 }
 
-import { ClientJob } from "./ClientJob";
-import { ClientPrintJob } from "./ClientPrintJob";
 export declare class ClientPrintJobGroup extends ClientJob {
     _jobs: ClientPrintJob[];
     get jobs(): ClientPrintJob[];
@@ -48,7 +42,6 @@ export declare class ClientPrintJobGroup extends ClientJob {
     _generateDataAsync(): Promise<Blob>;
 }
 
-import { DuplexMode, Serial } from "./Enums";
 export interface IClientPrinter {
     Id: any;
     serialize(): any;
@@ -128,8 +121,6 @@ export declare class UserSelectedPrinter implements IClientPrinter {
     serialize(): string;
 }
 
-import { ClientJob } from "./ClientJob";
-import { PixelMode, ScannerImageFormatOutput } from "./Enums";
 export declare class ClientScanJob extends ClientJob {
     _type: string;
     _scannerName: string;
@@ -403,23 +394,7 @@ export declare module Serial {
     }
 }
 
-export { DefaultPrinter, InstalledPrinter, NetworkPrinter, ParallelPortPrinter, SerialPortPrinter, UserSelectedPrinter } from "./ClientPrinter";
-export { ClientPrintJob } from "./ClientPrintJob";
-export { ClientPrintJobGroup } from "./ClientPrintJobGroup";
-export { ClientScanJob } from "./ClientScanJob";
-export * from "./Enums";
-export { JSPrintManager } from "./JSPrintManager";
-export { PrintFile } from './PrintFile';
-export { PrintFileDOC } from './PrintFileDOC';
-export { PrintFileGroup } from './PrintFileGroup';
-export { PrintFilePDF } from './PrintFilePDF';
-export { PrintFileTIF } from './PrintFileTIF';
-export { PrintFileTXT } from './PrintFileTXT';
-export { PrintFileXLS } from './PrintFileXLS';
-export { SerialComm } from './SerialComm';
 
-import { PrintersInfoLevel, WSStatus } from "./Enums";
-import { NDWS } from "./NDWS";
 export declare class JSPrintManager {
     static WS: NDWS | undefined;
     static _ses_cert: string;
@@ -446,7 +421,6 @@ export declare class JSPrintManager {
     static onStatusChanged: () => void;
 }
 
-import { WSStatus } from "./Enums";
 export declare class NDWS {
     private _ws;
     private _addr;
@@ -477,7 +451,6 @@ export declare class NDWS {
     stop(): void;
 }
 
-import { PrintFileType, FileSourceType } from "./Enums";
 export interface IPrintFileProperties {
     file_type: PrintFileType;
     file_name: string | string[];
@@ -512,8 +485,6 @@ export declare class PrintFileDuplexable extends PrintFile {
     getContent(): Promise<Blob>;
 }
 
-import { FileSourceType } from "./Enums";
-import { IPrintFileDuplexableProperties, PrintFileDuplexable } from "./PrintFile";
 interface IPrintFileDOCProperties extends IPrintFileDuplexableProperties {
     password: string;
 }
@@ -522,9 +493,7 @@ export declare class PrintFileDOC extends PrintFileDuplexable {
     constructor(fileContent: any, fileContentType: FileSourceType, fileName: string, copies?: number);
     getProperties(): IPrintFileDOCProperties;
 }
-export {};
 
-import { IPrintFileDuplexableProperties, PrintFileDuplexable, PrintFile } from "./PrintFile";
 interface IPrintFileGroupProperties extends IPrintFileDuplexableProperties {
 }
 export declare class PrintFileGroup extends PrintFileDuplexable {
@@ -533,10 +502,7 @@ export declare class PrintFileGroup extends PrintFileDuplexable {
     getProperties(): IPrintFileGroupProperties;
     protected _getBLOBContent(): Promise<Blob>;
 }
-export {};
 
-import { PrintRotation, Sizing, FileSourceType } from "./Enums";
-import { IPrintFileDuplexableProperties, PrintFileDuplexable } from "./PrintFile";
 interface IPrintFilePDFProperties extends IPrintFileDuplexableProperties {
     grayscale: boolean;
     annotations: boolean;
@@ -557,10 +523,7 @@ export declare class PrintFilePDF extends PrintFileDuplexable {
     constructor(fileContent: any, fileContentType: FileSourceType, fileName: string, copies?: number);
     getProperties(): IPrintFilePDFProperties;
 }
-export {};
 
-import { PrintRotation, Sizing, FileSourceType } from "./Enums";
-import { IPrintFileDuplexableProperties, PrintFileDuplexable } from "./PrintFile";
 interface IPrintFileTIFProperties extends IPrintFileDuplexableProperties {
     grayscale: boolean;
     auto_rotate: boolean;
@@ -578,10 +541,7 @@ export declare class PrintFileTIF extends PrintFileDuplexable {
     isValidRange(range: string): boolean;
     getProperties(): IPrintFileTIFProperties;
 }
-export {};
 
-import { TextAlignment, PrintOrientation, FileSourceType } from "./Enums";
-import { IPrintFileDuplexableProperties, PrintFileDuplexable } from "./PrintFile";
 interface IPrintFileTXTProperties extends IPrintFileDuplexableProperties {
     alignment: TextAlignment;
     font_name: String;
@@ -615,10 +575,7 @@ export declare class PrintFileTXT extends PrintFileDuplexable {
     constructor(fileContent: string, fileName: string, copies?: number, fileContentType?: FileSourceType);
     getProperties(): IPrintFileTXTProperties;
 }
-export {};
 
-import { FileSourceType } from "./Enums";
-import { IPrintFileProperties, PrintFile } from "./PrintFile";
 interface IPrintFileXLSProperties extends IPrintFileProperties {
     from_page: number;
     to_page: number;
@@ -632,9 +589,7 @@ export declare class PrintFileXLS extends PrintFile {
     getProperties(): IPrintFileXLSProperties;
     getContent(): Promise<Blob>;
 }
-export {};
 
-import { Serial } from "./Enums";
 export declare class SerialComm {
     private _id;
     private _isOpen;
