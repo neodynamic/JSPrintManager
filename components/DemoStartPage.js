@@ -156,7 +156,17 @@
 
                 <br />
                 <div className="row">
-                    
+                    <div className="col-sm-4">
+                       <h2>
+                            <i className="fa fa-retweet iconDemo" />&nbsp;BIDI TCP Comm
+                        </h2>
+                        <p>
+                            Bidirectional TCP Communication support! <strong>Send/Write &amp; Receive/Read</strong> data strings to any <strong>TCP Address and port</strong> reachable from the client system.
+                        </p>
+                        <button className="btn btn-danger" onClick={() => this.props.setSample(15)}>
+                            TRY NOW
+                        </button>
+                    </div>
                     <div className="col-sm-4">
                         <h2>
                             <i className="fa fa-print iconDemo" />&nbsp;Get Printers Info
@@ -179,9 +189,7 @@
                             TRY NOW
                         </button>
                     </div>
-                    <div className="col-sm-4">
-                       
-                    </div>
+                    
                 </div>
 
                 <hr />

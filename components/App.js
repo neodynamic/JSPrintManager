@@ -3,6 +3,7 @@
         super(props);
         this.state = {
             JSPM_WS_Status: null,
+            JSPM_WS_Port: 0,
             printersInfo: null,
             DemoIndex: 0
         };
@@ -29,8 +30,17 @@
     }
 
     componentDidMount() {
+
+        var wlPort = (new URLSearchParams(window.location.search)).get('wlport');
+
+        if(wlPort == null) wlPort = 25443;
+
+        this.setState({
+            JSPM_WS_Port: wlPort
+        });
+
         JSPM.JSPrintManager.auto_reconnect = true;
-        JSPM.JSPrintManager.start();
+        JSPM.JSPrintManager.start(true, 'localhost', wlPort);
 
         JSPM.JSPrintManager.MainApp = this;
 
@@ -39,7 +49,7 @@
 
             JSPM.JSPrintManager.MainApp.printersInfoChanged(null);
             //get client installed printers with detailed info
-            JSPM.JSPrintManager.getPrintersInfo().then(function (printersList) {
+            JSPM.JSPrintManager.getPrintersInfo(JSPM.PrintersInfoLevel.Basic, '', JSPM.PrinterIcon.Large).then(function (printersList) {
                 JSPM.JSPrintManager.MainApp.printersInfoChanged(printersList);
             });
         };
@@ -110,6 +120,8 @@
                 demoContent = <PrintingTIFSample setSample={this.setDemoSample} printersInfo={this.state.printersInfo} />;
             } else if (this.state.DemoIndex == 14) {
                 demoContent = <PrintingFileGroupDuplexSample setSample={this.setDemoSample} printersInfo={this.state.printersInfo} />;
+            } else if (this.state.DemoIndex == 15) {
+                demoContent = <TcpBIDISample setSample={this.setDemoSample} />;
             }
         } else if (this.state.JSPM_WS_Status == "Closed") demoContent = <InstallJSPMClientApp />;
         else if (this.state.JSPM_WS_Status == "Blocked") demoContent = <WebsiteBlocked />;
@@ -133,7 +145,7 @@
                     <div className="container">
                         <a className="navbar-brand" href="//neodynamic.com/products/printing/js-print-manager" target="_blank">
                             <img alt="Neodynamic" src="//neodynamic.com/images/jspm-32.png" />
-                            &nbsp;&nbsp;JSPrintManager <span className="round">4.0</span>
+                            &nbsp;&nbsp;JSPrintManager <span className="round">5.0</span>
                         </a>
                         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon" />
@@ -141,10 +153,11 @@
 
                         <div className="collapse navbar-collapse" id="navbarsExampleDefault">
                             <div className="mr-auto" />
+                            <JSPMStatus JSPM_WS_Status={this.state.JSPM_WS_Status} JSPM_WS_Port={this.state.JSPM_WS_Port} />
+                            &nbsp;&nbsp;&nbsp;
                             <a href="https://github.com/neodynamic/JSPrintManager/" target="_blank" title="Download Source Code..." className="githubIcon">
                                 <i className="fa fa-github" />
                             </a>
-                            <JSPMStatus JSPM_WS_Status={this.state.JSPM_WS_Status} />
                         </div>
                     </div>
                 </nav>

@@ -41,13 +41,13 @@
                         .toLowerCase();
 
                     if (file_ext == "pdf") {
-                        my_file = new JSPM.PrintFilePDF(files[j], JSPM.FileSourceType.URL, "myFileToPrint." + file_ext, 1);
+                        my_file = new JSPM.PrintFilePDF(files[j], JSPM.FileSourceType.ExternalURL, "myFileToPrint." + file_ext, 1);
                     } else if (file_ext == "tif") {
-                        my_file = new JSPM.PrintFileTIF(files[j], JSPM.FileSourceType.URL, "myFileToPrint." + file_ext, 1);
+                        my_file = new JSPM.PrintFileTIF(files[j], JSPM.FileSourceType.ExternalURL, "myFileToPrint." + file_ext, 1);
                     } else if (file_ext == "txt") {
-                        my_file = new JSPM.PrintFileTXT(files[j], "myFileToPrint." + file_ext, 1, JSPM.FileSourceType.URL);
+                        my_file = new JSPM.PrintFileTXT(files[j], "myFileToPrint." + file_ext, 1, JSPM.FileSourceType.ExternalURL);
                     } else {
-                        my_file = new JSPM.PrintFile(files[j], JSPM.FileSourceType.URL, "myFileToPrint." + file_ext, 1);
+                        my_file = new JSPM.PrintFile(files[j], JSPM.FileSourceType.ExternalURL, "myFileToPrint." + file_ext, 1);
                     }
                 }
 

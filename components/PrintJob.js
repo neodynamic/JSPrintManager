@@ -27,7 +27,7 @@
                 let my_file;
 
                 if (files[j].name) my_file = new JSPM.PrintFile(files[j], JSPM.FileSourceType.BLOB, files[j].name, 1);
-                else my_file = new JSPM.PrintFile(files[j], JSPM.FileSourceType.URL, "myFileToPrint." + files[j].split(".").pop(), 1);
+                else my_file = new JSPM.PrintFile(files[j], JSPM.FileSourceType.ExternalURL, "myFileToPrint." + files[j].split(".").pop(), 1);
 
                 cpj.files.push(my_file);
             }

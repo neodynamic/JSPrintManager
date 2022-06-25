@@ -42,7 +42,7 @@
             let myTifFile;
 
             if (this.state.tifFile[0].name) myTifFile = new JSPM.PrintFileTIF(this.state.tifFile[0], JSPM.FileSourceType.BLOB, this.state.tifFile[0].name, 1);
-            else myTifFile = new JSPM.PrintFileTIF(this.state.tifFile[0], JSPM.FileSourceType.URL, "myFileToPrint.tif", 1);
+            else myTifFile = new JSPM.PrintFileTIF(this.state.tifFile[0], JSPM.FileSourceType.ExternalURL, "myFileToPrint.tif", 1);
 
             myTifFile.printAsGrayscale = this.state.printAsGrayscale;
             myTifFile.printInReverseOrder = this.state.printInReverseOrder;

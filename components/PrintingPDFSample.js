@@ -43,7 +43,7 @@
             let myPdfFile;
 
             if (this.state.pdfFile[0].name) myPdfFile = new JSPM.PrintFilePDF(this.state.pdfFile[0], JSPM.FileSourceType.BLOB, this.state.pdfFile[0].name, 1);
-            else myPdfFile = new JSPM.PrintFilePDF(this.state.pdfFile[0], JSPM.FileSourceType.URL, "myFileToPrint.pdf", 1);
+            else myPdfFile = new JSPM.PrintFilePDF(this.state.pdfFile[0], JSPM.FileSourceType.ExternalURL, "myFileToPrint.pdf", 1);
 
             myPdfFile.printAnnotations = this.state.printAnnotations;
             myPdfFile.printAsGrayscale = this.state.printAsGrayscale;

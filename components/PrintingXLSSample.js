@@ -32,7 +32,7 @@
             let myXlsFile;
 
             if (this.state.xlsFile[0].name) myXlsFile = new JSPM.PrintFileXLS(this.state.xlsFile[0], JSPM.FileSourceType.BLOB, this.state.xlsFile[0].name, 1);
-            else myXlsFile = new JSPM.PrintFileXLS(this.state.xlsFile[0], JSPM.FileSourceType.URL, "myFileToPrint.xls", 1);
+            else myXlsFile = new JSPM.PrintFileXLS(this.state.xlsFile[0], JSPM.FileSourceType.ExternalURL, "myFileToPrint.xls", 1);
 
             myXlsFile.pageFrom = parseInt(this.state.pageFrom);
             myXlsFile.pageTo = parseInt(this.state.pageTo);

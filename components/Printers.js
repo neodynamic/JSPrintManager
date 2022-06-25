@@ -46,6 +46,7 @@
             this.state.clientPrinter = new JSPM.UserSelectedPrinter();
         } else if (this.state.selectedPrinterIndex == 2) {
             this.state.clientPrinter = new JSPM.InstalledPrinter(this.state.printerName);
+            //this.state.clientPrinter.autoDetectRawModeDataType = true;
         } else if (this.state.selectedPrinterIndex == 3) {
             this.state.clientPrinter = new JSPM.NetworkPrinter(parseInt(this.state.printerNetworkPort), this.state.printerNetworkIp, this.state.printerNetworkDns);
         } else if (this.state.selectedPrinterIndex == 4) {

@@ -24,11 +24,11 @@
             let file_ext = this.state.printFileName.split(".").pop().toLowerCase();
 
             if (file_ext == "pdf") {
-                my_file = new JSPM.PrintFilePDF(this.state.printFileName, JSPM.FileSourceType.URL, "myFileToPrint." + file_ext, 1);
+                my_file = new JSPM.PrintFilePDF(this.state.printFileName, JSPM.FileSourceType.ExternalURL, "myFileToPrint." + file_ext, 1);
             } else if (file_ext == "doc") {
-                my_file = new JSPM.PrintFileDOC(this.state.printFileName, JSPM.FileSourceType.URL, "myFileToPrint." + file_ext, 1);
+                my_file = new JSPM.PrintFileDOC(this.state.printFileName, JSPM.FileSourceType.ExternalURL, "myFileToPrint." + file_ext, 1);
             } else {
-                my_file = new JSPM.PrintFileXLS(this.state.printFileName, JSPM.FileSourceType.URL, "myFileToPrint." + file_ext, 1);
+                my_file = new JSPM.PrintFileXLS(this.state.printFileName, JSPM.FileSourceType.ExternalURL, "myFileToPrint." + file_ext, 1);
             }
 
             my_file.encryptedPassword = this.state.password;
@@ -69,22 +69,6 @@
             .then((data) => {req.send(JSON.stringify({ Certificate: data.certificate }));})
             .catch(err => console.log(err));
         
-
-        /*
-        fetch("/GetEncryptPassword.ashx", {
-            body: JSON.stringify({ Certificate: JSPM.JSPrintManager.session_certificate }),
-            headers: {
-                "content-type": "application/json"
-            },
-            method: "POST"
-        }).then((res) => {
-            res.text().then((data) => {
-                this.setState({
-                    password: data
-                });
-            });
-        });
-        */
 
     }
 

@@ -71,7 +71,7 @@
                 if (this.state.txtFile[0].name)
                     myTxtFile = new JSPM.PrintFileTXT(this.state.txtFile[0], this.state.txtFile[0].name, 1, JSPM.FileSourceType.BLOB);
                 else
-                    myTxtFile = new JSPM.PrintFileTXT(this.state.txtFile[0], "myFileToPrint.txt", 1, JSPM.FileSourceType.URL);
+                    myTxtFile = new JSPM.PrintFileTXT(this.state.txtFile[0], "myFileToPrint.txt", 1, JSPM.FileSourceType.ExternalURL);
             } else {
                 // plain text content
                 myTxtFile = new JSPM.PrintFileTXT(this.state.txtContent, "myFileToPrint.txt", 1);
@@ -231,7 +231,7 @@
                                     <div className="tab-content" id="myTabTxtContent">
                                         <div className="tab-pane fade show active" id="plain-txt" role="tabpanel" aria-labelledby="plain-txt">
                                             <br />
-                                            <textarea className="form-control form-control-sm" name="txtContent" onChange={this.setData.bind(this)} value="Type or copy/paste text here..." />
+                                            <textarea className="form-control form-control-sm" name="txtContent" onChange={this.setData.bind(this)} defaultValue="Type or copy/paste text here..." />
                                         </div>
                                         <div className="tab-pane fade" id="local-txt-file" role="tabpanel" aria-labelledby="local-txt-file">
                                             <br />

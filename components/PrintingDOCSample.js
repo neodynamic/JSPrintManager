@@ -34,7 +34,7 @@
             let myDocFile;
 
             if (this.state.docFile[0].name) myDocFile = new JSPM.PrintFileDOC(this.state.docFile[0], JSPM.FileSourceType.BLOB, this.state.docFile[0].name, 1);
-            else myDocFile = new JSPM.PrintFileDOC(this.state.docFile[0], JSPM.FileSourceType.URL, "myFileToPrint.doc", 1);
+            else myDocFile = new JSPM.PrintFileDOC(this.state.docFile[0], JSPM.FileSourceType.ExternalURL, "myFileToPrint.doc", 1);
 
             myDocFile.printInReverseOrder = this.state.printInReverseOrder;
             myDocFile.printRange = this.state.printRange;
