@@ -57,6 +57,7 @@ export declare class InstalledPrinter implements IClientPrinter {
     private _tray;
     private _paper;
     private _duplex;
+    private _autoDetectRawModeDataType;
     private bool2str;
     get printerName(): string;
     set printerName(value: string);
@@ -68,7 +69,9 @@ export declare class InstalledPrinter implements IClientPrinter {
     set paperName(value: string);
     get duplex(): DuplexMode;
     set duplex(value: DuplexMode);
-    constructor(printerName: string, printToDefaultIfNotFound?: boolean, trayName?: string, paperName?: string, duplex?: DuplexMode);
+    get autoDetectRawModeDataType(): boolean;
+    set autoDetectRawModeDataType(value: boolean);
+    constructor(printerName: string, printToDefaultIfNotFound?: boolean, trayName?: string, paperName?: string, duplex?: DuplexMode, autoDetectRawModeDataType?: boolean);
     serialize(): string;
 }
 export declare class ParallelPortPrinter implements IClientPrinter {
@@ -130,6 +133,10 @@ export declare class ClientScanJob extends ClientJob {
     _enableDuplex: boolean;
     _enableFeeder: boolean;
     _feederCount: number;
+    _jpgCompressionQuality: number;
+    _threshold: number;
+    _dither: Dither;
+    _pdfTitle: string;
     get scannerName(): string;
     set scannerName(val: string);
     get pixelMode(): PixelMode;
@@ -144,6 +151,14 @@ export declare class ClientScanJob extends ClientJob {
     set enableFeeder(val: boolean);
     get feederCount(): number;
     set feederCount(val: number);
+    get jpgCompressionQuality(): number;
+    set jpgCompressionQuality(val: number);
+    get threshold(): number;
+    set threshold(val: number);
+    get dither(): Dither;
+    set dither(val: Dither);
+    get pdfTitle(): string;
+    set pdfTitle(val: string);
     onFinished(data: any): void;
     onError(data: any, is_critical: any): void;
     onUpdate(data: any, last: any): void;
@@ -332,17 +347,21 @@ export declare enum Sizing {
 }
 export declare enum ScannerImageFormatOutput {
     JPG = 0,
-    PNG = 1
+    PNG = 1,
+    TIFF = 2,
+    PDF = 3
 }
 export declare enum PixelMode {
     Grayscale = 0,
-    Color = 1
+    Color = 1,
+    BlackAndWhite = 2
 }
 export declare enum FileSourceType {
     Base64 = 0,
     Text = 1,
     BLOB = 2,
-    URL = 3
+    URL = 3,
+    ExternalURL = 4
 }
 export declare enum WSStatus {
     Open = 0,
@@ -393,12 +412,26 @@ export declare module Serial {
         XOnXOff = 3
     }
 }
+export declare enum PrinterIcon {
+    None = 0,
+    Small = 1,
+    Large = 2,
+    ExtraLarge = 3,
+    Jumbo = 4
+}
+export declare enum Dither {
+    Threshold = 0,
+    FloydSteinberg = 1,
+    Bayer4x4 = 2,
+    Bayer8x8 = 3,
+    Cluster6x6 = 4,
+    Cluster8x8 = 5,
+    Cluster16x16 = 6
+}
 
 
 export declare class JSPrintManager {
     static WS: NDWS | undefined;
-    static _ses_cert: string;
-    static get session_certificate(): string;
     static auto_reconnect: boolean;
     private static _license;
     static start(secure?: boolean, host?: string, port?: number): Promise<void>;
@@ -406,7 +439,7 @@ export declare class JSPrintManager {
     static set license_url(value: string);
     static getPrinters(): Promise<unknown>;
     static getSessionCertificate(): Promise<unknown>;
-    static getPrintersInfo(detail_level?: PrintersInfoLevel, printer_name?: string): Promise<unknown>;
+    static getPrintersInfo(detail_level: PrintersInfoLevel, printer_name: string, printer_icon: PrinterIcon.None): Promise<unknown>;
     static get websocket_status(): WSStatus.Open | WSStatus;
     static showAbout(): Promise<any>;
     static updateClient(): Promise<any>;
@@ -418,7 +451,13 @@ export declare class JSPrintManager {
     static onPrinterDeleted(callback: any, error: any, detail_level?: PrintersInfoLevel): string;
     static unsubscribePrinterEvent(id: any): Promise<unknown>;
     static stop(): void;
-    static onStatusChanged: () => void;
+    static getClientAppInfo(secure?: boolean, host?: string, port?: number): Promise<unknown>;
+    static getMAC(): Promise<any>;
+    static getDefaultPaperName(printer_name: string): Promise<any>;
+    static getDefaultTrayName(printer_name: string): Promise<any>;
+    static getPaperInfo(printer_name: string, paper_name: string): Promise<any>;
+    static getPapers(printer_name: string): Promise<any>;
+    static getTrays(printer_name: string): Promise<any>;
 }
 
 export declare class NDWS {
@@ -454,6 +493,7 @@ export declare class NDWS {
 export interface IPrintFileProperties {
     file_type: PrintFileType;
     file_name: string | string[];
+    file_content_type: FileSourceType;
     copies: number;
 }
 export interface IPrintFileDuplexableProperties extends IPrintFileProperties {
@@ -631,7 +671,30 @@ export declare class SerialComm {
     };
 }
 
-export declare const VERSION = "4.0";
+export declare class TcpComm {
+    private _id;
+    private _address;
+    private _port;
+    private _timeout;
+    private _receiveBufferSize;
+    get timeout(): number;
+    set timeout(value: number);
+    get receiveBufferSize(): number;
+    set receiveBufferSize(value: number);
+    constructor(address: string, port: number);
+    onError(data: any, critical: any): void;
+    onDataReceived(data: any): void;
+    private _onDataReceived;
+    onClose(data: any): void;
+    connect(): Promise<unknown>;
+    send(utf8string: string): void;
+    close(): void;
+    propertiesJSON(): {
+        type: string;
+    };
+}
+
+export declare const VERSION = "5.0";
 export declare class Mutex {
     private mutex;
     lock(): PromiseLike<() => void>;
