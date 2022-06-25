@@ -33,13 +33,16 @@ Print Multipage TIFF image files silently with Advanced Printing settings includ
 Print Password Protected PDF, DOC & XLS files! The password protected file is set at server side and the password to unlock it is encrypted and embedded into the file as part of its metadata.
 
 ### Web Scan Docs & Images
-[Scan docs & images through any TWAIN/WIA/SANE-compatible devices](https://neodynamic.com/articles/How-to-scan-documents-images-from-Javascript) specifying settings like DPI Resolution, Pixel Mode (Grayscale, Color), and Output Image Format (JPG, PNG)!
+[Scan docs & images through any TWAIN/WIA/SANE-compatible devices](https://neodynamic.com/articles/How-to-scan-documents-images-from-Javascript) specifying settings like DPI Resolution, Pixel Mode (Grayscale, Color, Black & White), and Output Image Format (JPG, PNG, TIF & PDF)! Under **Windows**, Duplex & Feeder (ADF) features are also supported!
 
 ### Tray/Bin & Paper Size
 If the printer is installed in the client system through a Printer Driver, then you can specify to which Tray Name to send the print job and specify a Paper Size if desired. The file formats supported by this feature are PDF, JPEG, PNG, BMP & TXT
 
 ### BIDI Serial Comm
 [Bidirectional Serial Port Communication support!](https://neodynamic.com/articles/How-to-send-write-receive-read-bidi-serial-port-data-from-Javascript) Send/Write & Receive/Read data strings to any RS-232, COM & TTY port available on the client system.
+
+### BIDI TCP/IP Comm
+Bidirectional TCP/IP Communication support! Send/Write & Receive/Read data to any TCP Address and port reachable from the client system. The Address requires to be in the client's allow list!
 
 ### Get Printers Info & Status
 Besides getting the list of installed printers available in the client machine, you can also get further details like DPI Resolution, PortName, "Is Connected", "Is Shared", "Is Local", "Is Network", "Is Virtual or Real/Physical printer?", as well as the list of supported Papers and list of trays/bins!
