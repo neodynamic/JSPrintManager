@@ -1,4 +1,4 @@
-﻿class PrintingPDFSample extends React.Component {
+class PrintingPDFSample extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -16,7 +16,8 @@
             manualDuplex: false,
             driverDuplex: false,
             printAutoRotate: false,
-            printAutoCenter: false
+            printAutoCenter: false,
+            duplexOption: "Default"
         };
     }
 
@@ -32,7 +33,7 @@
     }
 
     setData(event) {
-        this.state[event.target.name] = event.target.checked ? event.target.checked : event.target.value;
+        this.setState({[event.target.name] : event.target.checked ? event.target.checked : event.target.value});
     }
 
     createPrintJob() {
@@ -54,7 +55,7 @@
             if (this.state.manualDuplex === true) {
                 myPdfFile.manualDuplex = this.state.manualDuplex;
             } else if (this.state.driverDuplex === true && this.props.printersInfo[this.state.selectedPrinterIndex].duplex === true) {
-                cpj.clientPrinter.duplex = JSPM.DuplexMode.Default;
+                cpj.clientPrinter.duplex = JSPM.DuplexMode[this.state.duplexOption];
             }
             myPdfFile.printAutoRotate = this.state.printAutoRotate;
             myPdfFile.printAutoCenter = this.state.printAutoCenter;
@@ -97,7 +98,20 @@
                     : {
                           textDecoration: "line-through",
                           color: "red"
-                      };
+                    };
+
+            let duplexOptions;
+            if (selPrinter.duplex === true && this.state.driverDuplex === true){
+                duplexOptions = (
+                                    <select className="form-control form-control-sm" name="duplexOption" onChange={this.setData.bind(this)}>
+                                        <option>Default</option>
+                                        <option>Simplex</option>
+                                        <option>DuplexLongEdge</option>
+                                        <option>DuplexShortEdge</option>
+                                    </select>
+                                 );
+            }
+
 
             demoContent = (
                 <div className="row">
@@ -224,6 +238,7 @@
                                         <label className="custom-control-label" htmlFor="driverDuplex" style={driverDuplexStyle}>
                                             Use Driver Duplex Printing
                                         </label>
+                                            {duplexOptions}
                                     </div>
                                     <div className="custom-control custom-switch">
                                         <input type="checkbox" className="custom-control-input" id="manualDuplex" name="manualDuplex" onChange={this.setData.bind(this)} />
