@@ -1,4 +1,4 @@
-﻿class DemoStartPage extends React.Component {
+class DemoStartPage extends React.Component {
     render() {
         return (
             <div>
@@ -194,14 +194,25 @@
 
                 <hr />
                 <div className="row">
-                    <div className="col-sm-12">
+                    <div className="col-sm-6">
                         <h2>
                             <i className="fa fa-mixcloud iconDemo" />&nbsp;Print from Mobile &amp; Sandboxed Devices
                         </h2>
                         <p>
-                            Printing from clients such as <strong>mobile/sandboxed devices (running iOS, Android, ChromeOS...)</strong> and <strong>Terminal Services/Citrix environments</strong> is possible with <strong>JSPrintManager in Print Server Mode</strong>,
+                            Printing from clients such as <strong>mobile/sandboxed devices (running iOS, Android, ChromeOS...)</strong> and <strong>Terminal Services/Citrix environments</strong> is possible with <strong>JSPrintManager in Print Server Mode</strong>
                         </p>
                         <a className="btn btn-danger" href="https://www.neodynamic.com/articles/How-to-print-raw-commands-pdf-files-from-iOS-Android-ChromeOS-sandboxed-devices-from-Javascript" target="_blank">
+                            Learn how to do it...
+                        </a>
+                    </div>
+                    <div className="col-sm-6">
+                        <h2>
+                            <i className="fa fa-users iconDemo" />&nbsp;Multi-users Scenario
+                        </h2>
+                        <p>
+                            If the client machine runs multiple user sessions simultaneously, printing through JSPrintManager is possible but requires some special considerations. Take a look at the following sample by testing it in a client machine under that scenario. 
+                        </p>
+                        <a className="btn btn-danger" href="multiusers.html" target="_blank">
                             Learn how to do it...
                         </a>
                     </div>
