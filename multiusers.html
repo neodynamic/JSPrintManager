@@ -1,0 +1,117 @@
+﻿<!XLSTYPE html>
+<html>
+
+<head>
+    <title>JSPrintManager Multi-users Scenario</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4">
+            <div style="text-align:center">
+                <h1>Multi-users Scenario</h1>
+                <div class="alert alert-warning">
+                    <small>
+                        If you're viewing this page from a multi-user sessions machine then all the different users running an instance of the JSPrintManager App should be listed. To get the printers for <strong>your current user name</strong> then please select it from the list and click on the below button.
+                    </small>
+                </div>
+                <fieldset>
+                    <legend><strong>Users running JSPM App instances</strong></legend>
+                    <select id="usersList" class="form-control"></select>
+                    <br />
+                    <button class="btn btn-info" onclick="doGetPrintersByUser();">Get user printers...</button>
+                </fieldset>
+
+                <br /><br />
+                <fieldset>
+                    <legend><strong>User Printers</strong></legend>
+                    <select id="printerName" class="form-control"></select>
+                </fieldset>
+
+            </div>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+    <script src="scripts/JSPrintManager.js"></script>
+
+    <script>
+
+        var jspmAppInstances = null;
+        var clientPrinters = null;
+        
+        $(function () {
+            // get current JSPM Instances
+            JSPM.JSPrintManager.getInstances().then(function (data) {
+
+                /*
+
+                { "instances" : [{ "user" : "mike", "port" : 25443 }, { "user" : "john", "port" : 61111 }, ...] }
+
+                */
+
+                if (data) {
+                    var j = JSON.parse(data);
+                    if (j.instances) {
+                        jspmAppInstances = j.instances;
+                        var options = '';
+                        for (var i = 0; i < jspmAppInstances.length; i++) {
+                            options += '<option value="' + jspmAppInstances[i].port + '">' + jspmAppInstances[i].user + '</option>';
+                        }
+                        $('#usersList').html(options);
+                    }
+                }
+
+            }).catch((m) => console.error(m))
+
+        });
+
+
+        function doGetPrintersByUser() {
+            // get user instance port
+            var port = parseInt($('#usersList').val());
+            // connect to that instance!
+            JSPM.JSPrintManager.start(true, 'localhost', port);
+            JSPM.JSPrintManager.WS.onStatusChanged = function () {
+                if (jspmWSStatus()) {
+                    //get client installed printers
+                    JSPM.JSPrintManager.getPrinters().then(function (printersList) {
+                        clientPrinters = printersList;
+                        var options = '';
+                        for (var i = 0; i < clientPrinters.length; i++) {
+                            options += '<option>' + clientPrinters[i] + '</option>';
+                        }
+                        $('#printerName').html(options);
+                    });
+                }
+            };
+        }
+
+        //Check JSPM WebSocket status
+        function jspmWSStatus() {
+            if (JSPM.JSPrintManager.websocket_status == JSPM.WSStatus.Open)
+                return true;
+            else if (JSPM.JSPrintManager.websocket_status == JSPM.WSStatus.Closed) {
+                console.warn('JSPrintManager (JSPM) is not installed or not running! Download JSPM Client App from https://neodynamic.com/downloads/jspm');
+                return false;
+            }
+            else if (JSPM.JSPrintManager.websocket_status == JSPM.WSStatus.Blocked) {
+                console.error('JSPM has blocked this website!');
+                return false;
+            }
+        }
+
+    </script>
+</body>
+
+</html>
