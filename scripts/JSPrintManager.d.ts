@@ -458,6 +458,8 @@ export declare class JSPrintManager {
     static getPaperInfo(printer_name: string, paper_name: string): Promise<any>;
     static getPapers(printer_name: string): Promise<any>;
     static getTrays(printer_name: string): Promise<any>;
+    static getInstances(secure?: boolean, host?: string, port?: number): Promise<unknown>;
+    static getUser(): Promise<any>;
 }
 
 export declare class NDWS {
