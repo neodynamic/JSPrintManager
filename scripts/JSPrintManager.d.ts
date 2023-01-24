@@ -58,6 +58,7 @@ export declare class InstalledPrinter implements IClientPrinter {
     private _paper;
     private _duplex;
     private _autoDetectRawModeDataType;
+    private _driverModel;
     private bool2str;
     get printerName(): string;
     set printerName(value: string);
@@ -71,7 +72,9 @@ export declare class InstalledPrinter implements IClientPrinter {
     set duplex(value: DuplexMode);
     get autoDetectRawModeDataType(): boolean;
     set autoDetectRawModeDataType(value: boolean);
-    constructor(printerName: string, printToDefaultIfNotFound?: boolean, trayName?: string, paperName?: string, duplex?: DuplexMode, autoDetectRawModeDataType?: boolean);
+    get driverModel(): number;
+    set driverModel(value: number);
+    constructor(printerName: string, printToDefaultIfNotFound?: boolean, trayName?: string, paperName?: string, duplex?: DuplexMode, autoDetectRawModeDataType?: boolean, driverModel?: number);
     serialize(): string;
 }
 export declare class ParallelPortPrinter implements IClientPrinter {
@@ -697,6 +700,7 @@ export declare class TcpComm {
 }
 
 export declare const VERSION = "5.0";
+export declare const WSPORT = 25443;
 export declare class Mutex {
     private mutex;
     lock(): PromiseLike<() => void>;
