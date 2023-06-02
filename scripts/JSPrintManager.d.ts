@@ -1,3 +1,26 @@
+export declare class BTComm {
+    private _id;
+    private _address;
+    private _channel;
+    private _timeout;
+    private _receiveBufferSize;
+    get timeout(): number;
+    set timeout(value: number);
+    get receiveBufferSize(): number;
+    set receiveBufferSize(value: number);
+    constructor(address: string, channel: number);
+    onError(data: any, critical: any): void;
+    onDataReceived(data: any): void;
+    private _onDataReceived;
+    onClose(data: any): void;
+    connect(): Promise<unknown>;
+    send(utf8string: string): void;
+    close(): void;
+    propertiesJSON(): {
+        type: string;
+    };
+}
+
 export declare class ClientJob {
     _type: string;
     protected _generateDataAsync(): Promise<Blob | string>;
@@ -59,6 +82,7 @@ export declare class InstalledPrinter implements IClientPrinter {
     private _duplex;
     private _autoDetectRawModeDataType;
     private _driverModel;
+    private _mediaType;
     private bool2str;
     get printerName(): string;
     set printerName(value: string);
@@ -74,7 +98,9 @@ export declare class InstalledPrinter implements IClientPrinter {
     set autoDetectRawModeDataType(value: boolean);
     get driverModel(): number;
     set driverModel(value: number);
-    constructor(printerName: string, printToDefaultIfNotFound?: boolean, trayName?: string, paperName?: string, duplex?: DuplexMode, autoDetectRawModeDataType?: boolean, driverModel?: number);
+    get mediaType(): string;
+    set mediaType(value: string);
+    constructor(printerName: string, printToDefaultIfNotFound?: boolean, trayName?: string, paperName?: string, duplex?: DuplexMode, autoDetectRawModeDataType?: boolean, driverModel?: number, mediaType?: string);
     serialize(): string;
 }
 export declare class ParallelPortPrinter implements IClientPrinter {
@@ -126,6 +152,17 @@ export declare class UserSelectedPrinter implements IClientPrinter {
     Id: number;
     serialize(): string;
 }
+export declare class BluetoothPrinter implements IClientPrinter {
+    Id: number;
+    private _address;
+    private _channel;
+    get address(): string;
+    set address(value: string);
+    get channel(): number;
+    set channel(value: number);
+    constructor(address: string, channel: number);
+    serialize(): string;
+}
 
 export declare class ClientScanJob extends ClientJob {
     _type: string;
@@ -140,6 +177,7 @@ export declare class ClientScanJob extends ClientJob {
     _threshold: number;
     _dither: Dither;
     _pdfTitle: string;
+    _showUI: boolean;
     get scannerName(): string;
     set scannerName(val: string);
     get pixelMode(): PixelMode;
@@ -162,6 +200,8 @@ export declare class ClientScanJob extends ClientJob {
     set dither(val: Dither);
     get pdfTitle(): string;
     set pdfTitle(val: string);
+    get showUI(): boolean;
+    set showUI(val: boolean);
     onFinished(data: any): void;
     onError(data: any, is_critical: any): void;
     onUpdate(data: any, last: any): void;
@@ -452,6 +492,7 @@ export declare class JSPrintManager {
     static onPrinterCreated(callback: any, error: any, detail_level?: PrintersInfoLevel): string;
     static onPrinterUpdated(callback: any, error: any, detail_level?: PrintersInfoLevel): string;
     static onPrinterDeleted(callback: any, error: any, detail_level?: PrintersInfoLevel): string;
+    static refreshPrinters(): Promise<any>;
     static unsubscribePrinterEvent(id: any): Promise<unknown>;
     static stop(): void;
     static getClientAppInfo(secure?: boolean, host?: string, port?: number): Promise<unknown>;
@@ -463,6 +504,8 @@ export declare class JSPrintManager {
     static getTrays(printer_name: string): Promise<any>;
     static getInstances(secure?: boolean, host?: string, port?: number): Promise<unknown>;
     static getUser(): Promise<any>;
+    static getBluetoothDevices(): Promise<any>;
+    static getMediaTypes(printer_name: string): Promise<any>;
 }
 
 export declare class NDWS {
@@ -556,6 +599,7 @@ interface IPrintFilePDFProperties extends IPrintFileDuplexableProperties {
     password: string;
     rotation: PrintRotation;
     sizing: Sizing;
+    scale: number;
 }
 export declare class PrintFilePDF extends PrintFileDuplexable {
     pageSizing: Sizing;
@@ -565,6 +609,7 @@ export declare class PrintFilePDF extends PrintFileDuplexable {
     printAsGrayscale: boolean;
     printAnnotations: boolean;
     printRotation: PrintRotation;
+    printScale: number;
     constructor(fileContent: any, fileContentType: FileSourceType, fileName: string, copies?: number);
     getProperties(): IPrintFilePDFProperties;
 }
@@ -699,8 +744,8 @@ export declare class TcpComm {
     };
 }
 
-export declare const VERSION = "5.0";
-export declare const WSPORT = 25443;
+export declare const VERSION = "6.0";
+export declare const WSPORT = 26443;
 export declare class Mutex {
     private mutex;
     lock(): PromiseLike<() => void>;
