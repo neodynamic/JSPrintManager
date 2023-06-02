@@ -15,6 +15,7 @@
             enableDuplex: false,
             enableFeeder: false,
             feederCount: 0,
+            showUI: false,
             scanningState: 0, // 0 = finished, 1 = scanning, 2 = error
             error: "",
             scannedImages: [],
@@ -69,6 +70,7 @@
         csj.feederCount = parseInt(this.state.feederCount);
         csj.jpgCompressionQuality = parseInt(this.state.jpgQuality);
         csj.pdfTitle = this.state.pdfTitle;
+        csj.showUI = this.state.showUI;
 
         let _this = this;
 
@@ -310,6 +312,14 @@
                 );
             }
 
+            let imageFormats;
+
+            if (bwDither){
+                imageFormats = (<select className="form-control form-control-sm" name="imageFormat" onChange={this.setImageFormat.bind(this)}><option>PNG</option><option>TIFF</option></select>);
+            } else {
+                imageFormats = (<div><select className="form-control form-control-sm" name="imageFormat" onChange={this.setImageFormat.bind(this)}><option>JPG</option><option>PNG</option><option>TIFF</option><option>PDF</option></select>{jpgQuality}{pdfTitle}</div>);
+            }
+    
             demoContent = (
                 <div className="row">
                     <div className="col-md-12">
@@ -344,14 +354,7 @@
                                 </div>
                                 <div className="col-md-2">
                                     <label>Image Format:</label>
-                                    <select className="form-control form-control-sm" name="imageFormat" onChange={this.setImageFormat.bind(this)}>
-                                        <option>JPG</option>
-                                        <option>PNG</option>
-                                        <option>TIFF</option>
-                                        <option>PDF</option>
-                                    </select>
-                                    {jpgQuality}
-                                    {pdfTitle}
+                                    {imageFormats}                                    
                                 </div>
                                 <div className="col-md-3">
                                     <span className="badge badge-info">Windows Only</span>
@@ -373,6 +376,12 @@
                                         <span className="input-group-text" id="basic-addon1">Feeder Count:</span>
                                       </div>
                                        <input type="number" name="feederCount" className="form-control" aria-label="Feeder Count" aria-describedby="basic-addon1" onChange={this.setData.bind(this)} placeholder="0" step="1" min="0" max="100"/>
+                                    </div>
+                                    <div className="custom-control custom-switch">
+                                        <input type="checkbox" className="custom-control-input" id="showUI" name="showUI" onChange={this.setData.bind(this)} />
+                                        <label className="custom-control-label" htmlFor="showUI">
+                                            Show UI
+                                        </label>
                                     </div>
                                 </div>
                             </div>

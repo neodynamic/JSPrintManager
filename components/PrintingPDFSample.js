@@ -1,4 +1,4 @@
-class PrintingPDFSample extends React.Component {
+﻿class PrintingPDFSample extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -17,7 +17,8 @@ class PrintingPDFSample extends React.Component {
             driverDuplex: false,
             printAutoRotate: false,
             printAutoCenter: false,
-            duplexOption: "Default"
+            duplexOption: "Default",
+            printScale: 100
         };
     }
 
@@ -34,6 +35,10 @@ class PrintingPDFSample extends React.Component {
 
     setData(event) {
         this.setState({[event.target.name] : event.target.checked ? event.target.checked : event.target.value});
+    }
+
+    setCustomPaper(event){
+        this.setState({"printerPaperName" : event.target.value});
     }
 
     createPrintJob() {
@@ -59,6 +64,7 @@ class PrintingPDFSample extends React.Component {
             }
             myPdfFile.printAutoRotate = this.state.printAutoRotate;
             myPdfFile.printAutoCenter = this.state.printAutoCenter;
+            myPdfFile.printScale = parseInt(this.state.printScale);
 
             cpj.files.push(myPdfFile);
         }
@@ -112,6 +118,37 @@ class PrintingPDFSample extends React.Component {
                                  );
             }
 
+            let printScaleOption;
+            if (this.state.pageSizing == "None"){
+                printScaleOption = (<div className="input-group input-group-sm mb-3">
+                                        <div className="input-group-prepend">
+                                        <span className="input-group-text" id="basic-addon1">Scale:</span>
+                                        </div>
+                                        <input type="number" name="printScale" className="form-control" aria-label="Scale" aria-describedby="basic-addon1" onChange={this.setData.bind(this)} placeholder="100" step="1" min="1" max="300" />
+                                    </div> 
+                );
+            }
+
+            let customPaperOption;
+            if (selPrinter.customPaperSupport){
+                customPaperOption = (<div><span><strong>or</strong></span><br/>
+                                     <div className="input-group input-group-sm mb-3">
+                                        <div className="input-group-prepend">
+                                        <span className="input-group-text" id="basic-addon1">Custom Paper:</span>
+                </div>
+                <input type="text" name="printScale" className="form-control" aria-label="Custom Paper" aria-describedby="basic-addon1" onChange={this.setCustomPaper.bind(this)} placeholder="Custom.WIDTHxHEIGHTin" />
+                <small>
+                <div className="alert alert-warning">
+                <strong>Valid formats:</strong><br/>
+                Custom.WIDTHxHEIGHTin<br/>
+                Custom.WIDTHxHEIGHTcm<br/>
+                Custom.WIDTHxHEIGHTmm
+                </div>
+                </small>                
+            </div> 
+            </div>
+                );
+            }
 
             demoContent = (
                 <div className="row">
@@ -200,106 +237,107 @@ class PrintingPDFSample extends React.Component {
                                             return opt;
                                         })}
                                     </select>
+                                    {customPaperOption}
                                 </div>
                                 <div className="col-md-3">
                                     <label>Print Rotation (Clockwise):</label>
-                                    <select className="form-control form-control-sm" name="printRotation" onChange={this.setData.bind(this)}>
-                                        <option>None</option>
-                                        <option>Rot90</option>
-                                        <option>Rot180</option>
-                                        <option>Rot270</option>
-                                    </select>
+                                        <select className="form-control form-control-sm" name="printRotation" onChange={this.setData.bind(this)}>
+                                            <option>None</option>
+                                            <option>Rot90</option>
+                                            <option>Rot180</option>
+                                            <option>Rot270</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <br />
+                                <br />
 
-                            <div className="row">
-                                <div className="col-md-3">
-                                    <label>Pages Range: [e.g. 1,2,3,10-13]</label>
-                                    <input type="text" className="form-control form-control-sm" name="printRange" onChange={this.setData.bind(this)} />
-                                </div>
-                                <div className="col-md-3">
-                                    <div className="custom-control custom-switch">
-                                        <input type="checkbox" className="custom-control-input" id="printAutoCenter" name="printAutoCenter" onChange={this.setData.bind(this)} />
-                                        <label className="custom-control-label" htmlFor="printAutoCenter">
-                                            Auto Center
-                                        </label>
+                                <div className="row">
+                                    <div className="col-md-3">
+                                        <label>Pages Range: [e.g. 1,2,3,10-13]</label>
+                                        <input type="text" className="form-control form-control-sm" name="printRange" onChange={this.setData.bind(this)} />
                                     </div>
-                                    <div className="custom-control custom-switch">
-                                        <input type="checkbox" className="custom-control-input" id="printAutoRotate" name="printAutoRotate" onChange={this.setData.bind(this)} />
-                                        <label className="custom-control-label" htmlFor="printAutoRotate">
-                                            Auto Rotate
-                                        </label>
+                                    <div className="col-md-3">
+                                        <div className="custom-control custom-switch">
+                                            <input type="checkbox" className="custom-control-input" id="printAutoCenter" name="printAutoCenter" onChange={this.setData.bind(this)} />
+                                            <label className="custom-control-label" htmlFor="printAutoCenter">
+                                                Auto Center
+                                            </label>
+                                        </div>
+                                        <div className="custom-control custom-switch">
+                                            <input type="checkbox" className="custom-control-input" id="printAutoRotate" name="printAutoRotate" onChange={this.setData.bind(this)} />
+                                            <label className="custom-control-label" htmlFor="printAutoRotate">
+                                                Auto Rotate
+                                            </label>
+                                        </div>
+                                    </div>                                
+                                    <div className="col-md-3">
+                                        <div className="custom-control custom-switch">
+                                            <input type="checkbox" className="custom-control-input" id="driverDuplex" name="driverDuplex" onChange={this.setData.bind(this)} disabled={selPrinter.duplex === false} />
+                                            <label className="custom-control-label" htmlFor="driverDuplex" style={driverDuplexStyle}>
+                                                Use Driver Duplex Printing
+                                            </label>
+                                        {duplexOptions}
+                                        </div>
+                                        <div className="custom-control custom-switch">
+                                            <input type="checkbox" className="custom-control-input" id="manualDuplex" name="manualDuplex" onChange={this.setData.bind(this)} />
+                                            <label className="custom-control-label" htmlFor="manualDuplex">
+                                                Use Manual Duplex Printing
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>                                
-                                <div className="col-md-3">
-                                    <div className="custom-control custom-switch">
-                                        <input type="checkbox" className="custom-control-input" id="driverDuplex" name="driverDuplex" onChange={this.setData.bind(this)} disabled={selPrinter.duplex === false} />
-                                        <label className="custom-control-label" htmlFor="driverDuplex" style={driverDuplexStyle}>
-                                            Use Driver Duplex Printing
-                                        </label>
-                                            {duplexOptions}
-                                    </div>
-                                    <div className="custom-control custom-switch">
-                                        <input type="checkbox" className="custom-control-input" id="manualDuplex" name="manualDuplex" onChange={this.setData.bind(this)} />
-                                        <label className="custom-control-label" htmlFor="manualDuplex">
-                                            Use Manual Duplex Printing
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="col-md-3">
-                                    <label>Page Sizing:</label>
-                                    <select name="lstPrintRotation" name="pageSizing" className="form-control form-control-sm" onChange={this.setData.bind(this)}>
-                                        <option>None</option>
-                                        <option>Fit</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br />
-                            <div className="row">
-                                <div className="col-md-3">
-                                    <div className="custom-control custom-switch">
-                                        <input type="checkbox" className="custom-control-input" id="printInReverseOrder" name="printInReverseOrder" onChange={this.setData.bind(this)} />
-                                        <label className="custom-control-label" htmlFor="printInReverseOrder">
-                                            Print In Reverse Order
-                                        </label>
-                                    </div>                                   
-                                </div>
-                                <div className="col-md-3">
-                                    <div className="custom-control custom-switch">
-                                        <input type="checkbox" className="custom-control-input" id="printAnnotations" name="printAnnotations" onChange={this.setData.bind(this)} />
-                                        <label className="custom-control-label" htmlFor="printAnnotations">
-                                            Print Annotations
-                                        </label>
+                                    <div className="col-md-3">
+                                        <label>Page Sizing:</label>
+                                        <select name="lstPrintRotation" name="pageSizing" className="form-control form-control-sm" onChange={this.setData.bind(this)}>
+                                            <option>None</option>
+                                            <option>Fit</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <div className="col-md-3">
-                                    <div className="custom-control custom-switch">
-                                        <input type="checkbox" className="custom-control-input" id="printAsGrayscale" name="printAsGrayscale" onChange={this.setData.bind(this)} />
-                                        <label className="custom-control-label" htmlFor="printAsGrayscale">
-                                            Print As Grayscale
-                                        </label>
+                                <br />
+                                <div className="row">
+                                    <div className="col-md-3">
+                                        <div className="custom-control custom-switch">
+                                            <input type="checkbox" className="custom-control-input" id="printInReverseOrder" name="printInReverseOrder" onChange={this.setData.bind(this)} />
+                                            <label className="custom-control-label" htmlFor="printInReverseOrder">
+                                                Print In Reverse Order
+                                            </label>
+                                        </div>                                   
+                                    </div>
+                                    <div className="col-md-3">
+                                        <div className="custom-control custom-switch">
+                                            <input type="checkbox" className="custom-control-input" id="printAnnotations" name="printAnnotations" onChange={this.setData.bind(this)} />
+                                            <label className="custom-control-label" htmlFor="printAnnotations">
+                                                Print Annotations
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-3">
+                                        <div className="custom-control custom-switch">
+                                            <input type="checkbox" className="custom-control-input" id="printAsGrayscale" name="printAsGrayscale" onChange={this.setData.bind(this)} />
+                                            <label className="custom-control-label" htmlFor="printAsGrayscale">
+                                                Print As Grayscale
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-3">
+                                        {printScaleOption}      
                                     </div>
                                 </div>
-                                <div className="col-md-3">
-
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <br />
-                                    <div className="text-center">
-                                        <button className="btn btn-success btn-lg" onClick={this.doPrinting.bind(this)}>
-                                            <i className="fa fa-print" /> Print PDF Now...
-                                        </button>
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <br />
+                                        <div className="text-center">
+                                            <button className="btn btn-success btn-lg" onClick={this.doPrinting.bind(this)}>
+                                                <i className="fa fa-print" /> Print PDF Now...
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
             );
-        }
+                                    }
 
         return (
             <div>

@@ -58,6 +58,10 @@
         else this.state.txtFile = [event.target.value];
     }
 
+    setCustomPaper(event){
+        this.setState({"printerPaperName" : event.target.value});
+    }
+
     createPrintJob() {
         //no need to re-render
         let cpj = new JSPM.ClientPrintJob();
@@ -127,6 +131,27 @@
         } else {
             let systemFonts = this.state.installedFonts;
             let selPrinter = installedPrinters[this.state.selectedPrinterIndex];
+
+            let customPaperOption;
+            if (selPrinter.customPaperSupport){
+                customPaperOption = (<div><span><strong>or</strong></span><br/>
+                                     <div className="input-group input-group-sm mb-3">
+                                        <div className="input-group-prepend">
+                                        <span className="input-group-text" id="basic-addon1">Custom Paper:</span>
+                </div>
+                <input type="text" name="printScale" className="form-control" aria-label="Custom Paper" aria-describedby="basic-addon1" onChange={this.setCustomPaper.bind(this)} placeholder="Custom.WIDTHxHEIGHTin" />
+                <small>
+                <div className="alert alert-warning">
+                <strong>Valid formats:</strong><br/>
+                Custom.WIDTHxHEIGHTin<br/>
+                Custom.WIDTHxHEIGHTcm<br/>
+                Custom.WIDTHxHEIGHTmm
+                </div>
+                </small>                
+            </div> 
+            </div>
+                );
+            }
 
             demoContent = (
                 <div className="row">
@@ -300,6 +325,7 @@
                                             return opt;
                                         })}
                                     </select>
+                                    {customPaperOption}
                                 </div>
                                 <div className="col-md-3">
                                     <label>Print Orientation:</label>

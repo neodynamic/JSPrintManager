@@ -33,7 +33,7 @@
 
         var wlPort = (new URLSearchParams(window.location.search)).get('wlport');
 
-        if(wlPort == null) wlPort = 25443;
+        if(wlPort == null) wlPort = 26443;
 
         this.setState({
             JSPM_WS_Port: wlPort
@@ -122,6 +122,10 @@
                 demoContent = <PrintingFileGroupDuplexSample setSample={this.setDemoSample} printersInfo={this.state.printersInfo} />;
             } else if (this.state.DemoIndex == 15) {
                 demoContent = <TcpBIDISample setSample={this.setDemoSample} />;
+            } else if (this.state.DemoIndex == 16) {
+                demoContent = <BTBIDISample setSample={this.setDemoSample} />;
+            } else if (this.state.DemoIndex == 17) {
+                demoContent = <BTDevicesInfoSample setSample={this.setDemoSample} />;
             }
         } else if (this.state.JSPM_WS_Status == "Closed") demoContent = <InstallJSPMClientApp />;
         else if (this.state.JSPM_WS_Status == "Blocked") demoContent = <WebsiteBlocked />;
@@ -145,7 +149,7 @@
                     <div className="container">
                         <a className="navbar-brand" href="//neodynamic.com/products/printing/js-print-manager" target="_blank">
                             <img alt="Neodynamic" src="//neodynamic.com/images/jspm-32.png" />
-                            &nbsp;&nbsp;JSPrintManager <span className="round">5.0</span>
+                            &nbsp;&nbsp;JSPrintManager <span className="round">6.0</span>
                         </a>
                         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon" />

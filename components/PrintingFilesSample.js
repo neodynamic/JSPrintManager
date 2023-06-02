@@ -62,6 +62,10 @@
             cpj.onFinished = function(data) {
                 _this.logPrintJobTrace(data);
             };
+
+            cpj.onError = function(data, is_critical) {
+                _this.logPrintJobTrace(data);
+            };
         }
 
         return cpj;

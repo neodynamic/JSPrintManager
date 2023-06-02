@@ -119,7 +119,7 @@
 
                                 </div>
                                 
-                                <div className="col-md-3">
+                                <div className="col-md-2">
                                     <label>Supported Trays:</label>
                                     <select className="form-control form-control-sm" name="printerTrayName">
                                         {selPrinter.trays.map(function(item, i) {
@@ -132,7 +132,20 @@
                                         })}
                                     </select>
                                 </div>
-                                <div className="col-md-3">
+                                <div className="col-md-2">
+                                    <label>Media Types:</label>
+                                    <select className="form-control form-control-sm" name="printerMediaType" id="printerMediaType">
+                                        {selPrinter.mediaTypes.map(function(item, i) {
+                                            let opt = (
+                                                <option key={i} value={item}>
+                                                    {item}
+                                                </option>
+                                            );
+                                return opt;
+                                })}
+                                    </select>
+                                </div>
+                                <div className="col-md-2">
                                     <label>Supported Papers:</label>
                                     <select className="form-control form-control-sm" name="printerPaperName" id="printerPaperName">
                                         {selPrinter.papers.map(function(item, i) {
@@ -146,6 +159,7 @@
                                     </select>
                                     {selPaperInfo}
                                 </div>
+                                
                             </div>
                             <div className="row">
                                 <div className="col-md-12">
@@ -208,8 +222,21 @@
                                                     </h4>
                                                 </td>
                                                 <td colSpan="2">
+                                                    <h4>
+                                                        <span className={selPrinter.isFax ? "badge badge-info fa fa-check" : "badge badge-danger fa fa-close"}>&nbsp;</span> Is Fax?
+                                                    </h4>
+                                                </td>
+                                                <td colSpan="2">
+                                                    <h4>
+                                                        <span className={selPrinter.customPaperSupport ? "badge badge-info fa fa-check" : "badge badge-danger fa fa-close"}>&nbsp;</span> Custom Paper Support?
+                                                    </h4>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colSpan="2">
                                                     <strong>It seems to be a...</strong><span className={isVirtual ? "badge badge-warning" : "badge badge-info"}>{isVirtual ? "VIRTUAL PRINTER" : "REAL/PHYSICAL PRINTER"}</span>                                                        
                                                 </td>
+                                                <td colSpan="2" />
                                                 <td colSpan="2" />
                                             </tr>
                                         </tbody>

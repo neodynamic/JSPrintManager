@@ -27,7 +27,7 @@
             );
 
 
-        let jspm_port = this.props.JSPM_WS_Port == 25443 ? "" : (<span style={{fontSize: '1.3em'}} className="badge badge-light">
+        let jspm_port = this.props.JSPM_WS_Port == 26443 ? "" : (<span style={{fontSize: '1.3em'}} className="badge badge-light">
                         <i className="icon fa fa-tag"></i> WHITE LABEL PORT <span className="badge badge-dark">{this.props.JSPM_WS_Port}</span>
                 </span>);
 

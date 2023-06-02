@@ -5,7 +5,8 @@
             job: null,
             clientPrinter: null,
             printerCommands: "",
-            printerCommandsCodePage: -1
+            printerCommandsCodePage: -1,
+            lastJobStatus: ""
         };
     }
 
@@ -21,8 +22,25 @@
         cpj.clientPrinter = this.state.clientPrinter;
         cpj.printerCommands = this.state.printerCommands;
         cpj.printerCommandsCodePage = this.state.printerCommandsCodePage; 
-        //no need to re-render
+
+        let _this = this;
+        cpj.onUpdated = function (data) {
+            _this.logPrintJobTrace(data);
+        };
+
+        cpj.onFinished = function(data) {
+            _this.logPrintJobTrace(data);
+        };
+
         this.state.job = cpj;
+    }
+
+    logPrintJobTrace(data) {
+        if (this.state.lastJobStatus != JSON.stringify(data)) {
+            console.info(data);
+            this.state.lastJobStatus = JSON.stringify(data);
+            
+        }
     }
 
     onPrinterChange(newPrinter) {

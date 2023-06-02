@@ -1,4 +1,4 @@
-class DemoStartPage extends React.Component {
+﻿class DemoStartPage extends React.Component {
     render() {
         return (
             <div>
@@ -168,6 +168,17 @@ class DemoStartPage extends React.Component {
                         </button>
                     </div>
                     <div className="col-sm-4">
+                       <h2>
+                            <i className="fa fa-bluetooth-b iconDemo" />&nbsp;BIDI BT Comm
+                        </h2>
+                        <p>
+                            Bidirectional Classic Bluetooth Communication support! <strong>Send/Write &amp; Receive/Read</strong> data strings to any <strong>Classic Bluetooth Address and Channel</strong> reachable from the client system.
+                        </p>
+                        <button className="btn btn-danger" onClick={() => this.props.setSample(16)}>
+                            TRY NOW
+                        </button>
+                    </div>
+                    <div className="col-sm-4">
                         <h2>
                             <i className="fa fa-print iconDemo" />&nbsp;Get Printers Info
                         </h2>
@@ -175,6 +186,21 @@ class DemoStartPage extends React.Component {
                             Get the <strong>list of installed printers</strong> available in the client machine including details like <strong>DPI Resolution, PortName, "Is Connected", "Is Shared", "Is Local", "Is Network"</strong> , as well as the <strong>list of supported Papers and list of trays/bins!</strong>
                         </p>
                         <button className="btn btn-danger" onClick={() => this.props.setSample(6)}>
+                            TRY NOW
+                        </button>
+                    </div>
+                    
+                </div>
+                <br />
+                <div className="row">
+                    <div className="col-sm-4">
+                        <h2>
+                            <i className="fa fa-bluetooth iconDemo" />&nbsp;Get BT Devices Info
+                        </h2>
+                        <p>
+                            Get the <strong>list of Bluetooth devices</strong> available in the client machine including details like <strong>Name, Address, Class of Device, Connected, Remembered, and Autheticated</strong>
+                        </p>
+                        <button className="btn btn-danger" onClick={() => this.props.setSample(17)}>
                             TRY NOW
                         </button>
                     </div>
@@ -189,11 +215,10 @@ class DemoStartPage extends React.Component {
                             TRY NOW
                         </button>
                     </div>
-                    
                 </div>
-
                 <hr />
                 <div className="row">
+                    
                     <div className="col-sm-6">
                         <h2>
                             <i className="fa fa-mixcloud iconDemo" />&nbsp;Print from Mobile &amp; Sandboxed Devices

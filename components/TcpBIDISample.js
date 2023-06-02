@@ -18,7 +18,7 @@
 
     doSendData() {
         if (!this.state.tcpComm) {
-            this.state.dataReceived += "TCP Comm is not connected!\r\n";
+            this.state.dataReceived += "TCP Comm is not created!\r\n";
             this.setState({ tcpCommState: 3 });
         } else if (this.state.dataToSend.length > 0) {
             this.setState({ tcpCommState: 1 });
@@ -48,6 +48,7 @@
             _this.state.dataReceived += "TCP COMM CLOSED!" + "\r\n";
             console.log("Closed: " + data);
             _this.setState({ tcpCommState: 0 });
+            _this.setState({ tcpComm: null });
         };
         this.state.tcpComm.connect().then(_ => {
             _this.state.dataReceived += "TCP COMM CONNECTED!" + "\r\n";

@@ -16,7 +16,9 @@
             printerSerialPortParity: "None",
             printerSerialPortStopBits: "One",
             printerSerialPortDataBits: "Eight",
-            printerSerialPortFlowControl: "None"
+            printerSerialPortFlowControl: "None",
+            printerBTAddress: "",
+            printerBTChannel: 0,
         };
     }
 
@@ -53,7 +55,10 @@
             this.state.clientPrinter = new JSPM.ParallelPortPrinter(this.state.printerLptPort);
         } else if (this.state.selectedPrinterIndex == 5) {
             this.state.clientPrinter = new JSPM.SerialPortPrinter(this.state.printerSerialPort, parseInt(this.state.printerSerialPortBaudRate), JSPM.Serial.Parity[this.state.printerSerialPortParity], JSPM.Serial.StopBits[this.state.printerSerialPortStopBits], JSPM.Serial.DataBits[this.state.printerSerialPortDataBits], JSPM.Serial.Handshake[this.state.printerSerialPortFlowControl]);
+        } else if (this.state.selectedPrinterIndex == 6) {
+            this.state.clientPrinter = new JSPM.BluetoothPrinter(this.state.printerBTAddress, parseInt(this.state.printerBTChannel));
         }
+
         this.props.onPrinterChange(this.state.clientPrinter);
     }
 
@@ -73,7 +78,8 @@
         let netPrinter = this.props.JobContentType == 0 ? <option value="3">Use an IP/Ethernet Printer</option> : "";
         let lptPrinter = this.props.JobContentType == 0 ? <option value="4">Use a Parallel LPT Port</option> : "";
         let rs232Printer = this.props.JobContentType == 0 ? <option value="5">Use a Serial (RS232) Port</option> : "";
-
+        let btPrinter = this.props.JobContentType == 0 ? <option value="6">Use a Bluetooth Printer</option> : "";
+        
         let printerSettings = <div>The Printer set as Default in this machine will be used.</div>;
 
         if (this.state.selectedPrinterIndex == 1) {
@@ -113,11 +119,11 @@
                 <div>
                     <label>
                         IP
-                        <input className="form-control form-control-sm" name="printerNetworkIp" onChange={this.setPrinterState.bind(this)} />
+                        <input className="form-control form-control-sm" name="printerNetworkIp" onChange={this.setPrinterState.bind(this)} placeholder="10.0.0.1" />
                     </label>
                     <label>
                         Port
-                        <input className="form-control form-control-sm" name="printerNetworkPort" onChange={this.setPrinterState.bind(this)} />
+                        <input className="form-control form-control-sm" name="printerNetworkPort" onChange={this.setPrinterState.bind(this)} placeholder="8001" />
                     </label>
                     <label>
                         DNS Name
@@ -194,6 +200,19 @@
                     </label>
                 </div>
             );
+        }else if (this.state.selectedPrinterIndex == 6 && this.props.JobContentType == 0) {
+                printerSettings = (
+                    <div>
+                        <label>
+                            Address
+                            <input className="form-control form-control-sm" name="printerBTAddress" onChange={this.setPrinterState.bind(this)} placeholder="00.00.00.00.00.00" />
+                        </label>
+                        <label>
+                            Channel
+                            <input className="form-control form-control-sm" name="printerBTChannel" onChange={this.setPrinterState.bind(this)} placeholder="0" />
+                        </label>                        
+                    </div>
+            );
         }
 
         return (
@@ -206,6 +225,7 @@
                     {netPrinter}
                     {lptPrinter}
                     {rs232Printer}
+                    {btPrinter}
                 </select>
                 <br />
                 <div className="small alert alert-warning">{printerSettings}</div>

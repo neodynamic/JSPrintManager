@@ -34,6 +34,10 @@
         this.state[event.target.name] = event.target.checked ? event.target.checked : event.target.value;
     }
 
+    setCustomPaper(event){
+        this.setState({"printerPaperName" : event.target.value});
+    }
+
     createPrintJob() {
         let cpj = new JSPM.ClientPrintJob();
         cpj.clientPrinter = new JSPM.InstalledPrinter(this.state.printerName, false, this.state.printerTrayName, this.state.printerPaperName);
@@ -95,7 +99,28 @@
                     : {
                           textDecoration: "line-through",
                           color: "red"
-                      };
+                    };
+
+            let customPaperOption;
+            if (selPrinter.customPaperSupport){
+                customPaperOption = (<div><span><strong>or</strong></span><br/>
+                                     <div className="input-group input-group-sm mb-3">
+                                        <div className="input-group-prepend">
+                                        <span className="input-group-text" id="basic-addon1">Custom Paper:</span>
+                </div>
+                <input type="text" name="printScale" className="form-control" aria-label="Custom Paper" aria-describedby="basic-addon1" onChange={this.setCustomPaper.bind(this)} placeholder="Custom.WIDTHxHEIGHTin" />
+                <small>
+                <div className="alert alert-warning">
+                <strong>Valid formats:</strong><br/>
+                Custom.WIDTHxHEIGHTin<br/>
+                Custom.WIDTHxHEIGHTcm<br/>
+                Custom.WIDTHxHEIGHTmm
+                </div>
+                </small>                
+            </div> 
+            </div>
+                );
+            }
 
             demoContent = (
                 <div className="row">
@@ -184,6 +209,7 @@
                                             return opt;
                                         })}
                                     </select>
+                                    {customPaperOption}
                                 </div>
                                 <div className="col-md-3">
                                     <label>Print Rotation (Clockwise):</label>
