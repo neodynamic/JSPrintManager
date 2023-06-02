@@ -42,7 +42,10 @@ If the printer is installed in the client system through a Printer Driver, then 
 [Bidirectional Serial Port Communication support!](https://neodynamic.com/articles/How-to-send-write-receive-read-bidi-serial-port-data-from-Javascript) Send/Write & Receive/Read data strings to any RS-232, COM & TTY port available on the client system.
 
 ### BIDI TCP/IP Comm
-Bidirectional TCP/IP Communication support! Send/Write & Receive/Read data to any TCP Address and port reachable from the client system. The Address requires to be in the client's allow list!
+[Bidirectional TCP Communication support!](https://neodynamic.com/articles/How-to-send-write-receive-read-bidi-tcp-ip-data-from-Javascript) Send/Write & Receive/Read data strings to any TCP Address and port reachable from the client system. The Address requires to be in the client's allow list!
+
+### BIDI Bluetooth Comm
+[Bidirectional Bluetooth Communication support!](https://neodynamic.com/articles/How-to-send-write-receive-read-bidi-bluetooth-data-from-Javascript) Send/Write & Receive/Read data strings to any BT Address and Channel reachable from the client system. The Address requires to be in the client's allow list!
 
 ### Get Printers Info & Status
 Besides getting the list of installed printers available in the client machine, you can also get further details like DPI Resolution, PortName, "Is Connected", "Is Shared", "Is Local", "Is Network", "Is Virtual or Real/Physical printer?", as well as the list of supported Papers and list of trays/bins!
@@ -65,11 +68,14 @@ Print to any brand and type of client printers! Thermal Label Barcode printers, 
 ### Get Printers Info
 Besides getting the list of installed printers available in the client machine, you can also get further details like DPI Resolution, PortName, "Is Connected", "Is Shared", "Is Local", "Is Network", "[Is Virtual or Real/Physical printer?](https://www.neodynamic.com/articles/How-to-detect-virtual-real-physical-printer-from-Javascript)", as well as the list of supported Papers and list of trays/bins!
 
+### Get Bluetooth Devices Info
+Get the list of Bluetooth devices available in the client machine including details like Name, Address, Class of Device, Connected, Remembered, and Autheticated
+
 ### Tray & Paper Size
 If the printer is installed in the client system through a Printer Driver, then you can specify to which Tray Name to send the print job and specify a Paper Size if desired. The file formats supported by this feature are PDF, JPEG, PNG, BMP & TXT
 
 ### Printer Communication
-Client Printers Connectivity support: installed printers through Printer Driver (for USB connection), Shared Printers, Parallel Port (LPT) or Serial Port RS-232 (COM) as well as IP/Ethernet Network printers. On Linux & Mac OS, any kind of printer installed through CUPS is supported.
+Client Printers Connectivity support: installed printers through Printer Driver (for USB connection), Shared Printers, Parallel Port (LPT) or Serial Port RS-232 (COM), Bluetooth (RFCOMM) as well as IP/Ethernet Network printers. On Linux & Mac OS, any kind of printer installed through CUPS is supported.
 
 ### Any Web Platform
 Based on pure Javascript code, JSPrintManager.js can be used in any Web Platform like ASP.NET, PHP, Django, Ruby On Rails (RoR), Express.js as well as in any Web Framework like Angular or React
