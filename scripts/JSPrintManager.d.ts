@@ -36,6 +36,9 @@ export declare class ClientPrintJob extends ClientJob {
     private _printerCommandsCopies;
     get printerCommandsCopies(): number;
     set printerCommandsCopies(value: number);
+    private _printerCommandsDocName;
+    get printerCommandsDocName(): string;
+    set printerCommandsDocName(value: string);
     private _printerCommands;
     private _printerCommandsCodePage;
     get printerCommands(): string;
@@ -52,7 +55,7 @@ export declare class ClientPrintJob extends ClientJob {
     onError(data: any, is_critical: any): void;
     onUpdate(data: any, last: any): void;
     _genPFGArrayAsync(printFileGroup: PrintFile[]): Promise<Blob>;
-    _genPCArrayAsync(binPrinterCommands: Uint8Array, printerCopies: number): Promise<Blob>;
+    _genPCArrayAsync(binPrinterCommands: Uint8Array, printerCopies: number, docName: string): Promise<Blob>;
     _genPrinterArrayAsync(clientPrinter: IClientPrinter): Promise<Uint8Array>;
     _cmd2bin(): void;
     _generateDataAsync(): Promise<Blob>;
@@ -178,6 +181,7 @@ export declare class ClientScanJob extends ClientJob {
     _dither: Dither;
     _pdfTitle: string;
     _showUI: boolean;
+    _showProgressUI: boolean;
     get scannerName(): string;
     set scannerName(val: string);
     get pixelMode(): PixelMode;
@@ -202,6 +206,8 @@ export declare class ClientScanJob extends ClientJob {
     set pdfTitle(val: string);
     get showUI(): boolean;
     set showUI(val: boolean);
+    get showProgressUI(): boolean;
+    set showProgressUI(val: boolean);
     onFinished(data: any): void;
     onError(data: any, is_critical: any): void;
     onUpdate(data: any, last: any): void;
@@ -471,13 +477,112 @@ export declare enum Dither {
     Cluster8x8 = 5,
     Cluster16x16 = 6
 }
+export declare enum SitesManagerAction {
+    Allow = 0,
+    Block = 1
+}
+
+/// <reference types="node" />
+export declare enum Ipp {
+    FALSE = 0,
+    TRUE = 1,
+    PRINT_JOB = 2,
+    PRINT_URI = 3,
+    VALIDATE_JOB = 4,
+    CREATE_JOB = 5,
+    SEND_DOCUMENT = 6,
+    SEND_URI = 7,
+    CANCEL_JOB = 8,
+    GET_JOB_ATTRIBUTES = 9,
+    GET_JOBS = 10,
+    GET_PRINTER_ATTRIBUTES = 11,
+    HOLD_JOB = 12,
+    RELEASE_JOB = 13,
+    RESTART_JOB = 14,
+    PAUSE_PRINTER = 16,
+    RESUME_PRINTER = 17,
+    PURGE_JOBS = 18,
+    OPERATION_ATTRIBUTES_TAG = 1,
+    JOB_ATTRIBUTES_TAG = 2,
+    END_OF_ATTRIBUTES_TAG = 3,
+    PRINTER_ATTRIBUTES_TAG = 4,
+    UNSUPPORTED_ATTRIBUTES_TAG = 5,
+    UNSUPPORTED = 16,
+    UNKNOWN = 18,
+    NO_VALUE = 19,
+    INTEGER = 33,
+    BOOLEAN = 34,
+    ENUM = 35,
+    OCTET_STRING = 48,
+    DATE_TIME = 49,
+    RESOLUTION = 50,
+    RANGE_OF_INTEGER = 51,
+    TEXT_WITH_LANG = 53,
+    NAME_WITH_LANG = 54,
+    TEXT_WITHOUT_LANG = 65,
+    NAME_WITHOUT_LANG = 66,
+    KEYWORD = 68,
+    URI = 69,
+    URI_SCHEME = 70,
+    CHARSET = 71,
+    NATURAL_LANG = 72,
+    MIME_MEDIA_TYPE = 73,
+    SUCCESSFUL_OK = 0,
+    SUCCESSFUL_OK_IGNORED_OR_SUBSTITUTED_ATTRIBUTES = 1,
+    SUCCESSFUL_OK_CONFLICTING_ATTRIBUTES = 2,
+    CLIENT_ERROR_BAD_REQUEST = 1024,
+    CLIENT_ERROR_FORBIDDEN = 1025,
+    CLIENT_ERROR_NOT_AUTHENTICATED = 1026,
+    CLIENT_ERROR_NOT_AUTHORIZED = 1027,
+    CLIENT_ERROR_NOT_POSSIBLE = 1028,
+    CLIENT_ERROR_TIMEOUT = 1029,
+    CLIENT_ERROR_NOT_FOUND = 1030,
+    CLIENT_ERROR_GONE = 1031,
+    CLIENT_ERROR_REQUEST_ENTITY_TOO_LARGE = 1032,
+    CLIENT_ERROR_REQUEST_VALUE_TOO_LONG = 1033,
+    CLIENT_ERROR_DOCUMENT_FORMAT_NOT_SUPPORTED = 1034,
+    CLIENT_ERROR_ATTRIBUTES_OR_VALUES_NOT_SUPPORTED = 1035,
+    CLIENT_ERROR_URI_SCHEME_NOT_SUPPORTED = 1036,
+    CLIENT_ERROR_CHARSET_NOT_SUPPORTED = 1037,
+    CLIENT_ERROR_CONFLICTING_ATTRIBUTES = 1038,
+    CLIENT_ERROR_COMPRESSION_NOT_SUPPORTED = 1039,
+    CLIENT_ERROR_COMPRESSION_ERROR = 1040,
+    CLIENT_ERROR_DOCUMENT_FORMAT_ERROR = 1041,
+    CLIENT_ERROR_DOCUMENT_ACCESS_ERROR = 1042,
+    SERVER_ERROR_INTERNAL_ERROR = 1280,
+    SERVER_ERROR_OPERATION_NOT_SUPPORTED = 1281,
+    SERVER_ERROR_SERVICE_UNAVAILABLE = 1282,
+    SERVER_ERROR_VERSION_NOT_SUPPORTED = 1283,
+    SERVER_ERROR_DEVICE_ERROR = 1284,
+    SERVER_ERROR_TEMPORARY_ERROR = 1285,
+    SERVER_ERROR_NOT_ACCEPTING_JOBS = 1286,
+    SERVER_ERROR_BUSY = 1287,
+    SERVER_ERROR_JOB_CANCELED = 1288,
+    SERVER_ERROR_MULTIPLE_DOCUMENT_JOBS_NOT_SUPPORTED = 1289,
+    PRINTER_IDLE = 3,
+    PRINTER_PROCESSING = 4,
+    PRINTER_STOPPED = 5,
+    JOB_PENDING = 3,
+    JOB_PENDING_HELD = 4,
+    JOB_PROCESSING = 5,
+    JOB_PROCESSING_STOPPED = 6,
+    JOB_CANCELED = 7,
+    JOB_ABORTED = 8,
+    JOB_COMPLETED = 9
+}
+export declare class IppMessage {
+    static _bytes: Number;
+    static decode(buf: Buffer, start?: number, end?: number): any;
+    private static _calcEncodingLength;
+    static encode(obj: any): Buffer;
+}
 
 
 export declare class JSPrintManager {
     static WS: NDWS | undefined;
     static auto_reconnect: boolean;
     private static _license;
-    static start(secure?: boolean, host?: string, port?: number): Promise<void>;
+    static start(secure?: boolean, host?: string, port?: number): Promise<unknown>;
     static get license_url(): string;
     static set license_url(value: string);
     static getPrinters(): Promise<unknown>;
@@ -506,6 +611,10 @@ export declare class JSPrintManager {
     static getUser(): Promise<any>;
     static getBluetoothDevices(): Promise<any>;
     static getMediaTypes(printer_name: string): Promise<any>;
+    static getDeviceId(): Promise<any>;
+    static printerDeleteAllJobs(printer_name: string): Promise<any>;
+    static sendIppMessage(device_uri: string, ipp_message: any, file_content?: Uint8Array, user_name?: string, password?: string): Promise<any>;
+    static sitesManager(site: string, action: SitesManagerAction): Promise<any>;
 }
 
 export declare class NDWS {
@@ -543,6 +652,7 @@ export interface IPrintFileProperties {
     file_name: string | string[];
     file_content_type: FileSourceType;
     copies: number;
+    doc_name: string;
 }
 export interface IPrintFileDuplexableProperties extends IPrintFileProperties {
     manual_duplex: boolean;
@@ -554,6 +664,7 @@ export declare class PrintFile {
     fileContentType: FileSourceType;
     fileContent: any;
     fileName: string;
+    docName: string;
     private _copies;
     get copies(): number;
     set copies(value: number);
@@ -596,6 +707,8 @@ interface IPrintFilePDFProperties extends IPrintFileDuplexableProperties {
     annotations: boolean;
     auto_rotate: boolean;
     auto_center: boolean;
+    auto_center_h: boolean;
+    auto_center_v: boolean;
     password: string;
     rotation: PrintRotation;
     sizing: Sizing;
@@ -605,6 +718,8 @@ export declare class PrintFilePDF extends PrintFileDuplexable {
     pageSizing: Sizing;
     printAutoRotate: boolean;
     printAutoCenter: boolean;
+    printAutoCenterVertically: boolean;
+    printAutoCenterHorizontally: boolean;
     encryptedPassword: string;
     printAsGrayscale: boolean;
     printAnnotations: boolean;
@@ -744,8 +859,8 @@ export declare class TcpComm {
     };
 }
 
-export declare const VERSION = "6.0";
-export declare const WSPORT = 26443;
+export declare const VERSION = "7.0";
+export declare const WSPORT = 27443;
 export declare class Mutex {
     private mutex;
     lock(): PromiseLike<() => void>;
