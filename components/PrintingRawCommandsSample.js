@@ -79,7 +79,7 @@
                 </div>
                 <div className="card-body">
                     <div className="row">
-                        <Printers JobContentType={0} onPrinterChange={this.onPrinterChange.bind(this)} />
+                        <Printers JobContentType={0} onPrinterChange={this.onPrinterChange.bind(this)} os={this.props.os} />
                     </div>
                     <div className="row">
                         <PrintJobForRawCommands jobIndex={0} onPrinterCommandsChange={this.onPrinterCommandsChange.bind(this)} onPrinterCommandsCodePageChange={this.onPrinterCommandsCodePageChange.bind(this)} />

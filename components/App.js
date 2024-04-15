@@ -4,6 +4,8 @@
         this.state = {
             JSPM_WS_Status: null,
             JSPM_WS_Port: 0,
+            JSPM_Client_Info: "",
+            JSPM_Device_Id: "",
             printersInfo: null,
             DemoIndex: 0
         };
@@ -15,6 +17,11 @@
         this.setState({
             JSPM_WS_Status: status
         });
+
+        if (status != "Open"){
+            this.jspmClientInfoChanged("");
+            this.jspmDeviceIdChanged("");
+        }
     }
 
     printersInfoChanged(newPrintersInfo) {
@@ -29,11 +36,23 @@
         });
     }
 
+    jspmClientInfoChanged(info) {
+        this.setState({
+            JSPM_Client_Info: info
+        });
+    }
+
+    jspmDeviceIdChanged(info) {
+        this.setState({
+            JSPM_Device_Id: info
+        });
+    }
+
     componentDidMount() {
 
         var wlPort = (new URLSearchParams(window.location.search)).get('wlport');
 
-        if(wlPort == null) wlPort = 26443;
+        if(wlPort == null) wlPort = 27443;
 
         this.setState({
             JSPM_WS_Port: wlPort
@@ -52,6 +71,22 @@
             JSPM.JSPrintManager.getPrintersInfo(JSPM.PrintersInfoLevel.Basic, '', JSPM.PrinterIcon.Large).then(function (printersList) {
                 JSPM.JSPrintManager.MainApp.printersInfoChanged(printersList);
             });
+            // get client info 
+            JSPM.JSPrintManager.getClientAppInfo().then(function (data) { 
+                let jsonData = JSON.parse(data);
+                let cInfo = "Version: " + jsonData.version + " OS: " + jsonData.os + " (" + jsonData.arch + ")";
+                JSPM.JSPrintManager.MainApp.jspmClientInfoChanged(cInfo);
+            }).catch(function(){
+                JSPM.JSPrintManager.MainApp.jspmClientInfoChanged("unkown");
+            });
+
+            // get device id 
+            JSPM.JSPrintManager.getDeviceId().then(function (data) { 
+                JSPM.JSPrintManager.MainApp.jspmDeviceIdChanged(data);
+            }).catch(function(){
+                JSPM.JSPrintManager.MainApp.jspmDeviceIdChanged("unknown");
+            })
+
         };
 
         JSPM.JSPrintManager.WS.onStatusChanged = function() {
@@ -62,18 +97,21 @@
             JSPM.JSPrintManager.MainApp.jspmWsStatusChanged(JSPM.WSStatus[JSPM.JSPrintManager.WS.status]);
         };
 
-        let os = (function() {
+        var os = (function () {
             var ua = navigator.userAgent.toLowerCase();
             return {
                 isWindows: /(windows|win32|win64)/.test(ua),
                 isLinux: /(linux)/.test(ua),
-                isIntelMac: /(intel mac)/.test(ua),
-                isRPi: /(Linux arm)/.test(ua)
+                isIntelMac: /(mac)/.test(ua),
+                isRPi: /(Linux arm)/.test(ua),
+                isAndroid: /(android)/.test(ua)
             };
-        })();
+        }());
 
         if (os.isWindows) {
             this.OS = "win";
+        } else if (os.isAndroid) {
+            this.OS = "Android";
         } else if (os.isLinux) {
             this.OS = "linux";
         } else if (os.isIntelMac) {
@@ -91,9 +129,9 @@
 
         if (this.state.JSPM_WS_Status == "Open") {
             if (this.state.DemoIndex == 0) {
-                demoContent = <DemoStartPage setSample={this.setDemoSample} />;
+                demoContent = <DemoStartPage setSample={this.setDemoSample} os={this.OS} />;
             } else if (this.state.DemoIndex == 1) {
-                demoContent = <PrintingRawCommandsSample setSample={this.setDemoSample} />;
+                demoContent = <PrintingRawCommandsSample setSample={this.setDemoSample} os={this.OS} />;
             } else if (this.state.DemoIndex == 2) {
                 demoContent = <PrintingPDFSample setSample={this.setDemoSample} printersInfo={this.state.printersInfo} />;
             } else if (this.state.DemoIndex == 3) {
@@ -126,6 +164,8 @@
                 demoContent = <BTBIDISample setSample={this.setDemoSample} />;
             } else if (this.state.DemoIndex == 17) {
                 demoContent = <BTDevicesInfoSample setSample={this.setDemoSample} />;
+            } else if (this.state.DemoIndex == 18) {
+                demoContent = <IPPSample setSample={this.setDemoSample} />;
             }
         } else if (this.state.JSPM_WS_Status == "Closed") demoContent = <InstallJSPMClientApp />;
         else if (this.state.JSPM_WS_Status == "Blocked") demoContent = <WebsiteBlocked />;
@@ -141,7 +181,7 @@
                     </div>
                 </div>
             );
-        }
+                            }
 
         return (
             <div>
@@ -149,7 +189,7 @@
                     <div className="container">
                         <a className="navbar-brand" href="//neodynamic.com/products/printing/js-print-manager" target="_blank">
                             <img alt="Neodynamic" src="//neodynamic.com/images/jspm-32.png" />
-                            &nbsp;&nbsp;JSPrintManager <span className="round">6.0</span>
+                            &nbsp;&nbsp;JSPrintManager <span className="round">7.0</span>
                         </a>
                         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon" />
@@ -166,6 +206,8 @@
                     </div>
                 </nav>
                 <div className="container content">
+                    <ClientInfo JSPM_Client_Info={this.state.JSPM_Client_Info} JSPM_Device_Id={this.state.JSPM_Device_Id} />
+                    <hr />
                     <h2>
                         JSPrintManager{" "}
                         <small>

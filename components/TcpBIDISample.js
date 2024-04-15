@@ -130,7 +130,7 @@
                     </div>
                     <div className="col-md-11">
                         <h2 className="text-center">
-                            <i className="fa fa-exchange iconDemo" />&nbsp;BIDI TCP Comm
+                            <i className="fa fa-retweet iconDemo" />&nbsp;BIDI TCP Comm
                         </h2>
                         <hr />
                     </div>

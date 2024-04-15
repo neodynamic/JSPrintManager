@@ -114,12 +114,17 @@
                                                 })}
                                       </div>
                                     </div>
-
-                                    
-
                                 </div>
-                                
-                                <div className="col-md-2">
+                                <div className="col-md-6">
+                                    <label>Manufacturer:</label>
+                                    <div>
+                                        <strong>{selPrinter.manufacturer}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <div className="row">
+                                <div className="col-md-4">
                                     <label>Supported Trays:</label>
                                     <select className="form-control form-control-sm" name="printerTrayName">
                                         {selPrinter.trays.map(function(item, i) {
@@ -128,11 +133,11 @@
                                                     {item}
                                                 </option>
                                             );
-                                            return opt;
+                                        return opt;
                                         })}
                                     </select>
                                 </div>
-                                <div className="col-md-2">
+                                <div className="col-md-4">
                                     <label>Media Types:</label>
                                     <select className="form-control form-control-sm" name="printerMediaType" id="printerMediaType">
                                         {selPrinter.mediaTypes.map(function(item, i) {
@@ -141,11 +146,11 @@
                                                     {item}
                                                 </option>
                                             );
-                                return opt;
-                                })}
+                                        return opt;
+                                        })}
                                     </select>
                                 </div>
-                                <div className="col-md-2">
+                                <div className="col-md-4">
                                     <label>Supported Papers:</label>
                                     <select className="form-control form-control-sm" name="printerPaperName" id="printerPaperName">
                                         {selPrinter.papers.map(function(item, i) {
@@ -154,12 +159,11 @@
                                                     {item}
                                                 </option>
                                             );
-                                            return opt;
+                                        return opt;
                                         })}
                                     </select>
                                     {selPaperInfo}
                                 </div>
-                                
                             </div>
                             <div className="row">
                                 <div className="col-md-12">

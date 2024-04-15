@@ -16,6 +16,7 @@
             enableFeeder: false,
             feederCount: 0,
             showUI: false,
+            showProgressUI: true,
             scanningState: 0, // 0 = finished, 1 = scanning, 2 = error
             error: "",
             scannedImages: [],
@@ -71,6 +72,7 @@
         csj.jpgCompressionQuality = parseInt(this.state.jpgQuality);
         csj.pdfTitle = this.state.pdfTitle;
         csj.showUI = this.state.showUI;
+        csj.showProgressUI = this.state.showProgressUI;
 
         let _this = this;
 
@@ -381,6 +383,12 @@
                                         <input type="checkbox" className="custom-control-input" id="showUI" name="showUI" onChange={this.setData.bind(this)} />
                                         <label className="custom-control-label" htmlFor="showUI">
                                             Show UI
+                                        </label>
+                                    </div>
+                                    <div className="custom-control custom-switch">
+                                        <input type="checkbox" className="custom-control-input" id="showProgressUI" name="showProgressUI" onChange={this.setData.bind(this)} />
+                                        <label className="custom-control-label" htmlFor="showProgressUI">
+                                            Show Progress UI
                                         </label>
                                     </div>
                                 </div>

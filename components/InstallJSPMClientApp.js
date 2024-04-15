@@ -11,7 +11,7 @@
                 <strong>
                     <em>without any dependencies</em>
                 </strong>
-                ) that handles all the <strong>Print Jobs</strong> and runs on <strong>Windows, Linux, Mac &amp; Raspberry Pi</strong> devices!
+                ) that handles all the <strong>Print Jobs</strong> and runs on <strong>Windows, Linux, Mac, Android &amp; Raspberry Pi</strong> devices!
                 <br />
                 <br />
                 <div className="text-center">

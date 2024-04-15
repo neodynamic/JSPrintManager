@@ -63,21 +63,31 @@
     }
 
     componentDidMount() {
-        //get client installed printers
-        JSPM.JSPrintManager.Caller = this;
-        JSPM.JSPrintManager.getPrinters().then(function(printersList) {
-            JSPM.JSPrintManager.Caller.setInstalledPrinters(printersList);
-        });
-        //get serial ports if any
-        JSPM.JSPrintManager.getSerialPorts().then(function(portsList) {
-            JSPM.JSPrintManager.Caller.setSerialPorts(portsList);
-        });
+        let isAndroid = this.props.os == "Android";
+        
+        if (!isAndroid){
+            //get client installed printers
+            JSPM.JSPrintManager.Caller = this;
+            JSPM.JSPrintManager.getPrinters().then(function(printersList) {
+                JSPM.JSPrintManager.Caller.setInstalledPrinters(printersList);
+            });
+            //get serial ports if any
+            JSPM.JSPrintManager.getSerialPorts().then(function(portsList) {
+                JSPM.JSPrintManager.Caller.setSerialPorts(portsList);
+            });
+        }
     }
 
     render() {
+        let isAndroid = this.props.os == "Android";
+
+        let defaultPrinter = isAndroid == false ? <option value="0">Default Printer</option> : "";
+        let userSelPrinter = isAndroid == false ? <option value="1">Select one through the OS Printer Dialog</option> : "";
+        let installedPrinter = isAndroid == false ? <option value="2">Select an Installed Printer</option> : "";
+
         let netPrinter = this.props.JobContentType == 0 ? <option value="3">Use an IP/Ethernet Printer</option> : "";
-        let lptPrinter = this.props.JobContentType == 0 ? <option value="4">Use a Parallel LPT Port</option> : "";
-        let rs232Printer = this.props.JobContentType == 0 ? <option value="5">Use a Serial (RS232) Port</option> : "";
+        let lptPrinter = this.props.JobContentType == 0 && !isAndroid ? <option value="4">Use a Parallel LPT Port</option> : "";
+        let rs232Printer = this.props.JobContentType == 0 && !isAndroid ? <option value="5">Use a Serial (RS232) Port</option> : "";
         let btPrinter = this.props.JobContentType == 0 ? <option value="6">Use a Bluetooth Printer</option> : "";
         
         let printerSettings = <div>The Printer set as Default in this machine will be used.</div>;
@@ -219,9 +229,9 @@
             <div className="col-md-12">
                 <strong>Client Printer</strong>
                 <select required className="form-control form-control-sm" name="selectedPrinterIndex" onChange={this.setPrinterState.bind(this)}>
-                    <option value="0">Default Printer</option>
-                    <option value="1">Select one through the OS Printer Dialog</option>
-                    <option value="2">Select an Installed Printer</option>
+                    {defaultPrinter}
+                    {userSelPrinter}
+                    {installedPrinter}
                     {netPrinter}
                     {lptPrinter}
                     {rs232Printer}
