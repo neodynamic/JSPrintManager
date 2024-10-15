@@ -587,7 +587,7 @@ export declare class JSPrintManager {
     static set license_url(value: string);
     static getPrinters(): Promise<unknown>;
     static getSessionCertificate(): Promise<unknown>;
-    static getPrintersInfo(detail_level: PrintersInfoLevel, printer_name: string, printer_icon: PrinterIcon.None): Promise<unknown>;
+    static getPrintersInfo(detail_level: PrintersInfoLevel, printer_name: string, printer_icon: PrinterIcon.None, extended_attributes?: string): Promise<unknown>;
     static get websocket_status(): WSStatus.Open | WSStatus;
     static showAbout(): Promise<any>;
     static updateClient(): Promise<any>;
