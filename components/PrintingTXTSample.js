@@ -19,6 +19,30 @@
             fontColor: "#000000",
             printOrientation: "Portrait"
         };
+        this.tmpTimer = null;
+    }
+
+    componentDidMount() {
+        this.tmpTimer = setInterval(() => {
+            let installedPrinters = this.props.printersInfo; 
+            if (installedPrinters){
+                // set default printer state
+                this.state.selectedPrinterIndex = 0;
+                let defPrinter = installedPrinters[this.state.selectedPrinterIndex];
+                this.state.printerName = defPrinter.name;
+                if (defPrinter.papers.length > 0) this.state.printerPaperName = defPrinter.papers[0];
+                if (defPrinter.trays.length > 0) this.state.printerTrayName = defPrinter.trays[0];    
+                if (defPrinter.mediaTypes.length > 0) this.state.printerMediaType = defPrinter.mediaTypes[0];
+
+                clearInterval(this.tmpTimer);  
+            }
+        }, 500);
+
+        JSPM.JSPrintManager.Caller = this;
+        //get installed fonts
+        JSPM.JSPrintManager.getSystemFonts().then(function(fontsList) {
+            JSPM.JSPrintManager.Caller.setInstalledFonts(fontsList);
+        });
     }
 
     
@@ -104,13 +128,6 @@
         }
     }
 
-    componentDidMount() {
-        JSPM.JSPrintManager.Caller = this;
-        //get installed fonts
-        JSPM.JSPrintManager.getSystemFonts().then(function(fontsList) {
-            JSPM.JSPrintManager.Caller.setInstalledFonts(fontsList);
-        });
-    }
 
     render() {
         let demoContent;

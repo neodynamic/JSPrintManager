@@ -45,7 +45,7 @@
                         <div className="text-center">
                             <div className="alert alert-danger">
                                 <div className="text-center">
-                                    No Bluetooth devices detected on this system.   
+                                    No Bluetooth devices were detected on this system.   
                                 </div>
                             </div>
                         </div>

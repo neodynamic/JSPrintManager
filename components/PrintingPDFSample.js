@@ -1,4 +1,4 @@
-﻿class PrintingPDFSample extends React.Component {
+﻿﻿class PrintingPDFSample extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -18,8 +18,27 @@
             printAutoRotate: false,
             printAutoCenter: false,
             duplexOption: "Default",
+            printerMediaType: "",
             printScale: 100
         };
+        this.tmpTimer = null;
+    }
+
+    componentDidMount() {
+        this.tmpTimer = setInterval(() => {
+            let installedPrinters = this.props.printersInfo; 
+            if (installedPrinters){
+                // set default printer state
+                this.state.selectedPrinterIndex = 0;
+                let defPrinter = installedPrinters[this.state.selectedPrinterIndex];
+                this.state.printerName = defPrinter.name;
+                if (defPrinter.papers.length > 0) this.state.printerPaperName = defPrinter.papers[0];
+                if (defPrinter.trays.length > 0) this.state.printerTrayName = defPrinter.trays[0];    
+                if (defPrinter.mediaTypes.length > 0) this.state.printerMediaType = defPrinter.mediaTypes[0];
+
+                clearInterval(this.tmpTimer);  
+            }
+        }, 500);
     }
 
     setPdfFile(event) {
@@ -44,6 +63,7 @@
     createPrintJob() {
         let cpj = new JSPM.ClientPrintJob();
         cpj.clientPrinter = new JSPM.InstalledPrinter(this.state.printerName, false, this.state.printerTrayName, this.state.printerPaperName);
+        cpj.clientPrinter.mediaType = this.state.printerMediaType;
 
         if (this.state.pdfFile) {
             let myPdfFile;
@@ -98,7 +118,7 @@
         } else {
 
             let selPrinter = installedPrinters[this.state.selectedPrinterIndex];
-
+            
             let driverDuplexStyle = selPrinter.duplex === true
                     ? { color: "black" }
                     : {
@@ -212,7 +232,7 @@
                                         })}
                                     </select>
                                 </div>
-                                <div className="col-md-3">
+                                <div className="col-md-2">
                                     <label>Tray:</label>
                                     <select className="form-control form-control-sm" name="printerTrayName" onChange={this.setData.bind(this)}>
                                         {selPrinter.trays.map(function(item, i) {
@@ -223,6 +243,19 @@
                                             );
                                             return opt;
                                         })}
+                                    </select>
+                                </div>
+                                <div className="col-md-2">
+                                    <label>Media:</label>
+                                    <select className="form-control form-control-sm" name="printerMediaType" onChange={this.setData.bind(this)}>
+                                        {selPrinter.mediaTypes.map(function(item, i) {
+                                            let opt = (
+                                                <option key={i} value={item}>
+                                                    {item}
+                                                </option>
+                                            );
+                                        return opt;
+                                    })}
                                     </select>
                                 </div>
                                 <div className="col-md-3">
@@ -239,8 +272,8 @@
                                     </select>
                                     {customPaperOption}
                                 </div>
-                                <div className="col-md-3">
-                                    <label>Print Rotation (Clockwise):</label>
+                                <div className="col-md-2">
+                                    <label>Rotation:</label>
                                         <select className="form-control form-control-sm" name="printRotation" onChange={this.setData.bind(this)}>
                                             <option>None</option>
                                             <option>Rot90</option>

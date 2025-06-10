@@ -216,6 +216,23 @@
                             TRY NOW
                         </button>
                     </div>
+                        <div className="col-sm-4">
+                            <h2>
+                                <i className="fa fa-video-camera iconDemo" />&nbsp;Video Snapshot
+                            </h2>
+                            <p>
+                                <strong>Use video devices as a scanner or take video snapshots</strong>
+                                &nbsp;specifying settings like&nbsp;
+                                <strong>Pixel Mode (Grayscale &amp; Color), and Output Image Format (JPG &amp; PNG) &amp; PDF!</strong> <span className="badge badge-info">Windows Only</span>
+                        </p>
+                        <button className="btn btn-danger" onClick={() => this.props.setSample(19)}>
+                            TRY NOW
+                        </button>
+                    </div>
+                </div>
+
+                <br />
+                <div className="row">
                     <div className="col-sm-4">
                         <h2>
                             <i className="fa fa-exchange iconDemo" />&nbsp;BIDI Serial Comm
@@ -227,10 +244,6 @@
                             TRY NOW
                         </button>
                     </div>
-                </div>
-
-                <br />
-                <div className="row">
                     <div className="col-sm-4">
                        <h2>
                             <i className="fa fa-retweet iconDemo" />&nbsp;BIDI TCP Comm
@@ -253,6 +266,11 @@
                             TRY NOW
                         </button>
                     </div>
+                    
+                    
+                </div>
+                <br />
+                <div className="row">
                     <div className="col-sm-4">
                         <h2>
                             <i className="fa fa-globe iconDemo" />&nbsp;IPP Comm
@@ -264,10 +282,6 @@
                             TRY NOW
                         </button>
                     </div>
-                    
-                </div>
-                <br />
-                <div className="row">
                     <div className="col-sm-4">
                         <h2>
                             <i className="fa fa-print iconDemo" />&nbsp;Get Printers Info
@@ -290,6 +304,21 @@
                             TRY NOW
                         </button>
                     </div>
+                    
+                </div>
+                <br />
+                <div className="row">
+                    <div className="col-sm-4">
+                        <h2>
+                            <i className="fa fa-th-list iconDemo" />&nbsp;Get Scanners Info
+                        </h2>
+                        <p>
+                            Get the <strong>list of installed scanners</strong> available in the client machine including details like <strong>DPI Resolutions, duplex support, fedder support</strong>, and more... <span className="badge badge-info">Windows Only</span>
+                        </p>
+                        <button className="btn btn-danger" onClick={() => this.props.setSample(20)}>
+                            TRY NOW
+                        </button>
+                    </div>
                     <div className="col-sm-4">
                         <h2>
                             <i className="fa fa-eye iconDemo" />&nbsp;Printers Watcher
@@ -301,10 +330,12 @@
                             TRY NOW
                         </button>
                     </div>
-                </div>
-                <hr />
-                <div className="row">
                     
+                </div>
+                
+                <hr />
+                
+                <div className="row">
                     <div className="col-sm-6">
                         <h2>
                             <i className="fa fa-mixcloud iconDemo" />&nbsp;Print from Mobile &amp; Sandboxed Devices

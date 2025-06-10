@@ -101,7 +101,7 @@
                 <div className="row">
                     <div className="col-md-12">
                         <div className="text-center">
-                            <div className="alert alert-danger">No serial ports detected on this system.</div>
+                            <div className="alert alert-danger">No serial ports were detected on this system.</div>
                         </div>
                     </div>
                 </div>

@@ -232,8 +232,22 @@
                                                 </td>
                                                 <td colSpan="2">
                                                     <h4>
-                                                        <span className={selPrinter.customPaperSupport ? "badge badge-info fa fa-check" : "badge badge-danger fa fa-close"}>&nbsp;</span> Custom Paper Support?
+                                                        <span className={selPrinter.isRaw ? "badge badge-info fa fa-check" : "badge badge-danger fa fa-close"}>&nbsp;</span> Is Raw?
                                                     </h4>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colSpan="2">
+                                                    <h4>
+                                                        <span className={selPrinter.customPaperSupport ? "badge badge-info fa fa-check" : "badge badge-danger fa fa-close"}>&nbsp;</span> Custom Paper Support?
+                                                    </h4>                                                       
+                                                </td>
+                                                <td colSpan="2" />
+                                                <td colSpan="2" />
+                                            </tr>
+                                            <tr>
+                                                <td colSpan="6">
+                                                    <strong>Status: </strong> {selPrinter.status}
                                                 </td>
                                             </tr>
                                             <tr>

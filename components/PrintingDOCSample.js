@@ -58,6 +58,7 @@
         //get client installed printers
         JSPM.JSPrintManager.getPrinters().then(function(printersList) {
             JSPM.JSPrintManager.Caller.setInstalledPrinters(printersList);
+            JSPM.JSPrintManager.Caller.state.printerName = printersList[0];
         });
     }
 

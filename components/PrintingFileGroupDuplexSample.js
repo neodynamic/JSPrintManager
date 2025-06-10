@@ -12,6 +12,23 @@
             manualDuplex: false,
             driverDuplex: false
         };
+        this.tmpTimer = null;
+    }
+
+    componentDidMount() {
+        this.tmpTimer = setInterval(() => {
+            let installedPrinters = this.props.printersInfo; 
+            if (installedPrinters){
+                // set default printer state
+                this.state.selectedPrinterIndex = 0;
+                let defPrinter = installedPrinters[this.state.selectedPrinterIndex];
+                this.state.printerName = defPrinter.name;
+                if (defPrinter.papers.length > 0) this.state.printerPaperName = defPrinter.papers[0];
+                if (defPrinter.trays.length > 0) this.state.printerTrayName = defPrinter.trays[0];    
+                
+                clearInterval(this.tmpTimer);  
+            }
+        }, 500);
     }
 
     setFilesGroup(event) {

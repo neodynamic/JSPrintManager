@@ -9,8 +9,11 @@
             pixelMode: "Color",
             dither: "Threshold",
             threshold: 128,
+            rotAngle: 0,
             imageFormat: "JPG",
             jpgQuality: 100,
+            tiffCompression: 0,
+            pngCompression: 0,
             pdfTitle: "",
             enableDuplex: false,
             enableFeeder: false,
@@ -41,6 +44,7 @@
 
     setPixelMode(event) {
         let val = event.target.checked ? event.target.checked : event.target.value;
+        this.state.imageFormat = "PNG";
         this.setState({pixelMode: val});
     }
 
@@ -54,9 +58,24 @@
         this.setState({threshold: val});
     }
 
+    setRotAngle(event) {
+        let val = event.target.checked ? event.target.checked : event.target.value;
+        this.setState({rotAngle: val});
+    }
+
     setJpgQuality(event) {
         let val = event.target.checked ? event.target.checked : event.target.value;
         this.setState({jpgQuality: val});
+    }
+
+    setTiffCompression(event) {
+        let val = event.target.checked ? event.target.checked : event.target.value;
+        this.setState({tiffCompression: val});
+    }
+
+    setPngCompression(event) {
+        let val = event.target.checked ? event.target.checked : event.target.value;
+        this.setState({pngCompression: val});
     }
 
     createScanJob() {
@@ -70,15 +89,19 @@
         csj.enableFeeder = this.state.enableFeeder;
         csj.feederCount = parseInt(this.state.feederCount);
         csj.jpgCompressionQuality = parseInt(this.state.jpgQuality);
+        csj.tiffCompression = JSPM.TiffCompression[this.state.tiffCompression];
+        csj.pngCompression = JSPM.PngCompression[this.state.pngCompression];
         csj.pdfTitle = this.state.pdfTitle;
         csj.showUI = this.state.showUI;
         csj.showProgressUI = this.state.showProgressUI;
+        csj.rotAngle = parseInt(this.state.rotAngle);
 
         let _this = this;
 
         csj.onUpdate = (data, last) => {
             
-            this.setState({ scanningState: (last ? 0 : 1) });
+            if (last && this.state.scanningState != 2)
+                this.setState({ scanningState: (last ? 0 : 1) });
 
             if (!(data instanceof Blob)) {
                 console.info(data);
@@ -178,7 +201,7 @@
                         <div className="text-center">
                             <div className="alert alert-danger">
                                 <div className="text-center">
-                                No scanner devices detected on this system.
+                                No scanner devices were detected on this system.
                                 <h4>READ CAREFULLY</h4>
                                 </div>
                                 <p>
@@ -194,7 +217,7 @@
                     </div>
                 </div>
             );
-        } else {
+                                } else {
             let scanningStateContent;
 
             if (this.state.scanningState == 1) {
@@ -216,10 +239,10 @@
                             <div className="text-center">
                                 <div className="alert alert-danger">
                                     <strong>Error:</strong> {this.state.error}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
                 );
             } else if (this.state.scanningState == 0 && this.state.scannedImages.length > 0) {
                 let imgScale = { width: Math.round(96.0 / this.state.resolution * 100.0) + "%", height: "auto" };
@@ -258,16 +281,16 @@
                 bwDither = (
                     <div>
                         <label>Dither:</label>
-                        <select className="form-control form-control-sm" name="dither" onChange={this.setDither.bind(this)}>
-                            <option>Threshold</option>
-                            <option>FloydSteinberg</option>
-                            <option>Bayer4x4</option>
-                            <option>Bayer8x8</option>
-                            <option>Cluster6x6</option>
-                            <option>Cluster8x8</option>
-                            <option>Cluster16x16</option>
-                        </select>                 
-                    </div>    
+                <select className="form-control form-control-sm" name="dither" onChange={this.setDither.bind(this)}>
+                    <option>Threshold</option>
+                    <option>FloydSteinberg</option>
+                    <option>Bayer4x4</option>
+                    <option>Bayer8x8</option>
+                    <option>Cluster6x6</option>
+                    <option>Cluster8x8</option>
+                    <option>Cluster16x16</option>
+                </select>                 
+            </div>    
                 );
 
                 if (this.state.dither == "Threshold"){
@@ -276,10 +299,10 @@
                             <div className="input-group input-group-sm mb-3">
                                 <div className="input-group-prepend">
                                 <span className="input-group-text" id="basic-addon1">Threshold:</span>
-                                </div>
-                                <input type="number" name="threshold" className="form-control" aria-label="Threshold" aria-describedby="basic-addon1" onChange={this.setThreshold.bind(this)} placeholder="1" step="1" min="0" max="255"/>
-                            </div>      
-                        </div>    
+                    </div>
+                    <input type="number" name="threshold" className="form-control" aria-label="Threshold" aria-describedby="basic-addon1" onChange={this.setThreshold.bind(this)} placeholder="1" step="1" min="0" max="255"/>
+                </div>      
+            </div>    
                     );
                 }
             }
@@ -289,15 +312,52 @@
             if (this.state.imageFormat == "JPG"){
                 jpgQuality = (
                     <div>
-                        <div className="input-group input-group-sm mb-3">
-                            <div className="input-group-prepend">
-                            <span className="input-group-text" id="basic-addon1">Quality:</span>
+                                    <div className="input-group input-group-sm mb-3">
+                                        <div className="input-group-prepend">
+                                        <span className="input-group-text" id="basic-addon1">Quality:</span>
                             </div>
                             <input type="number" name="jpgQuality" className="form-control" aria-label="Threshold" aria-describedby="basic-addon1" onChange={this.setJpgQuality.bind(this)} placeholder="1" step="1" min="0" max="100"/>
                         </div>      
                     </div>    
                 );
             }
+
+            let tiffCompression;
+
+            if (this.state.imageFormat == "TIFF"){
+                tiffCompression = (
+                    <div>
+                        <label>Compression:</label>
+                        <select className="form-control form-control-sm" name="tiffCompression" onChange={this.setTiffCompression.bind(this)}>
+                            <option>DEFAULT</option>
+                            <option>PACKBITS</option>
+                            <option>DEFLATE</option>
+                            <option>ADOBE_DEFLATE</option>
+                            <option>NONE</option>
+                            <option>CCITTFAX3</option>
+                            <option>CCITTFAX4</option>
+                            <option>LZW</option>
+                        </select>                 
+                    </div>    
+                        );
+            }
+
+            let pngCompression;
+
+            if (this.state.imageFormat == "PNG"){
+                pngCompression = (
+                    <div>
+                        <label>Compression:</label>
+                        <select className="form-control form-control-sm" name="pngCompression" onChange={this.setPngCompression.bind(this)}>
+                            <option>DEFAULT</option>
+                            <option>Z_BEST_SPEED</option>
+                            <option>Z_BEST_COMPRESSION</option>
+                            <option>NONE</option>
+                        </select>                 
+                    </div>    
+                        );
+            }
+
 
             let pdfTitle;
 
@@ -307,20 +367,20 @@
                         <div className="input-group input-group-sm mb-3">
                             <div className="input-group-prepend">
                             <span className="input-group-text" id="basic-addon1">Title:</span>
-                            </div>
-                            <input type="text" name="pdfTitle" className="form-control" aria-label="PDF Title" aria-describedby="basic-addon1" onChange={this.setData.bind(this)} placeholder="The title"/>
-                        </div>      
-                    </div>    
+                </div>
+                <input type="text" name="pdfTitle" className="form-control" aria-label="PDF Title" aria-describedby="basic-addon1" onChange={this.setData.bind(this)} placeholder="The title"/>
+            </div>      
+        </div>    
                 );
             }
 
             let imageFormats;
 
             if (bwDither){
-                imageFormats = (<select className="form-control form-control-sm" name="imageFormat" onChange={this.setImageFormat.bind(this)}><option>PNG</option><option>TIFF</option></select>);
-            } else {
-                imageFormats = (<div><select className="form-control form-control-sm" name="imageFormat" onChange={this.setImageFormat.bind(this)}><option>JPG</option><option>PNG</option><option>TIFF</option><option>PDF</option></select>{jpgQuality}{pdfTitle}</div>);
-            }
+                imageFormats = (<div><select className="form-control form-control-sm" name="imageFormat" onChange={this.setImageFormat.bind(this)}><option>PNG</option><option>TIFF</option></select>{tiffCompression}{pngCompression}</div>);
+        } else {
+                imageFormats = (<div><select className="form-control form-control-sm" name="imageFormat" onChange={this.setImageFormat.bind(this)}><option>JPG</option><option>PNG</option><option>TIFF</option><option>PDF</option></select>{jpgQuality}{pdfTitle}{tiffCompression}{pngCompression}</div>);
+                }
     
             demoContent = (
                 <div className="row">
@@ -340,12 +400,12 @@
                                         })}
                                     </select>
                                 </div>
-                                <div className="col-md-2">
-                                    <label>Resolution (DPI):</label>
+                                <div className="col-md-1">
+                                    <label>DPI:</label>
                                         <input type="text" className="form-control form-control-sm" name="resolution" onChange={this.setData.bind(this)} placeholder="200" />
                                 </div>
-                                <div className="col-md-2">
-                                    <label>Pixel Mode:</label>
+                                <div className="col-md-1">
+                                    <label>Color:</label>
                                     <select className="form-control form-control-sm" name="pixelMode" onChange={this.setPixelMode.bind(this)}>
                                         <option>Color</option>
                                         <option>Grayscale</option>
@@ -357,6 +417,15 @@
                                 <div className="col-md-2">
                                     <label>Image Format:</label>
                                     {imageFormats}                                    
+                                </div>
+                                <div className="col-md-1">
+                                    <label>Rotate:</label>
+                                    <select className="form-control form-control-sm" name="rotAngle" onChange={this.setRotAngle.bind(this)}>
+                                        <option value="0">None</option>
+                                        <option value="90">Rot90</option>
+                                        <option value="180">Rot180</option>
+                                        <option value="270">Rot270</option>
+                                    </select>
                                 </div>
                                 <div className="col-md-3">
                                     <span className="badge badge-info">Windows Only</span>
