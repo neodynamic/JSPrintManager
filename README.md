@@ -50,6 +50,9 @@ If the printer is installed in the client system through a Printer Driver, then 
 ### IPP Comm
 [IPP (Internet Printing Protocol) Communication support!](https://neodynamic.com/articles/How-to-send-request-IPP-internet-printing-protocol-from-Javascript) Send/Request IPP JSON messages to any IPP URI device and get IPP JSON response from the client system. The target IPP Device URI requires to be in the client's allow list!
 
+### Take Video Snapshots
+Use video devices as a scanner or take video snapshots specifying settings like Pixel Mode (Grayscale &amp; Color), and Output Image Format (JPG &amp; PNG) &amp; PDF!
+
 ### Get Printers Info & Status
 Besides getting the list of installed printers available in the client machine, you can also get further details like DPI Resolution, PortName, "Is Connected", "Is Shared", "Is Local", "Is Network", "Is Virtual or Real/Physical printer?", as well as the list of supported Papers and list of trays/bins!
 
