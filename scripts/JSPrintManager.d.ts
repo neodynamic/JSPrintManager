@@ -182,6 +182,9 @@ export declare class ClientScanJob extends ClientJob {
     _pdfTitle: string;
     _showUI: boolean;
     _showProgressUI: boolean;
+    _tiffCompression: TiffCompression;
+    _pngCompression: PngCompression;
+    _rotAngle: number;
     get scannerName(): string;
     set scannerName(val: string);
     get pixelMode(): PixelMode;
@@ -208,6 +211,50 @@ export declare class ClientScanJob extends ClientJob {
     set showUI(val: boolean);
     get showProgressUI(): boolean;
     set showProgressUI(val: boolean);
+    get tiffCompression(): TiffCompression;
+    set tiffCompression(val: TiffCompression);
+    get pngCompression(): PngCompression;
+    set pngCompression(val: PngCompression);
+    get rotAngle(): number;
+    set rotAngle(val: number);
+    onFinished(data: any): void;
+    onError(data: any, is_critical: any): void;
+    onUpdate(data: any, last: any): void;
+    protected _generateDataAsync(): Promise<string>;
+}
+
+export declare class ClientVideoScanJob extends ClientJob {
+    _type: string;
+    _videoDeviceName: string;
+    _pixelMode: PixelMode;
+    _imageFormat: ScannerImageFormatOutput;
+    _jpgCompressionQuality: number;
+    _threshold: number;
+    _dither: Dither;
+    _pdfTitle: string;
+    _tiffCompression: TiffCompression;
+    _pngCompression: PngCompression;
+    _rotAngle: number;
+    get videoDeviceName(): string;
+    set videoDeviceName(val: string);
+    get pixelMode(): PixelMode;
+    set pixelMode(val: PixelMode);
+    get imageFormat(): ScannerImageFormatOutput;
+    set imageFormat(val: ScannerImageFormatOutput);
+    get jpgCompressionQuality(): number;
+    set jpgCompressionQuality(val: number);
+    get threshold(): number;
+    set threshold(val: number);
+    get dither(): Dither;
+    set dither(val: Dither);
+    get pdfTitle(): string;
+    set pdfTitle(val: string);
+    get tiffCompression(): TiffCompression;
+    set tiffCompression(val: TiffCompression);
+    get pngCompression(): PngCompression;
+    set pngCompression(val: PngCompression);
+    get rotAngle(): number;
+    set rotAngle(val: number);
     onFinished(data: any): void;
     onError(data: any, is_critical: any): void;
     onUpdate(data: any, last: any): void;
@@ -481,6 +528,22 @@ export declare enum SitesManagerAction {
     Allow = 0,
     Block = 1
 }
+export declare enum TiffCompression {
+    DEFAULT = 0,
+    PACKBITS = 256,
+    DEFLATE = 512,
+    ADOBE_DEFLATE = 1024,
+    NONE = 2048,
+    CCITTFAX3 = 4096,
+    CCITTFAX4 = 8192,
+    LZW = 16384
+}
+export declare enum PngCompression {
+    DEFAULT = 0,
+    Z_BEST_SPEED = 1,
+    Z_BEST_COMPRESSION = 9,
+    NONE = 256
+}
 
 /// <reference types="node" />
 export declare enum Ipp {
@@ -582,10 +645,13 @@ export declare class JSPrintManager {
     static WS: NDWS | undefined;
     static auto_reconnect: boolean;
     private static _license;
+    private static _license_authorization_header;
     static start(secure?: boolean, host?: string, port?: number): Promise<unknown>;
+    static get license_authorization_header(): string;
+    static set license_authorization_header(value: string);
     static get license_url(): string;
     static set license_url(value: string);
-    static getPrinters(): Promise<unknown>;
+    static getPrinters(locals_only?: boolean): Promise<unknown>;
     static getSessionCertificate(): Promise<unknown>;
     static getPrintersInfo(detail_level: PrintersInfoLevel, printer_name: string, printer_icon: PrinterIcon.None, extended_attributes?: string): Promise<unknown>;
     static get websocket_status(): WSStatus.Open | WSStatus;
@@ -615,6 +681,8 @@ export declare class JSPrintManager {
     static printerDeleteAllJobs(printer_name: string): Promise<any>;
     static sendIppMessage(device_uri: string, ipp_message: any, file_content?: Uint8Array, user_name?: string, password?: string): Promise<any>;
     static sitesManager(site: string, action: SitesManagerAction): Promise<any>;
+    static getVideoDevices(): Promise<any>;
+    static getScannersInfo(scanner_name?: string): Promise<unknown>;
 }
 
 export declare class NDWS {
@@ -859,8 +927,8 @@ export declare class TcpComm {
     };
 }
 
-export declare const VERSION = "7.0";
-export declare const WSPORT = 27443;
+export declare const VERSION = "8.0";
+export declare const WSPORT = 28443;
 export declare class Mutex {
     private mutex;
     lock(): PromiseLike<() => void>;
