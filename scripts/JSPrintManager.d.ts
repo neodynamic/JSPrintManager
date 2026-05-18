@@ -86,6 +86,10 @@ export declare class InstalledPrinter implements IClientPrinter {
     private _autoDetectRawModeDataType;
     private _driverModel;
     private _mediaType;
+    private _trayIndex;
+    private _paperIndex;
+    private _pageTrays;
+    private _autoTrayByPageSize;
     private bool2str;
     get printerName(): string;
     set printerName(value: string);
@@ -103,6 +107,14 @@ export declare class InstalledPrinter implements IClientPrinter {
     set driverModel(value: number);
     get mediaType(): string;
     set mediaType(value: string);
+    get trayIndex(): number;
+    set trayIndex(value: number);
+    get paperIndex(): number;
+    set paperIndex(value: number);
+    get pageTrays(): PageTrayItem[];
+    set pageTrays(value: PageTrayItem[]);
+    get autoTrayByPageSize(): boolean;
+    set autoTrayByPageSize(value: boolean);
     constructor(printerName: string, printToDefaultIfNotFound?: boolean, trayName?: string, paperName?: string, duplex?: DuplexMode, autoDetectRawModeDataType?: boolean, driverModel?: number, mediaType?: string);
     serialize(): string;
 }
@@ -185,6 +197,7 @@ export declare class ClientScanJob extends ClientJob {
     _tiffCompression: TiffCompression;
     _pngCompression: PngCompression;
     _rotAngle: number;
+    _enableDecodeBarcode: boolean;
     get scannerName(): string;
     set scannerName(val: string);
     get pixelMode(): PixelMode;
@@ -217,6 +230,8 @@ export declare class ClientScanJob extends ClientJob {
     set pngCompression(val: PngCompression);
     get rotAngle(): number;
     set rotAngle(val: number);
+    get enableDecodeBarcode(): boolean;
+    set enableDecodeBarcode(val: boolean);
     onFinished(data: any): void;
     onError(data: any, is_critical: any): void;
     onUpdate(data: any, last: any): void;
@@ -235,6 +250,7 @@ export declare class ClientVideoScanJob extends ClientJob {
     _tiffCompression: TiffCompression;
     _pngCompression: PngCompression;
     _rotAngle: number;
+    _enableDecodeBarcode: boolean;
     get videoDeviceName(): string;
     set videoDeviceName(val: string);
     get pixelMode(): PixelMode;
@@ -255,6 +271,8 @@ export declare class ClientVideoScanJob extends ClientJob {
     set pngCompression(val: PngCompression);
     get rotAngle(): number;
     set rotAngle(val: number);
+    get enableDecodeBarcode(): boolean;
+    set enableDecodeBarcode(val: boolean);
     onFinished(data: any): void;
     onError(data: any, is_critical: any): void;
     onUpdate(data: any, last: any): void;
@@ -463,7 +481,10 @@ export declare enum WSStatus {
     Open = 0,
     Closed = 1,
     Blocked = 2,
-    WaitingForUserResponse = 3
+    WaitingForUserResponse = 3,
+    NotInstalled = 4,
+    CertificateError = 5,
+    ConnectionError = 6
 }
 export declare enum PrintRotation {
     None = 0,
@@ -543,6 +564,22 @@ export declare enum PngCompression {
     Z_BEST_SPEED = 1,
     Z_BEST_COMPRESSION = 9,
     NONE = 256
+}
+
+export declare class HIDComm {
+    private _id;
+    private _devicePath;
+    constructor(devicePath: string);
+    onError(data: any, critical: any): void;
+    onDataReceived(data: any): void;
+    private _onDataReceived;
+    onClose(data: any): void;
+    connect(): Promise<unknown>;
+    send(utf8string: string): void;
+    close(): void;
+    propertiesJSON(): {
+        type: string;
+    };
 }
 
 /// <reference types="node" />
@@ -643,10 +680,14 @@ export declare class IppMessage {
 
 export declare class JSPrintManager {
     static WS: NDWS | undefined;
+    private static _startPromise;
     static auto_reconnect: boolean;
     private static _license;
     private static _license_authorization_header;
-    static start(secure?: boolean, host?: string, port?: number): Promise<unknown>;
+    static start(secure?: boolean, host?: string, port?: number): Promise<any>;
+    private static _license_custom_headers;
+    static get license_custom_headers(): string;
+    static set license_custom_headers(value: string);
     static get license_authorization_header(): string;
     static set license_authorization_header(value: string);
     static get license_url(): string;
@@ -674,8 +715,11 @@ export declare class JSPrintManager {
     static getPapers(printer_name: string): Promise<any>;
     static getTrays(printer_name: string): Promise<any>;
     static getInstances(secure?: boolean, host?: string, port?: number): Promise<unknown>;
+    static getWorkerInstance(secure?: boolean, host?: string, port?: number): Promise<unknown>;
     static getUser(): Promise<any>;
     static getBluetoothDevices(): Promise<any>;
+    static getUsbDevices(): Promise<any>;
+    static getHidDevices(): Promise<any>;
     static getMediaTypes(printer_name: string): Promise<any>;
     static getDeviceId(): Promise<any>;
     static printerDeleteAllJobs(printer_name: string): Promise<any>;
@@ -689,12 +733,14 @@ export declare class NDWS {
     private _ws;
     private _addr;
     private _port;
+    private _workerPort;
     private _secure;
     private _status;
     private _job_list;
     private _processing_message;
     get address(): string;
     get port(): number;
+    get workerPort(): number;
     get isSecure(): boolean;
     get status(): WSStatus;
     autoReconnect: boolean;
@@ -702,14 +748,25 @@ export declare class NDWS {
     onOpen: (e: any) => void;
     onStatusChanged: () => void;
     onError: (e: any) => never;
+    onConnectionFailed: (status: WSStatus, wasConnected: boolean) => void;
+    closeReason: {
+        code: number;
+        wasConnected: boolean;
+        detail: string;
+    } | null;
+    private _wasEverConnected;
+    private _stopped;
     constructor(addr?: string, port?: number, secure?: boolean, auto_reconnect?: boolean);
     private _onOpen;
+    private _onConnected;
     private _onMessage;
     private _onError;
+    private _pingPongInterval;
     private _pingPong;
     private _onClose;
     private _genID;
     private _send;
+    private _start;
     start(): Promise<void>;
     send(data: any, properties: any): string;
     stop(): void;
@@ -727,6 +784,19 @@ export interface IPrintFileDuplexableProperties extends IPrintFileProperties {
     duplex_message: string;
     range: string;
     reverse: boolean;
+}
+export declare class PageTrayItem {
+    private _page;
+    get page(): number;
+    set page(value: number);
+    private _trayIndex;
+    get trayIndex(): number;
+    set trayIndex(value: number);
+    private _tray;
+    get trayName(): string;
+    set trayName(value: string);
+    constructor(page?: number, trayIndex?: number, trayName?: string);
+    toJson(): any;
 }
 export declare class PrintFile {
     fileContentType: FileSourceType;
@@ -853,11 +923,15 @@ interface IPrintFileXLSProperties extends IPrintFileProperties {
     from_page: number;
     to_page: number;
     password: string;
+    sheet_names: string[];
+    sheet_indexes: number[];
 }
 export declare class PrintFileXLS extends PrintFile {
     encryptedPassword: string;
     pageFrom: number;
     pageTo: number;
+    sheetNames: any[];
+    sheetIndexes: any[];
     constructor(fileContent: any, fileContentType: FileSourceType, fileName: string, copies?: number);
     getProperties(): IPrintFileXLSProperties;
     getContent(): Promise<Blob>;
@@ -927,8 +1001,27 @@ export declare class TcpComm {
     };
 }
 
-export declare const VERSION = "8.0";
-export declare const WSPORT = 28443;
+export declare class USBComm {
+    private _id;
+    private _devicePath;
+    private _receiveBufferSize;
+    get receiveBufferSize(): number;
+    set receiveBufferSize(value: number);
+    constructor(devicePath: string);
+    onError(data: any, critical: any): void;
+    onDataReceived(data: any): void;
+    private _onDataReceived;
+    onClose(data: any): void;
+    connect(): Promise<unknown>;
+    send(utf8string: string): void;
+    close(): void;
+    propertiesJSON(): {
+        type: string;
+    };
+}
+
+export declare const VERSION = "9.0";
+export declare const WSPORT = 29443;
 export declare class Mutex {
     private mutex;
     lock(): PromiseLike<() => void>;
