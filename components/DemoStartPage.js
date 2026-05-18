@@ -272,6 +272,28 @@
                 <br />
                 <div className="row">
                     <div className="col-sm-4">
+                       <h2>
+                            <i className="fa fa-usb iconDemo" />&nbsp;BIDI USB Comm
+                        </h2>
+                        <p>
+                            Bidirectional USB Communication support! <strong>Send/Write &amp; Receive/Read</strong> data strings to any <strong>USB Devices</strong> reachable from the client system.  <span className="badge badge-info">Windows Only</span>
+                        </p>
+                        <button className="btn btn-danger" onClick={() => this.props.setSample(21)}>
+                            TRY NOW
+                        </button>
+                    </div>
+                    <div className="col-sm-4">
+                       <h2>
+                            <i className="fa fa-usb iconDemo" />&nbsp;BIDI HID Comm
+                        </h2>
+                        <p>
+                            Bidirectional HID Communication support! <strong>Send/Write &amp; Receive/Read</strong> data strings to any <strong>HID Devices</strong> reachable from the client system.  <span className="badge badge-info">Windows Only</span>
+                        </p>
+                        <button className="btn btn-danger" onClick={() => this.props.setSample(22)}>
+                            TRY NOW
+                        </button>
+                    </div>
+                    <div className="col-sm-4">
                         <h2>
                             <i className="fa fa-globe iconDemo" />&nbsp;IPP Comm
                         </h2>
@@ -282,6 +304,11 @@
                             TRY NOW
                         </button>
                     </div>
+                    
+                    
+                </div>
+                <br />
+                <div className="row">
                     <div className="col-sm-4">
                         <h2>
                             <i className="fa fa-print iconDemo" />&nbsp;Get Printers Info
@@ -305,20 +332,20 @@
                         </button>
                     </div>
                     
-                </div>
-                <br />
-                <div className="row">
                     <div className="col-sm-4">
                         <h2>
                             <i className="fa fa-th-list iconDemo" />&nbsp;Get Scanners Info
                         </h2>
                         <p>
-                            Get the <strong>list of installed scanners</strong> available in the client machine including details like <strong>DPI Resolutions, duplex support, fedder support</strong>, and more... <span className="badge badge-info">Windows Only</span>
+                            Get the <strong>list of installed scanners</strong> available in the client machine including details like <strong>DPI Resolutions, duplex support, fedder support</strong>, and more...
                         </p>
                         <button className="btn btn-danger" onClick={() => this.props.setSample(20)}>
                             TRY NOW
                         </button>
                     </div>
+                </div>
+                <br />
+                <div className="row">
                     <div className="col-sm-4">
                         <h2>
                             <i className="fa fa-eye iconDemo" />&nbsp;Printers Watcher
@@ -332,7 +359,6 @@
                     </div>
                     
                 </div>
-                
                 <hr />
                 
                 <div className="row">
@@ -346,17 +372,6 @@
                         <a className="btn btn-danger" href="https://www.neodynamic.com/articles/How-to-print-raw-commands-pdf-files-from-iOS-Android-ChromeOS-sandboxed-devices-from-Javascript" target="_blank">
                             Learn how to do it...
                                         </a>
-                        </div>
-                        <div className="col-sm-6">
-                            <h2>
-                                <i className="fa fa-users iconDemo" />&nbsp;Multi-users Scenario
-                            </h2>
-                            <p>
-                                If the client machine runs multiple user sessions simultaneously, printing through JSPrintManager is possible but requires some special considerations. Take a look at the following sample by testing it in a client machine under that scenario. 
-                            </p>
-                            <a className="btn btn-danger" href="multiusers.html" target="_blank">
-                                Learn how to do it...
-                            </a>
                         </div>
                     </div>
                 </div>

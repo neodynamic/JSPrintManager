@@ -52,7 +52,7 @@
 
         var wlPort = (new URLSearchParams(window.location.search)).get('wlport');
 
-        if(wlPort == null) wlPort = 28443;
+        if(wlPort == null) wlPort = 29443;
 
         this.setState({
             JSPM_WS_Port: wlPort
@@ -88,6 +88,10 @@
             })
 
         };
+
+        JSPM.JSPrintManager.WS.onError = function (e){
+            console.log(e);
+        }
 
         JSPM.JSPrintManager.WS.onStatusChanged = function() {
             JSPM.JSPrintManager.MainApp.jspmWsStatusChanged(JSPM.WSStatus[JSPM.JSPrintManager.WS.status]);
@@ -147,7 +151,7 @@
             } else if (this.state.DemoIndex == 8) {
                 demoContent = <PrintingXLSSample setSample={this.setDemoSample} os={this.OS} />;
             } else if (this.state.DemoIndex == 9) {
-                demoContent = <ScanningSample setSample={this.setDemoSample} />;
+                demoContent = <ScanningSample setSample={this.setDemoSample} os={this.OS} />;
             } else if (this.state.DemoIndex == 10) {
                 demoContent = <SerialPortBIDISample setSample={this.setDemoSample} />;
             } else if (this.state.DemoIndex == 11) {
@@ -170,9 +174,41 @@
                 demoContent = <VideoScanningSample setSample={this.setDemoSample} os={this.OS} />;
             } else if (this.state.DemoIndex == 20) {
                 demoContent = <ScannersInfoSample setSample={this.setDemoSample} os={this.OS} />;
+            } else if (this.state.DemoIndex == 21) {
+                demoContent = <UsbBIDISample setSample={this.setDemoSample} os={this.OS} />;
+            } else if (this.state.DemoIndex == 22) {
+                demoContent = <HidBIDISample setSample={this.setDemoSample} os={this.OS} />;
             }
-        } else if (this.state.JSPM_WS_Status == "Closed") demoContent = <InstallJSPMClientApp />;
+        } else if (this.state.JSPM_WS_Status == "NotInstalled" || this.state.JSPM_WS_Status == "Closed") demoContent = <InstallJSPMClientApp />;
         else if (this.state.JSPM_WS_Status == "Blocked") demoContent = <WebsiteBlocked />;
+        else if (this.state.JSPM_WS_Status == "CertificateError") {        
+            demoContent = (
+                <div className="row">
+                    <div className="col-md-12">
+                        <div className="text-center">
+                            <div className="alert alert-danger">
+                                <h4>Certificate Error</h4>
+                                <p>A TLS/SSL certificate error prevented the WebSocket Secure connection.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+        else if (this.state.JSPM_WS_Status == "ConnectionError") {        
+            demoContent = (
+                <div className="row">
+                    <div className="col-md-12">
+                        <div className="text-center">
+                            <div className="alert alert-danger">
+                                <h4>Connection Error</h4>
+                                <p>A generic network error prevented the connection (e.g. firewall, DNS failure).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
         else {
             demoContent = (
                 <div className="row">
@@ -193,7 +229,7 @@
                     <div className="container">
                         <a className="navbar-brand" href="//neodynamic.com/products/printing/js-print-manager" target="_blank">
                             <img alt="Neodynamic" src="//neodynamic.com/images/jspm-32.png" />
-                            &nbsp;&nbsp;JSPrintManager <span className="round">8.0</span>
+                            &nbsp;&nbsp;JSPrintManager <span className="round">9.0</span>
                         </a>
                         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon" />

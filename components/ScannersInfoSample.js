@@ -18,13 +18,12 @@
         
         let _this = this;
 
-        if (this.props.os == "win") {
-            JSPM.JSPrintManager.Caller.scannersInfoChanged(null);
-            //get client installed scanners with detailed info
-            JSPM.JSPrintManager.getScannersInfo().then(function (scannersList) {
-                JSPM.JSPrintManager.Caller.scannersInfoChanged(scannersList);
-            });
-        }
+        JSPM.JSPrintManager.Caller.scannersInfoChanged(null);
+        //get client installed scanners with detailed info
+        JSPM.JSPrintManager.getScannersInfo().then(function (scannersList) {
+            JSPM.JSPrintManager.Caller.scannersInfoChanged(scannersList);
+        });
+        
     }
 
     setScannerState(event) {
@@ -35,42 +34,67 @@
     render() {
         let demoContent;
 
-        if (this.props.os == "win") {
-            let installedScanners = this.state.scannersInfo;
+        let installedScanners = this.state.scannersInfo;
 
-            if (!installedScanners) {
-                demoContent = (
-                    <div className="row">
-                        <div className="col-md-12">
-                            <div className="text-center">
-                                <img src="loading.gif" id="loadingScannersInfo" />
-                                <br />
-                                <strong>Getting scanners info...</strong>
-                            </div>
+        if (!installedScanners) {
+            demoContent = (
+                <div className="row">
+                    <div className="col-md-12">
+                        <div className="text-center">
+                            <img src="loading.gif" id="loadingScannersInfo" />
+                            <br />
+                            <strong>Getting scanners info...</strong>
                         </div>
                     </div>
-                );
-            } 
-            else if (installedScanners.length == 0) {
-                demoContent = (
-                    <div className="row">
-                        <div className="col-md-12">
-                            <div className="text-center">
-                                <div className="alert alert-danger">
-                                    <div className="text-center">
-                                    No scanners were detected on this system.
-                                    </div>
+                </div>
+            );
+        } 
+        else if (installedScanners.length == 0) {
+            demoContent = (
+                <div className="row">
+                    <div className="col-md-12">
+                        <div className="text-center">
+                            <div className="alert alert-danger">
+                                <div className="text-center">
+                                No scanners were detected on this system.
                                 </div>
+                            </div>
 
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+        else {
+            let selScanner = installedScanners[this.state.selectedScannerIndex];
+
+            let selIndex = this.state.selectedScannerIndex;
+
+            let self = this;
+
+            if (selScanner.error) {
+                demoContent = (
+                    <div className="row">
+                        <div className="col-md-12">
+                            <label>Scanners:</label>
+                            <select className="form-control form-control-sm" onChange={this.setScannerState.bind(this)} value={selIndex}>
+                                            {installedScanners.map(function(item, i) {
+                                                let opt = (
+                                                    <option key={i} value={i}>
+                                                        {item.name}
+                                                    </option>
+                                                            );
+                                        return opt;
+                                    })}
+                            </select>
+                            <br/>
+                            <div className="alert alert-warning">
+                                {selScanner.error}
                             </div>
                         </div>
                     </div>
                 );
-            }
-            else {
-                let selScanner = installedScanners[this.state.selectedScannerIndex];
-
-                let self = this;
+            } else {
 
                 demoContent = (
                     <div className="row">
@@ -79,7 +103,7 @@
                                 <div className="row">
                                     <div className="col-md-3">
                                         <label>Scanners:</label>
-                                            <select className="form-control form-control-sm" onChange={this.setScannerState.bind(this)}>
+                                        <select className="form-control form-control-sm" onChange={this.setScannerState.bind(this)}  value={selIndex}>
                                                 {installedScanners.map(function(item, i) {
                                                     let opt = (
                                                         <option key={i} value={i}>
@@ -160,21 +184,9 @@
                     </div>
                 </div>
             );
-                                    }
-        } else {
-            demoContent = (
-                <div className="row">
-                    <div className="col-md-12">
-                        <div className="alert alert-warning">
-                            Available for <strong>Windows clients only</strong>
-                        </div>
-                    </div>
-                </div>
-            );
+            }
         }
-
         
-
         return (
             <div>
                 <div className="row">

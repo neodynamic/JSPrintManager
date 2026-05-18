@@ -18,6 +18,7 @@
             enableDuplex: false,
             enableFeeder: false,
             feederCount: 0,
+            enableDecodeBarcode: false,
             showUI: false,
             showProgressUI: true,
             scanningState: 0, // 0 = finished, 1 = scanning, 2 = error
@@ -29,7 +30,8 @@
 
     setScannerDevices(scannersList) {
         this.state.numOfScannerDevices = scannersList.length;
-        this.state.scannerName = scannersList[0];
+        if (scannersList && scannersList.length > 0)
+            this.state.scannerName = scannersList[0];
         this.setState({ scannerDevices: scannersList });
     }
 
@@ -95,6 +97,7 @@
         csj.showUI = this.state.showUI;
         csj.showProgressUI = this.state.showProgressUI;
         csj.rotAngle = parseInt(this.state.rotAngle);
+        csj.enableDecodeBarcode= this.state.enableDecodeBarcode;
 
         let _this = this;
 
@@ -104,6 +107,11 @@
                 this.setState({ scanningState: (last ? 0 : 1) });
 
             if (!(data instanceof Blob)) {
+
+                if (data.barcodes){
+                    data.barcodes.map(bc => alert('Barcode Detected: ' + bc.type + '\nBarcode Data: ' + bc.data));
+                }
+
                 console.info(data);
                 return;
             }
@@ -176,11 +184,32 @@
         //get client installed scanners
         JSPM.JSPrintManager.getScanners().then(function(scannersList) {
             JSPM.JSPrintManager.Caller.setScannerDevices(scannersList);
+        })
+        .catch(error => {
+            console.error(error);
+            JSPM.JSPrintManager.Caller.setScannerDevices([]);
         });
     }
 
     render() {
         let demoContent;
+
+        let twainInfo;
+        
+        if (this.props.os == "win") {
+            twainInfo = (
+                <div>
+                    <h4>PLEASE READ CAREFULLY</h4>                    
+                    <p>
+                    If you are using JSPrintManager on a 64-bit Windows system but your scanner lacks a 64-bit TWAIN driver (or only supports TWAIN 1.x), please follow these steps:
+                    </p>
+                    <ul>
+                    <li>Uninstall the current 64-bit JSPrintManager app.</li>
+                    <li><a href="https://www.neodynamic.com/downloads/jspm/">Download and install <strong>JSPrintManager app for 32-bit</strong></a> instead. The 32-bit app ensures compatibility with legacy TWAIN devices and will also detect any available WIA devices on your system.</li>
+                    </ul>
+                </div>                
+                );
+        }
 
         if (this.state.numOfScannerDevices == -1) {
             demoContent = (
@@ -202,17 +231,9 @@
                             <div className="alert alert-danger">
                                 <div className="text-center">
                                 No scanner devices were detected on this system.
-                                <h4>READ CAREFULLY</h4>
                                 </div>
-                                <p>
-                                If you have installed the JSPrintManager client app in a Windows 64-bit edition through our universal installer or the one specific for Win64 and your scanner does not provide a 64-bit TWAIN driver or it supports the TWAIN 1.x specification only then please, do the following:
-                                </p>
-                                <ul>
-                                <li>Uninstall current JSPrintManager app for 64-bit</li>
-                                <li><a href="https://www.neodynamic.com/downloads/jspm/">Download and install <strong>JSPrintManager app for 32-bit</strong></a> instead. The JSPrintManager app for 32-bit will detect not only those missing TWAIN devices but also any other WIA devices that might be available in your system.</li>
-                                </ul>
+                                {twainInfo}
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -428,8 +449,6 @@
                                     </select>
                                 </div>
                                 <div className="col-md-3">
-                                    <span className="badge badge-info">Windows Only</span>
-                                    <br />
                                     <div className="custom-control custom-switch">
                                         <input type="checkbox" className="custom-control-input" id="enableDuplex" name="enableDuplex" onChange={this.setData.bind(this)} />
                                         <label className="custom-control-label" htmlFor="enableDuplex">
@@ -447,6 +466,14 @@
                                         <span className="input-group-text" id="basic-addon1">Feeder Count:</span>
                                       </div>
                                        <input type="number" name="feederCount" className="form-control" aria-label="Feeder Count" aria-describedby="basic-addon1" onChange={this.setData.bind(this)} placeholder="0" step="1" min="0" max="100"/>
+                                    </div>
+                                    <span className="badge badge-info">Windows Only</span>
+                                    <br />                                    
+                                    <div className="custom-control custom-switch">
+                                        <input type="checkbox" className="custom-control-input" id="enableDecodeBarcode" name="enableDecodeBarcode" onChange={this.setData.bind(this)} />
+                                        <label className="custom-control-label" htmlFor="enableDecodeBarcode">
+                                            Decode Barcodes
+                                        </label>
                                     </div>
                                     <div className="custom-control custom-switch">
                                         <input type="checkbox" className="custom-control-input" id="showUI" name="showUI" onChange={this.setData.bind(this)} />

@@ -65,6 +65,16 @@
         cpj.clientPrinter = new JSPM.InstalledPrinter(this.state.printerName, false, this.state.printerTrayName, this.state.printerPaperName);
         cpj.clientPrinter.mediaType = this.state.printerMediaType;
 
+        /*
+
+        // How to map pdf pages to printer trays
+
+        let pageTrays = [];
+        pageTrays.push(new JSPM.PageTrayItem(1, -1, 'Manual Feed'));
+        pageTrays.push(new JSPM.PageTrayItem(2, -1, 'Tray 1'));
+        cpj.clientPrinter.pageTrays = pageTrays;
+        */
+
         if (this.state.pdfFile) {
             let myPdfFile;
 
